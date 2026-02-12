@@ -12,3 +12,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Write a reproducibility manifest for each parameter sweep run.
  - [ ] Hash experiment configs and store hash with metrics artifacts.
  - [ ] Add growth-field recovery MAE metric for inverse benchmarks.
+ - [ ] Add growth-field recovery Pearson/Spearman correlation metrics.
