@@ -1,5 +1,6 @@
 """Soft penalty constraints for cortical folding simulation."""
 
+import jax
 import jax.numpy as jnp
 
 from .mesh import MeshTopology
@@ -30,19 +31,23 @@ def self_collision_penalty(
     n_sample: int = 256,
     key=None,
 ) -> jnp.ndarray:
-    """Approximate self-collision penalty via random vertex-pair sampling.
+    """Approximate self-collision penalty via sampled non-adjacent pairs.
 
-    For efficiency, we sample random non-adjacent vertex pairs and apply
-    repulsion if they are closer than min_dist. Returns (V, 3).
+    For efficiency, this samples candidate vertex pairs and applies repulsion
+    if they are closer than `min_dist`. Immediate topological neighbors are
+    ignored so local mesh edges are not treated as collisions.
     """
     if key is None:
-        import jax
-        key = jax.random.PRNGKey(0)
+        # Deterministic pseudo-randomized pairing when no key is passed.
+        idx_a = jnp.arange(n_sample) % verts.shape[0]
+        idx_b = (idx_a * 1103515245 + 12345) % verts.shape[0]
+    else:
+        n_verts = verts.shape[0]
+        k1, k2 = jax.random.split(key)
+        idx_a = jax.random.randint(k1, (n_sample,), 0, n_verts)
+        idx_b = jax.random.randint(k2, (n_sample,), 0, n_verts)
 
     n_verts = verts.shape[0]
-    k1, k2 = jax.random.split(key)
-    idx_a = jax.random.randint(k1, (n_sample,), 0, n_verts)
-    idx_b = jax.random.randint(k2, (n_sample,), 0, n_verts)
 
     va = verts[idx_a]  # (n_sample, 3)
     vb = verts[idx_b]  # (n_sample, 3)
@@ -50,16 +55,22 @@ def self_collision_penalty(
     dist = jnp.linalg.norm(diff, axis=1, keepdims=True)  # (n_sample, 1)
     safe_dist = jnp.maximum(dist, 1e-12)
 
-    # Only repel if closer than min_dist and not the same vertex
+    # Ignore trivial and topological-neighbor pairs.
     same = (idx_a == idx_b)[:, None]
+    edges = topo.edges
+    a_col = idx_a[:, None]
+    b_col = idx_b[:, None]
+    is_adjacent = jnp.any(
+        ((a_col == edges[None, :, 0]) & (b_col == edges[None, :, 1]))
+        | ((a_col == edges[None, :, 1]) & (b_col == edges[None, :, 0])),
+        axis=1,
+    )[:, None]
+
     gap = jnp.maximum(min_dist - dist, 0.0)
     repulsion = stiffness * gap * diff / safe_dist  # (n_sample, 3)
-    repulsion = jnp.where(same, 0.0, repulsion)
+    repulsion = jnp.where(same | is_adjacent, 0.0, repulsion)
 
     forces = jnp.zeros_like(verts)
     forces = forces.at[idx_a].add(repulsion)
     forces = forces.at[idx_b].add(-repulsion)
     return forces
-
-
-import jax
