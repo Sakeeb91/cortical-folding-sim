@@ -10,3 +10,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Report skull penetration percentiles per run.
  - [ ] Track collision-force contribution relative to total force norm.
  - [ ] Write a reproducibility manifest for each parameter sweep run.
+ - [ ] Hash experiment configs and store hash with metrics artifacts.
