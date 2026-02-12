@@ -6,3 +6,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Add solver stability KPI logging (stability rate, divergence rate).
  - [ ] Add a NaN/Inf incident counter to per-run diagnostics output.
  - [ ] Export max displacement histograms for forward sweeps.
+ - [ ] Report curvature percentiles (p50/p90/p99) in benchmark outputs.
