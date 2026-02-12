@@ -13,7 +13,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-from cortical_folding.benchmarking import load_grid_config
+from cortical_folding.benchmarking import is_gi_plausible, load_grid_config
 from cortical_folding.losses import gyrification_index
 from cortical_folding.mesh import build_topology, compute_face_areas, compute_mean_curvature
 from cortical_folding.solver import SimParams, make_initial_state, simulate
@@ -48,6 +48,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--n-steps", type=int, default=200, help="Simulation timesteps.")
     parser.add_argument("--dt", type=float, default=0.02, help="Simulation dt.")
     parser.add_argument("--seed", type=int, default=42, help="Run seed metadata.")
+    parser.add_argument(
+        "--gi-plausible-min",
+        type=float,
+        default=0.8,
+        help="Lower bound for GI plausibility flag.",
+    )
+    parser.add_argument(
+        "--gi-plausible-max",
+        type=float,
+        default=3.5,
+        help="Upper bound for GI plausibility flag.",
+    )
     parser.add_argument(
         "--max-runs",
         type=int,
@@ -122,6 +134,8 @@ def run_single(
     n_steps: int,
     dt: float,
     seed: int,
+    gi_plausible_min: float,
+    gi_plausible_max: float,
 ) -> dict:
     """Execute one config and return a flat metrics row."""
     if cfg["growth_mode"] == "uniform":
@@ -183,6 +197,7 @@ def run_single(
                 "final_area": float("nan"),
                 "area_ratio": float("nan"),
                 "gi": float("nan"),
+                "gi_plausible": 0,
                 "mean_curv_mean": float("nan"),
                 "mean_curv_std": float("nan"),
                 "mean_curv_abs_max": float("nan"),
@@ -211,6 +226,7 @@ def run_single(
             "final_area": final_area,
             "area_ratio": final_area / max(initial_area, 1e-12),
             "gi": gi,
+            "gi_plausible": int(is_gi_plausible(gi, gi_plausible_min, gi_plausible_max)),
             "mean_curv_mean": float(np.mean(curv)),
             "mean_curv_std": float(np.std(curv)),
             "mean_curv_abs_max": float(np.max(np.abs(curv))),
@@ -254,11 +270,14 @@ def write_summary(rows: list[dict], path: Path) -> None:
 
     if stable_rows:
         gi_values = [r["gi"] for r in stable_rows]
+        plausible_count = int(sum(r["gi_plausible"] for r in stable_rows))
         summary.update(
             {
                 "gi_mean": float(np.mean(gi_values)),
                 "gi_std": float(np.std(gi_values)),
                 "best_gi_run_id": int(max(stable_rows, key=lambda r: r["gi"])["run_id"]),
+                "gi_plausible_count": plausible_count,
+                "gi_plausible_rate": float(plausible_count / len(stable_rows)),
             }
         )
 
@@ -294,6 +313,8 @@ def main() -> None:
             n_steps=args.n_steps,
             dt=args.dt,
             seed=args.seed,
+            gi_plausible_min=args.gi_plausible_min,
+            gi_plausible_max=args.gi_plausible_max,
         )
         rows.append(row)
         print(
