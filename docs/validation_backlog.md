@@ -23,3 +23,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Add biologically plausible GI range checks to evaluation reports.
  - [ ] Add a quality gate that flags runs with instability symptoms.
  - [ ] Add data-ingestion interface placeholder for future MRI surfaces.
+ - [ ] Add uncertainty reporting template for inverse-fit results.
