@@ -1,0 +1,10 @@
+{
+  "generated_at_utc": "2026-02-12T23:12:54.915098+00:00",
+  "n_runs": 4,
+  "n_stable": 4,
+  "n_unstable": 0,
+  "stability_rate": 1.0,
+  "gi_mean": 2.2315056324005127,
+  "gi_std": 0.8536228144321729,
+  "best_gi_run_id": 3
+}
