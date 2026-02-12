@@ -1,10 +1,20 @@
 {
-  "generated_at_utc": "2026-02-12T23:12:54.915098+00:00",
-  "n_runs": 4,
-  "n_stable": 4,
+  "generated_at_utc": "2026-02-12T23:49:41.586385+00:00",
+  "seed": 42,
+  "git_commit": "416db65",
+  "sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
+  "config_path": "configs/forward_sweep_baseline.json",
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
+  "output_csv": "results/forward_sweep.csv",
+  "output_summary": "results/forward_sweep_summary.json",
+  "n_runs": 16,
+  "n_stable": 16,
   "n_unstable": 0,
   "stability_rate": 1.0,
-  "gi_mean": 2.2315056324005127,
-  "gi_std": 0.8536228144321729,
-  "best_gi_run_id": 3
+  "gi_mean": 2.212916385382414,
+  "gi_std": 1.424122080871706,
+  "best_gi_run_id": 7,
+  "gi_plausible_count": 9,
+  "gi_plausible_rate": 0.5625
 }

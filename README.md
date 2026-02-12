@@ -57,18 +57,22 @@ MPLBACKEND=Agg python3.11 scripts/animate_forward.py --output forward_simulation
 ### Forward sweep benchmark
 
 ```bash
-MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py --quick --n-steps 120
+MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py --n-steps 120
 ```
 
 Generated artifacts:
 
 1. `results/forward_sweep.csv`
 2. `results/forward_sweep_summary.json`
+3. `results/forward_sweep_manifest.json`
 
 ### Full forward sweep grid
 
 ```bash
-MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py --n-steps 200
+MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py \
+  --config-path configs/forward_sweep_baseline.json \
+  --n-steps 200 \
+  --output-manifest results/forward_sweep_manifest.json
 ```
 
 ## Visualization Outputs
