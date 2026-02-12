@@ -8,3 +8,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Export max displacement histograms for forward sweeps.
  - [ ] Report curvature percentiles (p50/p90/p99) in benchmark outputs.
  - [ ] Report skull penetration percentiles per run.
+ - [ ] Track collision-force contribution relative to total force norm.
