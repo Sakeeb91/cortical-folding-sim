@@ -11,3 +11,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Track collision-force contribution relative to total force norm.
  - [ ] Write a reproducibility manifest for each parameter sweep run.
  - [ ] Hash experiment configs and store hash with metrics artifacts.
+ - [ ] Add growth-field recovery MAE metric for inverse benchmarks.
