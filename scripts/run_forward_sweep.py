@@ -13,7 +13,12 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-from cortical_folding.benchmarking import is_gi_plausible, load_grid_config
+from cortical_folding.benchmarking import (
+    config_hash,
+    current_git_commit,
+    is_gi_plausible,
+    load_grid_config,
+)
 from cortical_folding.losses import gyrification_index
 from cortical_folding.mesh import build_topology, compute_face_areas, compute_mean_curvature
 from cortical_folding.solver import SimParams, make_initial_state, simulate
@@ -41,6 +46,11 @@ def parse_args() -> argparse.Namespace:
         "--output-summary",
         default="results/forward_sweep_summary.json",
         help="Path to output summary JSON.",
+    )
+    parser.add_argument(
+        "--output-manifest",
+        default="results/forward_sweep_manifest.json",
+        help="Path to output run manifest JSON.",
     )
     parser.add_argument("--subdivisions", type=int, default=3, help="Icosphere subdivisions.")
     parser.add_argument("--radius", type=float, default=1.0, help="Initial sphere radius.")
@@ -136,6 +146,8 @@ def run_single(
     seed: int,
     gi_plausible_min: float,
     gi_plausible_max: float,
+    sweep_config_hash: str,
+    git_commit: str,
 ) -> dict:
     """Execute one config and return a flat metrics row."""
     if cfg["growth_mode"] == "uniform":
@@ -187,6 +199,9 @@ def run_single(
         "n_steps": n_steps,
         "dt": dt,
         "seed": seed,
+        "run_config_hash": config_hash(cfg),
+        "sweep_config_hash": sweep_config_hash,
+        "git_commit": git_commit,
         "stable": int(stable),
         "runtime_s": runtime_s,
     }
@@ -255,13 +270,14 @@ def write_csv(rows: list[dict], path: Path) -> None:
         writer.writerows(rows)
 
 
-def write_summary(rows: list[dict], path: Path) -> None:
+def write_summary(rows: list[dict], path: Path, metadata: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     stable_rows = [r for r in rows if r["stable"] == 1]
     unstable_rows = [r for r in rows if r["stable"] == 0]
 
     summary = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        **metadata,
         "n_runs": len(rows),
         "n_stable": len(stable_rows),
         "n_unstable": len(unstable_rows),
@@ -285,6 +301,22 @@ def write_summary(rows: list[dict], path: Path) -> None:
         json.dump(summary, f, indent=2)
 
 
+def write_manifest(path: Path, metadata: dict, rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    manifest = {
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        **metadata,
+        "n_runs": len(rows),
+        "run_config_hashes": [r["run_config_hash"] for r in rows],
+        "output_files": {
+            "csv": metadata["output_csv"],
+            "summary": metadata["output_summary"],
+        },
+    }
+    with path.open("w") as f:
+        json.dump(manifest, f, indent=2)
+
+
 def main() -> None:
     args = parse_args()
 
@@ -295,6 +327,8 @@ def main() -> None:
     grid = build_quick_grid() if args.quick else load_grid_config(args.config_path)
     if args.max_runs is not None:
         grid = grid[: args.max_runs]
+    sweep_config_hash = config_hash(grid)
+    git_commit = current_git_commit()
 
     print(
         f"Running forward sweep with {len(grid)} configs "
@@ -315,6 +349,8 @@ def main() -> None:
             seed=args.seed,
             gi_plausible_min=args.gi_plausible_min,
             gi_plausible_max=args.gi_plausible_max,
+            sweep_config_hash=sweep_config_hash,
+            git_commit=git_commit,
         )
         rows.append(row)
         print(
@@ -326,11 +362,24 @@ def main() -> None:
 
     csv_path = Path(args.output_csv)
     summary_path = Path(args.output_summary)
+    manifest_path = Path(args.output_manifest)
+    metadata = {
+        "seed": args.seed,
+        "git_commit": git_commit,
+        "sweep_config_hash": sweep_config_hash,
+        "config_path": args.config_path,
+        "gi_plausible_min": args.gi_plausible_min,
+        "gi_plausible_max": args.gi_plausible_max,
+        "output_csv": str(csv_path),
+        "output_summary": str(summary_path),
+    }
     write_csv(rows, csv_path)
-    write_summary(rows, summary_path)
+    write_summary(rows, summary_path, metadata)
+    write_manifest(manifest_path, metadata, rows)
 
     print(f"Saved CSV: {csv_path}")
     print(f"Saved summary: {summary_path}")
+    print(f"Saved manifest: {manifest_path}")
 
 
 if __name__ == "__main__":
