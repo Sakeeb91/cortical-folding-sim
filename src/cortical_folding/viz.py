@@ -33,13 +33,13 @@ def plot_mesh(
         if len(scalars_np) == len(faces_np):
             face_colors = plt.cm.get_cmap(cmap)(
                 (scalars_np - scalars_np.min())
-                / (scalars_np.ptp() + 1e-12)
+                / (np.ptp(scalars_np) + 1e-12)
             )
         else:
             # Per-vertex: average to faces
             face_vals = scalars_np[faces_np].mean(axis=1)
             face_colors = plt.cm.get_cmap(cmap)(
-                (face_vals - face_vals.min()) / (face_vals.ptp() + 1e-12)
+                (face_vals - face_vals.min()) / (np.ptp(face_vals) + 1e-12)
             )
         poly = Poly3DCollection(triangles, alpha=alpha)
         poly.set_facecolor(face_colors)
