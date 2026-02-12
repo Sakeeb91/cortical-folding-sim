@@ -192,6 +192,9 @@ def run_single(
                 "disp_mean": float("nan"),
                 "disp_p95": float("nan"),
                 "outside_skull_frac": float("nan"),
+                "skull_penetration_mean": float("nan"),
+                "skull_penetration_p95": float("nan"),
+                "skull_penetration_max": float("nan"),
             }
         )
         return row
@@ -201,6 +204,7 @@ def run_single(
     curv = np.asarray(compute_mean_curvature(final_state.vertices, topo))
     disp = np.linalg.norm(final_verts_np - np.asarray(verts), axis=1)
     radii = np.linalg.norm(final_verts_np - np.asarray(skull_center), axis=1)
+    penetration = np.maximum(radii - skull_radius, 0.0)
 
     row.update(
         {
@@ -216,6 +220,9 @@ def run_single(
             "disp_mean": float(np.mean(disp)),
             "disp_p95": float(np.percentile(disp, 95)),
             "outside_skull_frac": float(np.mean(radii > skull_radius)),
+            "skull_penetration_mean": float(np.mean(penetration)),
+            "skull_penetration_p95": float(np.percentile(penetration, 95)),
+            "skull_penetration_max": float(np.max(penetration)),
         }
     )
     return row
