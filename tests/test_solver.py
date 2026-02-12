@@ -65,3 +65,34 @@ def test_differentiability(setup):
     grads = jax.grad(loss_fn)(growth)
     assert jnp.all(jnp.isfinite(grads))
     assert float(jnp.max(jnp.abs(grads))) > 0
+
+
+def test_save_every_subsamples_trajectory(setup):
+    """simulate(save_every=k) should return ceil(n_steps / k) snapshots."""
+    verts, topo, params, _ = setup
+    growth = create_uniform_growth(topo.faces.shape[0], rate=0.2)
+    state = make_initial_state(verts, topo)
+    n_steps = 23
+    save_every = 5
+    _, traj = simulate(state, topo, growth, params, n_steps=n_steps, save_every=save_every)
+    assert traj.shape[0] == (n_steps + save_every - 1) // save_every
+
+
+def test_velocity_clipping_bound(setup):
+    """Robustness clipping should bound velocity norm."""
+    verts, topo, params, _ = setup
+    growth = create_uniform_growth(topo.faces.shape[0], rate=0.8)
+    param_dict = params._asdict()
+    param_dict.update(
+        {
+            "max_velocity_norm": 0.2,
+            "max_acc_norm": 0.3,
+            "max_force_norm": 0.3,
+            "max_displacement_per_step": 0.01,
+        }
+    )
+    constrained_params = SimParams(**param_dict)
+    state = make_initial_state(verts, topo)
+    final, _ = simulate(state, topo, growth, constrained_params, n_steps=30)
+    vel_norm = jnp.linalg.norm(final.velocities, axis=1)
+    assert float(jnp.max(vel_norm)) <= 0.2001
