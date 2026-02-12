@@ -18,3 +18,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Add identifiability stress-test protocol for ambiguous growth fields.
  - [ ] Add ablation plan for force/velocity/displacement clipping thresholds.
  - [ ] Add ablation plan for collision sampling density and min distance.
+ - [ ] Add runtime profiling checklist for step function performance.
