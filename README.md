@@ -1,7 +1,7 @@
 # Differentiable Cortical Folding Simulator
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-16%20passing-2EA44F)](#testing)
+[![Tests](https://img.shields.io/badge/tests-18%20passing-2EA44F)](#testing)
 [![Framework](https://img.shields.io/badge/JAX-differentiable%20physics-F7931E)](https://github.com/jax-ml/jax)
 
 A research-focused simulator for cortical folding that is differentiable end-to-end in JAX.
@@ -49,6 +49,7 @@ python3.11 -m pytest tests -q
 MPLBACKEND=Agg python3.11 scripts/demo_sphere.py
 MPLBACKEND=Agg python3.11 scripts/run_forward.py
 MPLBACKEND=Agg python3.11 scripts/train_inverse.py
+MPLBACKEND=Agg python3.11 scripts/animate_forward.py --output forward_simulation.gif --rotate
 ```
 
 ## Reproducible Research Commands
@@ -79,6 +80,7 @@ The current repository already includes generated sample outputs:
 3. `growth_field.png`
 4. `inverse_training_loss.png`
 5. `growth_comparison.png`
+6. `forward_simulation.gif` (generated via `scripts/animate_forward.py`)
 
 | Forward Folding | Growth Field |
 |---|---|
@@ -87,6 +89,16 @@ The current repository already includes generated sample outputs:
 | Inverse Training Loss | Growth Comparison |
 |---|---|
 | ![Inverse loss](inverse_training_loss.png) | ![Growth comparison](growth_comparison.png) |
+
+## Robustness Features
+
+The solver now includes configurable numerical safety rails:
+
+1. Per-vertex clipping for force, acceleration, velocity, and step displacement
+2. Growth-rate and rest-geometry lower/upper bounds
+3. Finite-value guards that fall back to the previous state on numerical overflow
+4. Optional self-collision penalty with deterministic sampling and adjacency filtering
+5. Trajectory subsampling (`save_every`) for memory-aware long simulations
 
 ## Project Layout
 
@@ -105,7 +117,8 @@ The current repository already includes generated sample outputs:
 │   ├── demo_sphere.py
 │   ├── run_forward.py
 │   ├── run_forward_sweep.py
-│   └── train_inverse.py
+│   ├── train_inverse.py
+│   └── animate_forward.py
 ├── tests/
 ├── PLAN.md
 ├── PROJECT_OVERVIEW.md
