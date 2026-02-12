@@ -13,7 +13,7 @@ from .physics import (
     update_rest_lengths_plasticity,
     update_rest_lengths_from_areas,
 )
-from .constraints import skull_penalty
+from .constraints import skull_penalty, self_collision_penalty
 
 
 class SimState(NamedTuple):
@@ -38,6 +38,32 @@ class SimParams(NamedTuple):
     carrying_cap_factor: float = 3.0  # carrying capacity = initial_area * factor
     tau: float = 1000.0  # plasticity timescale
     dt: float = 0.05
+    # Robustness controls
+    max_growth_rate: float = 2.0
+    min_rest_area: float = 1e-8
+    min_rest_length: float = 1e-8
+    max_force_norm: float = 1e3
+    max_acc_norm: float = 1e3
+    max_velocity_norm: float = 5.0
+    max_displacement_per_step: float = 0.05
+    enable_self_collision: bool = False
+    self_collision_min_dist: float = 0.02
+    self_collision_stiffness: float = 50.0
+    self_collision_n_sample: int = 256
+
+
+def _clip_vectors_norm(vectors: jnp.ndarray, max_norm: float) -> jnp.ndarray:
+    """Clip per-vector L2 norm to avoid unstable updates."""
+    if max_norm <= 0:
+        return vectors
+    norms = jnp.linalg.norm(vectors, axis=1, keepdims=True)
+    scale = jnp.minimum(1.0, max_norm / jnp.maximum(norms, 1e-12))
+    return vectors * scale
+
+
+def _finite_or_previous(new_val: jnp.ndarray, previous_val: jnp.ndarray) -> jnp.ndarray:
+    """Replace non-finite entries with previous state values."""
+    return jnp.where(jnp.isfinite(new_val), new_val, previous_val)
 
 
 def make_initial_state(
@@ -67,6 +93,7 @@ def simulation_step(
 ) -> SimState:
     """Single timestep: forces → integrate → grow."""
     dt = params.dt
+    safe_growth_rates = jnp.clip(growth_rates, 0.0, params.max_growth_rate)
 
     # --- Forces ---
     f_elastic = elastic_force(state.vertices, topo, state.rest_lengths, params.Kc)
@@ -76,16 +103,39 @@ def simulation_step(
     f_skull = skull_penalty(
         state.vertices, params.skull_center, params.skull_radius, params.skull_stiffness
     )
-    f_total = f_elastic + f_bending + f_skull
+    f_collision = jnp.zeros_like(state.vertices)
+    if params.enable_self_collision and params.self_collision_stiffness > 0:
+        f_collision = self_collision_penalty(
+            state.vertices,
+            topo,
+            min_dist=params.self_collision_min_dist,
+            stiffness=params.self_collision_stiffness,
+            n_sample=params.self_collision_n_sample,
+        )
+    f_total = _clip_vectors_norm(
+        f_elastic + f_bending + f_skull + f_collision,
+        params.max_force_norm,
+    )
 
     # --- Damped Newmark explicit integration ---
-    acc = f_total - params.damping * state.velocities
-    new_verts = state.vertices + dt * state.velocities + 0.5 * dt**2 * acc
-    new_vel = state.velocities + dt * acc
+    acc = _clip_vectors_norm(
+        f_total - params.damping * state.velocities,
+        params.max_acc_norm,
+    )
+    step_disp = dt * state.velocities + 0.5 * dt**2 * acc
+    step_disp = _clip_vectors_norm(step_disp, params.max_displacement_per_step)
+    new_verts = state.vertices + step_disp
+    new_vel = _clip_vectors_norm(state.velocities + dt * acc, params.max_velocity_norm)
 
     # --- Growth: update rest areas and lengths ---
-    carrying_cap = initial_areas * params.carrying_cap_factor
-    new_rest_areas = grow_rest_areas(state.rest_areas, growth_rates, carrying_cap, dt)
+    carrying_cap = jnp.maximum(
+        initial_areas * params.carrying_cap_factor,
+        params.min_rest_area,
+    )
+    new_rest_areas = grow_rest_areas(
+        state.rest_areas, safe_growth_rates, carrying_cap, dt
+    )
+    new_rest_areas = jnp.maximum(new_rest_areas, params.min_rest_area)
 
     # Scale rest lengths based on area growth
     new_rest_lengths = update_rest_lengths_from_areas(
@@ -97,6 +147,13 @@ def simulation_step(
     new_rest_lengths = update_rest_lengths_plasticity(
         new_rest_lengths, current_lengths, params.tau, dt
     )
+    new_rest_lengths = jnp.maximum(new_rest_lengths, params.min_rest_length)
+
+    # Finite guards to keep simulation recoverable in long runs.
+    new_verts = _finite_or_previous(new_verts, state.vertices)
+    new_vel = _finite_or_previous(new_vel, state.velocities)
+    new_rest_areas = _finite_or_previous(new_rest_areas, state.rest_areas)
+    new_rest_lengths = _finite_or_previous(new_rest_lengths, state.rest_lengths)
 
     return SimState(
         vertices=new_verts,
@@ -130,7 +187,10 @@ def simulate(
         )
         return new_state, new_state.vertices
 
+    if save_every < 1:
+        raise ValueError("save_every must be >= 1")
+
     final_state, trajectory = jax.lax.scan(
         step_fn, initial_state, jnp.arange(n_steps)
     )
-    return final_state, trajectory
+    return final_state, trajectory[::save_every]
