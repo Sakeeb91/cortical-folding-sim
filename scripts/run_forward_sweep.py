@@ -13,6 +13,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from cortical_folding.benchmarking import load_grid_config
 from cortical_folding.losses import gyrification_index
 from cortical_folding.mesh import build_topology, compute_face_areas, compute_mean_curvature
 from cortical_folding.solver import SimParams, make_initial_state, simulate
@@ -26,6 +27,11 @@ from cortical_folding.synthetic import (
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--config-path",
+        default="configs/forward_sweep_baseline.json",
+        help="Path to frozen JSON sweep config grid.",
+    )
     parser.add_argument(
         "--output-csv",
         default="results/forward_sweep.csv",
@@ -41,6 +47,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skull-radius", type=float, default=1.5, help="Skull radius.")
     parser.add_argument("--n-steps", type=int, default=200, help="Simulation timesteps.")
     parser.add_argument("--dt", type=float, default=0.02, help="Simulation dt.")
+    parser.add_argument("--seed", type=int, default=42, help="Run seed metadata.")
     parser.add_argument(
         "--max-runs",
         type=int,
@@ -55,87 +62,54 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_grid(quick: bool) -> list[dict]:
-    """Return run configurations for forward sweep."""
-    if quick:
-        return [
-            {
-                "growth_mode": "uniform",
-                "uniform_rate": 0.30,
-                "high_rate": 0.30,
-                "low_rate": 0.30,
-                "Kc": 2.0,
-                "Kb": 3.0,
-                "carrying_cap_factor": 3.5,
-                "damping": 0.9,
-                "tau": 500.0,
-            },
-            {
-                "growth_mode": "uniform",
-                "uniform_rate": 0.50,
-                "high_rate": 0.50,
-                "low_rate": 0.50,
-                "Kc": 2.0,
-                "Kb": 3.0,
-                "carrying_cap_factor": 4.0,
-                "damping": 0.9,
-                "tau": 500.0,
-            },
-            {
-                "growth_mode": "regional",
-                "uniform_rate": 0.0,
-                "high_rate": 0.80,
-                "low_rate": 0.10,
-                "Kc": 2.0,
-                "Kb": 3.0,
-                "carrying_cap_factor": 4.0,
-                "damping": 0.9,
-                "tau": 500.0,
-            },
-            {
-                "growth_mode": "regional",
-                "uniform_rate": 0.0,
-                "high_rate": 0.90,
-                "low_rate": 0.15,
-                "Kc": 1.8,
-                "Kb": 2.5,
-                "carrying_cap_factor": 4.0,
-                "damping": 0.9,
-                "tau": 500.0,
-            },
-        ]
-
-    grid: list[dict] = []
-    for kc in [1.6, 2.0]:
-        for kb in [2.5, 3.5]:
-            for cap in [3.5, 4.0]:
-                grid.append(
-                    {
-                        "growth_mode": "uniform",
-                        "uniform_rate": 0.40,
-                        "high_rate": 0.40,
-                        "low_rate": 0.40,
-                        "Kc": kc,
-                        "Kb": kb,
-                        "carrying_cap_factor": cap,
-                        "damping": 0.9,
-                        "tau": 500.0,
-                    }
-                )
-                grid.append(
-                    {
-                        "growth_mode": "regional",
-                        "uniform_rate": 0.0,
-                        "high_rate": 0.80,
-                        "low_rate": 0.10,
-                        "Kc": kc,
-                        "Kb": kb,
-                        "carrying_cap_factor": cap,
-                        "damping": 0.9,
-                        "tau": 500.0,
-                    }
-                )
-    return grid
+def build_quick_grid() -> list[dict]:
+    """Small debug grid for rapid local checks."""
+    return [
+        {
+            "growth_mode": "uniform",
+            "uniform_rate": 0.30,
+            "high_rate": 0.30,
+            "low_rate": 0.30,
+            "Kc": 2.0,
+            "Kb": 3.0,
+            "carrying_cap_factor": 3.5,
+            "damping": 0.9,
+            "tau": 500.0,
+        },
+        {
+            "growth_mode": "uniform",
+            "uniform_rate": 0.50,
+            "high_rate": 0.50,
+            "low_rate": 0.50,
+            "Kc": 2.0,
+            "Kb": 3.0,
+            "carrying_cap_factor": 4.0,
+            "damping": 0.9,
+            "tau": 500.0,
+        },
+        {
+            "growth_mode": "regional",
+            "uniform_rate": 0.0,
+            "high_rate": 0.80,
+            "low_rate": 0.10,
+            "Kc": 2.0,
+            "Kb": 3.0,
+            "carrying_cap_factor": 4.0,
+            "damping": 0.9,
+            "tau": 500.0,
+        },
+        {
+            "growth_mode": "regional",
+            "uniform_rate": 0.0,
+            "high_rate": 0.90,
+            "low_rate": 0.15,
+            "Kc": 1.8,
+            "Kb": 2.5,
+            "carrying_cap_factor": 4.0,
+            "damping": 0.9,
+            "tau": 500.0,
+        },
+    ]
 
 
 def run_single(
@@ -147,6 +121,7 @@ def run_single(
     skull_radius: float,
     n_steps: int,
     dt: float,
+    seed: int,
 ) -> dict:
     """Execute one config and return a flat metrics row."""
     if cfg["growth_mode"] == "uniform":
@@ -197,6 +172,7 @@ def run_single(
         "tau": cfg["tau"],
         "n_steps": n_steps,
         "dt": dt,
+        "seed": seed,
         "stable": int(stable),
         "runtime_s": runtime_s,
     }
@@ -284,7 +260,7 @@ def main() -> None:
     topo = build_topology(verts, faces)
     skull_center, skull_radius = create_skull(radius=args.skull_radius)
 
-    grid = build_grid(args.quick)
+    grid = build_quick_grid() if args.quick else load_grid_config(args.config_path)
     if args.max_runs is not None:
         grid = grid[: args.max_runs]
 
@@ -304,6 +280,7 @@ def main() -> None:
             skull_radius=skull_radius,
             n_steps=args.n_steps,
             dt=args.dt,
+            seed=args.seed,
         )
         rows.append(row)
         print(
