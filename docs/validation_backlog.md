@@ -5,3 +5,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Add deterministic seed controls across all runnable scripts.
  - [ ] Add solver stability KPI logging (stability rate, divergence rate).
  - [ ] Add a NaN/Inf incident counter to per-run diagnostics output.
+ - [ ] Export max displacement histograms for forward sweeps.
