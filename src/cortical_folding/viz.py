@@ -1,8 +1,11 @@
 """Visualization utilities for cortical folding simulation."""
 
+from pathlib import Path
+
 import numpy as np
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
+from matplotlib import animation
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 from .mesh import MeshTopology, compute_mean_curvature, compute_face_areas
@@ -129,3 +132,79 @@ def plot_simulation_frames(
     fig.suptitle(title)
     plt.tight_layout()
     return fig
+
+
+def save_simulation_animation(
+    trajectory: jnp.ndarray,
+    faces: jnp.ndarray,
+    output_path: str = "simulation.gif",
+    fps: int = 20,
+    stride: int = 1,
+    rotate: bool = False,
+    dpi: int = 120,
+):
+    """Save a trajectory animation as GIF or MP4.
+
+    The output format is inferred from file extension (`.gif` or `.mp4`).
+    """
+    if stride < 1:
+        raise ValueError("stride must be >= 1")
+    if fps < 1:
+        raise ValueError("fps must be >= 1")
+
+    traj_np = np.asarray(trajectory)[::stride]
+    faces_np = np.asarray(faces)
+    if traj_np.shape[0] == 0:
+        raise ValueError("trajectory is empty after applying stride")
+
+    # Fix axis bounds across all frames to avoid camera jitter.
+    all_pts = traj_np.reshape(-1, 3)
+    margin = 0.1
+    mins = all_pts.min(axis=0) - margin
+    maxs = all_pts.max(axis=0) + margin
+
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_box_aspect([1, 1, 1])
+    ax.set_xlim(mins[0], maxs[0])
+    ax.set_ylim(mins[1], maxs[1])
+    ax.set_zlim(mins[2], maxs[2])
+    ax.set_title("Cortical Folding Simulation")
+
+    poly = Poly3DCollection(
+        traj_np[0][faces_np],
+        alpha=0.85,
+        edgecolor="k",
+        linewidth=0.06,
+    )
+    poly.set_facecolor("skyblue")
+    ax.add_collection3d(poly)
+    frame_text = ax.text2D(0.03, 0.95, "Step 0", transform=ax.transAxes)
+
+    def update(frame_idx: int):
+        verts = traj_np[frame_idx]
+        poly.set_verts(verts[faces_np])
+        if rotate:
+            ax.view_init(elev=20, azim=45 + 0.9 * frame_idx)
+        frame_text.set_text(f"Step {frame_idx * stride}")
+        return poly, frame_text
+
+    anim = animation.FuncAnimation(
+        fig,
+        update,
+        frames=traj_np.shape[0],
+        interval=1000 / fps,
+        blit=False,
+    )
+
+    suffix = Path(output_path).suffix.lower()
+    if suffix == ".gif":
+        writer = animation.PillowWriter(fps=fps)
+    elif suffix == ".mp4":
+        writer = animation.FFMpegWriter(fps=fps, bitrate=1800)
+    else:
+        raise ValueError("output_path must end with .gif or .mp4")
+
+    anim.save(output_path, writer=writer, dpi=dpi)
+    plt.close(fig)
+    return output_path
