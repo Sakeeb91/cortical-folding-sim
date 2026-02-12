@@ -75,20 +75,21 @@ MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py --n-steps 200
 
 The current repository already includes generated sample outputs:
 
-1. `demo_folding.png`
-2. `forward_simulation.png`
-3. `growth_field.png`
-4. `inverse_training_loss.png`
-5. `growth_comparison.png`
-6. `forward_simulation.gif` (generated via `scripts/animate_forward.py`)
+1. `docs/assets/forward_simulation.png`
+2. `docs/assets/growth_field.png`
+3. `docs/assets/inverse_training_loss.png`
+4. `docs/assets/growth_comparison.png`
+5. `docs/assets/forward_simulation.gif` (generated via `scripts/animate_forward.py`)
 
 | Forward Folding | Growth Field |
 |---|---|
-| ![Forward simulation](forward_simulation.png) | ![Growth field](growth_field.png) |
+| ![Forward simulation](docs/assets/forward_simulation.png) | ![Growth field](docs/assets/growth_field.png) |
 
 | Inverse Training Loss | Growth Comparison |
 |---|---|
-| ![Inverse loss](inverse_training_loss.png) | ![Growth comparison](growth_comparison.png) |
+| ![Inverse loss](docs/assets/inverse_training_loss.png) | ![Growth comparison](docs/assets/growth_comparison.png) |
+
+![Forward animation](docs/assets/forward_simulation.gif)
 
 ## Robustness Features
 

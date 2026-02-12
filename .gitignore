@@ -6,3 +6,6 @@ build/
 .pytest_cache/
 *.png
 .DS_Store
+forward_animation.gif
+!docs/assets/*.png
+!docs/assets/*.gif
