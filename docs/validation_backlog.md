@@ -9,3 +9,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Report curvature percentiles (p50/p90/p99) in benchmark outputs.
  - [ ] Report skull penetration percentiles per run.
  - [ ] Track collision-force contribution relative to total force norm.
+ - [ ] Write a reproducibility manifest for each parameter sweep run.
