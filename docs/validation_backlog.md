@@ -15,3 +15,4 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Add growth-field recovery Pearson/Spearman correlation metrics.
  - [ ] Add a multi-seed inverse benchmark runner with aggregate summary.
  - [ ] Add confidence interval utilities for reported scalar metrics.
+ - [ ] Add identifiability stress-test protocol for ambiguous growth fields.
