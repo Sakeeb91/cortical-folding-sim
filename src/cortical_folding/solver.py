@@ -169,6 +169,15 @@ def simulation_step(
     new_rest_lengths = update_rest_lengths_from_areas(
         initial_edge_lengths, new_rest_areas, initial_areas, topo
     )
+    if params.anisotropy_strength > 0:
+        axis = _normalize_axis(params.anisotropy_axis)
+        edge_align = _edge_axis_alignment(state.vertices, topo, axis)  # (E,)
+        edge_face_aniso = _edge_face_values(face_anisotropy, topo)  # (E,)
+        # Center alignment so anisotropy redistributes growth directionally.
+        centered_align = edge_align - jnp.mean(edge_align)
+        aniso_scale = 1.0 + params.anisotropy_strength * edge_face_aniso * centered_align
+        aniso_scale = jnp.clip(aniso_scale, 0.5, 1.5)
+        new_rest_lengths = new_rest_lengths * aniso_scale
 
     # Also apply plasticity
     current_lengths = compute_edge_lengths(new_verts, topo)
