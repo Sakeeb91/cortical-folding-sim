@@ -60,6 +60,16 @@ class SimParams(NamedTuple):
     anisotropy_axis: jnp.ndarray = jnp.array([0.0, 0.0, 1.0])
 
 
+class ForceComponents(NamedTuple):
+    """Per-vertex force decomposition at a single simulation state."""
+
+    elastic: jnp.ndarray
+    bending: jnp.ndarray
+    skull: jnp.ndarray
+    collision: jnp.ndarray
+    total: jnp.ndarray
+
+
 def _clip_vectors_norm(vectors: jnp.ndarray, max_norm: float) -> jnp.ndarray:
     """Clip per-vector L2 norm to avoid unstable updates."""
     if max_norm <= 0:
@@ -112,6 +122,42 @@ def make_initial_state(
         rest_lengths=rest_lengths,
         rest_areas=rest_areas,
         rest_curvatures=rest_curvatures,
+    )
+
+
+def compute_force_components(
+    state: SimState,
+    topo: MeshTopology,
+    params: SimParams,
+) -> ForceComponents:
+    """Compute raw per-vertex force decomposition for diagnostics."""
+    f_elastic = elastic_force(state.vertices, topo, state.rest_lengths, params.Kc)
+    f_bending = bending_force(
+        state.vertices, topo, state.rest_curvatures, params.Kb
+    )
+    f_skull = skull_penalty(
+        state.vertices, params.skull_center, params.skull_radius, params.skull_stiffness
+    )
+    f_collision = jnp.zeros_like(state.vertices)
+    if params.enable_self_collision and params.self_collision_stiffness > 0:
+        f_collision = self_collision_penalty(
+            state.vertices,
+            topo,
+            min_dist=params.self_collision_min_dist,
+            stiffness=params.self_collision_stiffness,
+            n_sample=params.self_collision_n_sample,
+            use_spatial_hash=params.self_collision_use_spatial_hash,
+            hash_cell_size=params.self_collision_hash_cell_size,
+            hash_neighbor_window=params.self_collision_hash_neighbor_window,
+            deterministic_fallback=params.self_collision_deterministic_fallback,
+            fallback_n_sample=params.self_collision_fallback_n_sample,
+        )
+    return ForceComponents(
+        elastic=f_elastic,
+        bending=f_bending,
+        skull=f_skull,
+        collision=f_collision,
+        total=f_elastic + f_bending + f_skull + f_collision,
     )
 
 
