@@ -1,0 +1,27 @@
+{
+  "generated_at_utc": "2026-02-13T12:47:28.442125+00:00",
+  "seed": 42,
+  "git_commit": "580bc60",
+  "sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+  "config_path": "configs/week3_anisotropy_ab.json",
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
+  "fail_fast_disp_max": 1.0,
+  "fail_fast_penetration_max": 0.5,
+  "output_csv": "results/week3_anisotropy_ab.csv",
+  "output_summary": "results/week3_anisotropy_ab_summary.json",
+  "n_runs": 2,
+  "n_anisotropic_runs": 1,
+  "n_isotropic_runs": 1,
+  "n_stable": 2,
+  "n_unstable": 0,
+  "stability_rate": 1.0,
+  "fail_reason_counts": {
+    "none": 2
+  },
+  "gi_mean": 2.278922736644745,
+  "gi_std": 0.5802672505378723,
+  "best_gi_run_id": 2,
+  "gi_plausible_count": 2,
+  "gi_plausible_rate": 1.0
+}

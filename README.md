@@ -90,6 +90,21 @@ python3.11 scripts/check_forward_sweep_gates.py \
 ./scripts/run_validation_full.sh
 ```
 
+### Week 3 anisotropy comparison
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/run_anisotropy_comparison.py --n-steps 120
+MPLBACKEND=Agg python3.11 scripts/plot_week3_anisotropy.py
+```
+
+Generated artifacts:
+
+1. `results/week3_anisotropy_ab.csv`
+2. `results/week3_anisotropy_ab_summary.json`
+3. `results/week3_anisotropy_ab_manifest.json`
+4. `results/week3_anisotropy_comparison.json`
+5. `docs/assets/week3_anisotropy_delta.png`
+
 ## Visualization Outputs
 
 The current repository already includes generated sample outputs:
@@ -109,6 +124,8 @@ The current repository already includes generated sample outputs:
 | ![Inverse loss](docs/assets/inverse_training_loss.png) | ![Growth comparison](docs/assets/growth_comparison.png) |
 
 ![Forward animation](docs/assets/forward_simulation.gif)
+
+![Week 3 anisotropy delta](docs/assets/week3_anisotropy_delta.png)
 
 ## Robustness Features
 
@@ -137,6 +154,8 @@ The solver now includes configurable numerical safety rails:
 │   ├── demo_sphere.py
 │   ├── run_forward.py
 │   ├── run_forward_sweep.py
+│   ├── run_anisotropy_comparison.py
+│   ├── plot_week3_anisotropy.py
 │   ├── train_inverse.py
 │   └── animate_forward.py
 ├── tests/

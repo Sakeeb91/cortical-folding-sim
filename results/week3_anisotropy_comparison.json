@@ -1,0 +1,18 @@
+{
+  "n_runs": 2,
+  "baseline_label": "isotropic_baseline",
+  "anisotropic_label": "anisotropic_z_bias",
+  "baseline_stable": 1,
+  "anisotropic_stable": 1,
+  "baseline_gi": 1.6986554861068726,
+  "anisotropic_gi": 2.859189987182617,
+  "delta_gi": 1.1605345010757446,
+  "baseline_curv_p90": 4.34138298034668,
+  "anisotropic_curv_p90": 4.255120754241943,
+  "delta_curv_p90": -0.08626222610473633,
+  "baseline_disp_p95": 0.6027324199676514,
+  "anisotropic_disp_p95": 0.6889258623123169,
+  "delta_disp_p95": 0.08619344234466553,
+  "stability_rate": 1.0,
+  "morphology_difference_detected": true
+}

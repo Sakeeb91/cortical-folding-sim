@@ -1,0 +1,22 @@
+{
+  "generated_at_utc": "2026-02-13T12:47:28.442275+00:00",
+  "seed": 42,
+  "git_commit": "580bc60",
+  "sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+  "config_path": "configs/week3_anisotropy_ab.json",
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
+  "fail_fast_disp_max": 1.0,
+  "fail_fast_penetration_max": 0.5,
+  "output_csv": "results/week3_anisotropy_ab.csv",
+  "output_summary": "results/week3_anisotropy_ab_summary.json",
+  "n_runs": 2,
+  "run_config_hashes": [
+    "2068b1d0afac502ae6319c12009ac6524abfbfa434bf3a50a14ab6ba37a889d5",
+    "ae4be1b3bc73d8cfb4f23fe1faf84508787e1cdb48f6007ac8f94db6e49c8103"
+  ],
+  "output_files": {
+    "csv": "results/week3_anisotropy_ab.csv",
+    "summary": "results/week3_anisotropy_ab_summary.json"
+  }
+}
