@@ -21,7 +21,7 @@ from cortical_folding.benchmarking import (
 )
 from cortical_folding.losses import gyrification_index
 from cortical_folding.mesh import build_topology, compute_face_areas, compute_mean_curvature
-from cortical_folding.solver import SimParams, make_initial_state, simulate
+from cortical_folding.solver import SimParams, compute_force_components, make_initial_state, simulate
 from cortical_folding.synthetic import (
     create_anisotropy_field,
     create_icosphere,
