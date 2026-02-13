@@ -57,6 +57,22 @@ def create_regional_growth(
     return jnp.where(above, high_rate, low_rate)
 
 
+def create_regional_anisotropy(
+    vertices: jnp.ndarray,
+    faces: jnp.ndarray,
+    high_value: float = 1.0,
+    low_value: float = 0.0,
+    axis: int = 2,
+    threshold: float = 0.0,
+) -> jnp.ndarray:
+    """Regional anisotropy field based on face centroid location."""
+    centroids = (
+        vertices[faces[:, 0]] + vertices[faces[:, 1]] + vertices[faces[:, 2]]
+    ) / 3.0
+    above = centroids[:, axis] > threshold
+    return jnp.where(above, high_value, low_value)
+
+
 def create_target_folded(
     vertices: jnp.ndarray,
     topo: MeshTopology,
