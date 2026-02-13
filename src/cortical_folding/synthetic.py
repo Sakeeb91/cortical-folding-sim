@@ -73,6 +73,27 @@ def create_regional_anisotropy(
     return jnp.where(above, high_value, low_value)
 
 
+def create_anisotropy_field(
+    mode: str,
+    vertices: jnp.ndarray,
+    faces: jnp.ndarray,
+    high_value: float,
+    low_value: float,
+    axis: int = 2,
+    threshold: float = 0.0,
+) -> jnp.ndarray:
+    """Build anisotropy field from mode string."""
+    if mode == "none":
+        return create_uniform_anisotropy(faces.shape[0], value=0.0)
+    if mode == "uniform":
+        return create_uniform_anisotropy(faces.shape[0], value=high_value)
+    if mode == "regional":
+        return create_regional_anisotropy(
+            vertices, faces, high_value=high_value, low_value=low_value, axis=axis, threshold=threshold
+        )
+    raise ValueError(f"Unsupported anisotropy mode: {mode}")
+
+
 def create_target_folded(
     vertices: jnp.ndarray,
     topo: MeshTopology,
