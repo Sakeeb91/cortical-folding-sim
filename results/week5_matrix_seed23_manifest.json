@@ -1,0 +1,28 @@
+{
+  "generated_at_utc": "2026-02-13T15:33:49.113298+00:00",
+  "seed": 23,
+  "git_commit": "609f522",
+  "sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+  "config_path": "configs/week5_layered_ablation.json",
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
+  "fail_fast_disp_max": 1.0,
+  "fail_fast_penetration_max": 0.5,
+  "output_csv": "results/week5_matrix_seed23.csv",
+  "output_summary": "results/week5_matrix_seed23_summary.json",
+  "n_runs": 8,
+  "run_config_hashes": [
+    "8d667f8695b804bf9ddc836eb491ed807a27fee5ab2dda876fc961cfd6e7bbda",
+    "f85657b5cd4a9a7cc06df3ce73bc679e7e053ff216ff792a90470c9375739e1c",
+    "4a12cd1cbe753392a55a39a36a764d822ba1771e3fdd51a7df245003e3591734",
+    "d6e19dc64868b2b860f2dc18145f50b9a5764d07b7ff915322e21b5f461ed969",
+    "fca5210f7c6181536166998f28dc1dd6428c0fb1bdd8bd5db29ca5915f9b9f43",
+    "1e240797027f9edb4f488dc9526ce2a9b332a22a69f27a1dc3e4e68f1c2d1989",
+    "d0365ea10acaad89b7f2a3e82eda2b89fee47240fafdd8ffd51064145ac3cd85",
+    "9acc14b35cc9fa2218d064acff58393d7fafa9741bcc77f92eed01041431efd4"
+  ],
+  "output_files": {
+    "csv": "results/week5_matrix_seed23.csv",
+    "summary": "results/week5_matrix_seed23_summary.json"
+  }
+}
