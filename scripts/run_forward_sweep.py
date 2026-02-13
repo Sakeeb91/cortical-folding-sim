@@ -160,6 +160,52 @@ def build_quick_grid() -> list[dict]:
     ]
 
 
+def collision_mode_label(cfg: dict) -> str:
+    """Canonical collision mode label for reporting."""
+    if not cfg_get(cfg, "enable_self_collision", False):
+        return "disabled"
+    if cfg_get(cfg, "self_collision_use_spatial_hash", False):
+        return "spatial_hash"
+    return "sampled"
+
+
+def compute_nonadjacent_overlap_stats(
+    verts_np: np.ndarray,
+    edges_np: np.ndarray,
+    min_dist: float,
+) -> dict[str, float]:
+    """Measure non-adjacent pair overlap depth statistics."""
+    n_verts = verts_np.shape[0]
+    adjacency = np.zeros((n_verts, n_verts), dtype=bool)
+    adjacency[edges_np[:, 0], edges_np[:, 1]] = True
+    adjacency[edges_np[:, 1], edges_np[:, 0]] = True
+
+    tri_mask = np.triu(np.ones((n_verts, n_verts), dtype=bool), k=1)
+    valid_mask = tri_mask & (~adjacency)
+    if not np.any(valid_mask):
+        return {
+            "collision_overlap_mean": 0.0,
+            "collision_overlap_p95": 0.0,
+            "collision_overlap_max": 0.0,
+            "collision_overlap_count": 0.0,
+            "collision_overlap_frac": 0.0,
+        }
+
+    diff = verts_np[:, None, :] - verts_np[None, :, :]
+    dist = np.linalg.norm(diff, axis=2)
+    pair_dist = dist[valid_mask]
+    overlap = np.maximum(min_dist - pair_dist, 0.0)
+    overlap_count = int(np.sum(overlap > 0.0))
+    total_pairs = int(overlap.shape[0])
+    return {
+        "collision_overlap_mean": float(np.mean(overlap)),
+        "collision_overlap_p95": float(np.percentile(overlap, 95)),
+        "collision_overlap_max": float(np.max(overlap)),
+        "collision_overlap_count": float(overlap_count),
+        "collision_overlap_frac": float(overlap_count / max(total_pairs, 1)),
+    }
+
+
 def run_single(
     run_id: int,
     cfg: dict,
