@@ -306,6 +306,22 @@ def write_summary(rows: list[dict], path: Path, metadata: dict) -> None:
         "n_stable": len(stable_rows),
         "n_unstable": len(unstable_rows),
         "stability_rate": (len(stable_rows) / len(rows)) if rows else 0.0,
+        "fail_reason_counts": {
+            k: int(v)
+            for k, v in {
+                "none": sum(1 for r in rows if r["fail_reason"] == "none"),
+                "non_finite_vertices": sum(
+                    1 for r in rows if r["fail_reason"] == "non_finite_vertices"
+                ),
+                "dispersion_explosion": sum(
+                    1 for r in rows if r["fail_reason"] == "dispersion_explosion"
+                ),
+                "penetration_explosion": sum(
+                    1 for r in rows if r["fail_reason"] == "penetration_explosion"
+                ),
+            }.items()
+            if v > 0
+        },
     }
 
     if stable_rows:
@@ -396,6 +412,8 @@ def main() -> None:
         "config_path": args.config_path,
         "gi_plausible_min": args.gi_plausible_min,
         "gi_plausible_max": args.gi_plausible_max,
+        "fail_fast_disp_max": args.fail_fast_disp_max,
+        "fail_fast_penetration_max": args.fail_fast_penetration_max,
         "output_csv": str(csv_path),
         "output_summary": str(summary_path),
     }
