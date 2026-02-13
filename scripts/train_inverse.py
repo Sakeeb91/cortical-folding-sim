@@ -63,7 +63,9 @@ def main():
             face_growth = growth_rates_to_faces(vertex_growth, topo)
 
             initial_state = make_initial_state(vertices, topo)
-            final_state, _ = simulate(initial_state, topo, face_growth, params, n_sim_steps)
+            final_state, _ = simulate(
+                initial_state, topo, face_growth, params, n_steps=n_sim_steps
+            )
 
             return total_loss(
                 final_state.vertices, target_verts, topo,
