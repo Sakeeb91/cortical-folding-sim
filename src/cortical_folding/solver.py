@@ -144,6 +144,11 @@ def simulation_step(
             min_dist=params.self_collision_min_dist,
             stiffness=params.self_collision_stiffness,
             n_sample=params.self_collision_n_sample,
+            use_spatial_hash=params.self_collision_use_spatial_hash,
+            hash_cell_size=params.self_collision_hash_cell_size,
+            hash_neighbor_window=params.self_collision_hash_neighbor_window,
+            deterministic_fallback=params.self_collision_deterministic_fallback,
+            fallback_n_sample=params.self_collision_fallback_n_sample,
         )
     f_total = _clip_vectors_norm(
         f_elastic + f_bending + f_skull + f_collision,
