@@ -23,11 +23,17 @@ from cortical_folding.losses import gyrification_index
 from cortical_folding.mesh import build_topology, compute_face_areas, compute_mean_curvature
 from cortical_folding.solver import SimParams, make_initial_state, simulate
 from cortical_folding.synthetic import (
+    create_anisotropy_field,
     create_icosphere,
     create_regional_growth,
     create_skull,
     create_uniform_growth,
 )
+
+
+def cfg_get(cfg: dict, key: str, default):
+    """Safe config value fetch with defaults for backward compatibility."""
+    return cfg[key] if key in cfg else default
 
 
 def parse_args() -> argparse.Namespace:
