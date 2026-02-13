@@ -16,7 +16,7 @@ Each checkbox is intentionally narrow so progress can be tracked with high granu
  - [ ] Add a multi-seed inverse benchmark runner with aggregate summary.
  - [ ] Add confidence interval utilities for reported scalar metrics.
  - [ ] Add identifiability stress-test protocol for ambiguous growth fields.
- - [ ] Add ablation plan for force/velocity/displacement clipping thresholds.
+ - [x] Add ablation plan for force/velocity/displacement clipping thresholds.
  - [x] Add ablation plan for collision sampling density and min distance.
  - [ ] Add runtime profiling checklist for step function performance.
  - [ ] Add memory profiling checklist for long-trajectory simulations.
