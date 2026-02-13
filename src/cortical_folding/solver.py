@@ -50,6 +50,11 @@ class SimParams(NamedTuple):
     self_collision_min_dist: float = 0.02
     self_collision_stiffness: float = 50.0
     self_collision_n_sample: int = 256
+    self_collision_use_spatial_hash: bool = False
+    self_collision_hash_cell_size: float = 0.02
+    self_collision_hash_neighbor_window: int = 8
+    self_collision_deterministic_fallback: bool = True
+    self_collision_fallback_n_sample: int = 256
     # Anisotropic rest-length growth controls
     anisotropy_strength: float = 0.0
     anisotropy_axis: jnp.ndarray = jnp.array([0.0, 0.0, 1.0])
