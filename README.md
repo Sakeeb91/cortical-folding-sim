@@ -65,6 +65,7 @@ Generated artifacts:
 1. `results/forward_sweep.csv`
 2. `results/forward_sweep_summary.json`
 3. `results/forward_sweep_manifest.json`
+4. `results/validation_gate_report.json` (after gate check)
 
 ### Full forward sweep grid
 
@@ -73,6 +74,20 @@ MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py \
   --config-path configs/forward_sweep_baseline.json \
   --n-steps 200 \
   --output-manifest results/forward_sweep_manifest.json
+
+python3.11 scripts/check_forward_sweep_gates.py \
+  --input-csv results/forward_sweep.csv \
+  --input-summary results/forward_sweep_summary.json \
+  --gate-config configs/validation_gates_default.json \
+  --output-report results/validation_gate_report.json \
+  --fail-on-failure
+```
+
+### CI command presets
+
+```bash
+./scripts/run_validation_quick.sh
+./scripts/run_validation_full.sh
 ```
 
 ## Visualization Outputs
