@@ -17,3 +17,28 @@ jobs:
         run: python3.11 -m pip install -e ".[dev]"
       - name: Run quick validation preset
         run: ./scripts/run_validation_quick.sh
+
+  seeded-reproducibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install project
+        run: python3.11 -m pip install -e ".[dev]"
+      - name: First seeded run
+        run: |
+          MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py \
+            --quick --n-steps 80 --max-runs 4 \
+            --output-summary results/forward_sweep_summary_seed_1.json
+      - name: Second seeded run
+        run: |
+          MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py \
+            --quick --n-steps 80 --max-runs 4 \
+            --output-summary results/forward_sweep_summary_seed_2.json
+      - name: Compare seeded summaries
+        run: |
+          python3.11 scripts/check_seed_reproducibility.py \
+            --first results/forward_sweep_summary_seed_1.json \
+            --second results/forward_sweep_summary_seed_2.json
