@@ -50,6 +50,9 @@ class SimParams(NamedTuple):
     self_collision_min_dist: float = 0.02
     self_collision_stiffness: float = 50.0
     self_collision_n_sample: int = 256
+    # Anisotropic rest-length growth controls
+    anisotropy_strength: float = 0.0
+    anisotropy_axis: jnp.ndarray = jnp.array([0.0, 0.0, 1.0])
 
 
 def _clip_vectors_norm(vectors: jnp.ndarray, max_norm: float) -> jnp.ndarray:
