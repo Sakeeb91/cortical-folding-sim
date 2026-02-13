@@ -7,7 +7,12 @@ import argparse
 import jax.numpy as jnp
 
 from cortical_folding.mesh import build_topology
-from cortical_folding.synthetic import create_icosphere, create_regional_growth, create_skull
+from cortical_folding.synthetic import (
+    create_anisotropy_field,
+    create_icosphere,
+    create_regional_growth,
+    create_skull,
+)
 from cortical_folding.solver import SimParams, make_initial_state, simulate
 from cortical_folding.viz import save_simulation_animation
 
@@ -24,6 +29,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--fps", type=int, default=20, help="Animation frame rate.")
     parser.add_argument("--stride", type=int, default=2, help="Frame stride for animation.")
     parser.add_argument("--rotate", action="store_true", help="Rotate camera over time.")
+    parser.add_argument(
+        "--anisotropic",
+        action="store_true",
+        help="Enable anisotropic directional redistribution.",
+    )
     return parser.parse_args()
 
 
@@ -36,6 +46,15 @@ def main() -> None:
     skull_center, skull_radius = create_skull(radius=1.5)
     growth_rates = create_regional_growth(
         vertices, topo.faces, high_rate=0.8, low_rate=0.1, axis=2, threshold=0.0
+    )
+    face_anisotropy = create_anisotropy_field(
+        mode="regional" if args.anisotropic else "none",
+        vertices=vertices,
+        faces=topo.faces,
+        high_value=1.0,
+        low_value=0.0,
+        axis=2,
+        threshold=0.0,
     )
 
     # Robust defaults intended for long trajectories.
@@ -58,11 +77,15 @@ def main() -> None:
         self_collision_min_dist=0.03,
         self_collision_stiffness=40.0,
         self_collision_n_sample=512,
+        anisotropy_strength=0.35 if args.anisotropic else 0.0,
+        anisotropy_axis=jnp.array([0.0, 0.0, 1.0]),
     )
 
     print(f"Running simulation ({args.steps} steps)...")
     state = make_initial_state(vertices, topo)
-    _, trajectory = simulate(state, topo, growth_rates, params, n_steps=args.steps)
+    _, trajectory = simulate(
+        state, topo, growth_rates, params, face_anisotropy=face_anisotropy, n_steps=args.steps
+    )
 
     print(f"Saving animation to {args.output}...")
     save_simulation_animation(
