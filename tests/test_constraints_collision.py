@@ -46,3 +46,26 @@ def test_spatial_hash_collision_path_is_deterministic():
     f1 = self_collision_penalty(verts, topo, **kwargs)
     f2 = self_collision_penalty(verts, topo, **kwargs)
     np.testing.assert_allclose(np.asarray(f1), np.asarray(f2), atol=1e-8)
+
+
+def test_spatial_hash_can_fall_back_to_deterministic_sampling():
+    verts, topo = _sphere_topology()
+    sampled = self_collision_penalty(
+        verts,
+        topo,
+        min_dist=10.0,
+        stiffness=1.0,
+        n_sample=64,
+    )
+    fallback = self_collision_penalty(
+        verts,
+        topo,
+        min_dist=10.0,
+        stiffness=1.0,
+        use_spatial_hash=True,
+        hash_cell_size=1e-6,
+        hash_neighbor_window=1,
+        deterministic_fallback=True,
+        fallback_n_sample=64,
+    )
+    np.testing.assert_allclose(np.asarray(fallback), np.asarray(sampled), atol=1e-8)
