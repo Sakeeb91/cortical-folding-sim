@@ -4,6 +4,7 @@ on:
   push:
     branches: ["main"]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   quick-validation:
@@ -42,3 +43,16 @@ jobs:
           python3.11 scripts/check_seed_reproducibility.py \
             --first results/forward_sweep_summary_seed_1.json \
             --second results/forward_sweep_summary_seed_2.json
+
+  full-validation:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install project
+        run: python3.11 -m pip install -e ".[dev]"
+      - name: Run full validation preset
+        run: ./scripts/run_validation_full.sh
