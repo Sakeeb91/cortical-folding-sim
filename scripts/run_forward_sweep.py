@@ -237,6 +237,7 @@ def run_single(
         )
     anisotropy_mode = cfg_get(cfg, "anisotropy_mode", "none")
     anisotropy_axis = jnp.array(cfg_get(cfg, "anisotropy_axis", [0.0, 0.0, 1.0]))
+    two_layer_axis = jnp.array(cfg_get(cfg, "two_layer_axis", [0.0, 0.0, 1.0]))
     face_anisotropy = create_anisotropy_field(
         mode=anisotropy_mode,
         vertices=verts,
@@ -246,6 +247,7 @@ def run_single(
         axis=2,
         threshold=0.0,
     )
+    run_dt = cfg_get(cfg, "dt", dt)
 
     params = SimParams(
         Kc=cfg_get(cfg, "Kc", 2.0),
@@ -256,7 +258,7 @@ def run_single(
         skull_stiffness=100.0,
         carrying_cap_factor=cfg_get(cfg, "carrying_cap_factor", 4.0),
         tau=cfg_get(cfg, "tau", 500.0),
-        dt=dt,
+        dt=run_dt,
         enable_self_collision=cfg_get(cfg, "enable_self_collision", False),
         self_collision_min_dist=cfg_get(cfg, "self_collision_min_dist", 0.02),
         self_collision_stiffness=cfg_get(cfg, "self_collision_stiffness", 50.0),
@@ -272,6 +274,20 @@ def run_single(
         self_collision_fallback_n_sample=cfg_get(cfg, "self_collision_fallback_n_sample", 256),
         anisotropy_strength=cfg_get(cfg, "anisotropy_strength", 0.0),
         anisotropy_axis=anisotropy_axis,
+        enable_two_layer_approx=cfg_get(cfg, "enable_two_layer_approx", False),
+        two_layer_axis=two_layer_axis,
+        two_layer_threshold=cfg_get(cfg, "two_layer_threshold", 0.0),
+        two_layer_transition_sharpness=cfg_get(cfg, "two_layer_transition_sharpness", 6.0),
+        outer_layer_growth_scale=cfg_get(cfg, "outer_layer_growth_scale", 1.15),
+        inner_layer_growth_scale=cfg_get(cfg, "inner_layer_growth_scale", 0.85),
+        two_layer_coupling=cfg_get(cfg, "two_layer_coupling", 0.1),
+        max_growth_rate=cfg_get(cfg, "max_growth_rate", 2.0),
+        min_rest_area=cfg_get(cfg, "min_rest_area", 1e-8),
+        min_rest_length=cfg_get(cfg, "min_rest_length", 1e-8),
+        max_force_norm=cfg_get(cfg, "max_force_norm", 1e3),
+        max_acc_norm=cfg_get(cfg, "max_acc_norm", 1e3),
+        max_velocity_norm=cfg_get(cfg, "max_velocity_norm", 5.0),
+        max_displacement_per_step=cfg_get(cfg, "max_displacement_per_step", 0.05),
     )
 
     initial_state = make_initial_state(verts, topo)
@@ -321,8 +337,18 @@ def run_single(
         "self_collision_deterministic_fallback": int(
             cfg_get(cfg, "self_collision_deterministic_fallback", True)
         ),
+        "enable_two_layer_approx": int(cfg_get(cfg, "enable_two_layer_approx", False)),
+        "two_layer_threshold": cfg_get(cfg, "two_layer_threshold", 0.0),
+        "two_layer_transition_sharpness": cfg_get(cfg, "two_layer_transition_sharpness", 6.0),
+        "outer_layer_growth_scale": cfg_get(cfg, "outer_layer_growth_scale", 1.15),
+        "inner_layer_growth_scale": cfg_get(cfg, "inner_layer_growth_scale", 0.85),
+        "two_layer_coupling": cfg_get(cfg, "two_layer_coupling", 0.1),
+        "max_force_norm": cfg_get(cfg, "max_force_norm", 1e3),
+        "max_acc_norm": cfg_get(cfg, "max_acc_norm", 1e3),
+        "max_velocity_norm": cfg_get(cfg, "max_velocity_norm", 5.0),
+        "max_displacement_per_step": cfg_get(cfg, "max_displacement_per_step", 0.05),
         "n_steps": n_steps,
-        "dt": dt,
+        "dt": run_dt,
         "seed": seed,
         "run_config_hash": config_hash(cfg),
         "sweep_config_hash": sweep_config_hash,
@@ -434,6 +460,7 @@ def write_summary(rows: list[dict], path: Path, metadata: dict) -> None:
         "n_runs": len(rows),
         "n_anisotropic_runs": int(sum(1 for r in rows if float(r["anisotropy_strength"]) > 0)),
         "n_isotropic_runs": int(sum(1 for r in rows if float(r["anisotropy_strength"]) == 0)),
+        "n_two_layer_runs": int(sum(1 for r in rows if int(r["enable_two_layer_approx"]) == 1)),
         "n_collision_enabled_runs": int(sum(1 for r in rows if int(r["enable_self_collision"]) == 1)),
         "n_spatial_hash_collision_runs": int(
             sum(1 for r in rows if int(r["self_collision_use_spatial_hash"]) == 1)
