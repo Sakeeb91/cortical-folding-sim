@@ -175,31 +175,8 @@ def simulation_step(
     safe_growth_rates = jnp.clip(growth_rates, 0.0, params.max_growth_rate)
 
     # --- Forces ---
-    f_elastic = elastic_force(state.vertices, topo, state.rest_lengths, params.Kc)
-    f_bending = bending_force(
-        state.vertices, topo, state.rest_curvatures, params.Kb
-    )
-    f_skull = skull_penalty(
-        state.vertices, params.skull_center, params.skull_radius, params.skull_stiffness
-    )
-    f_collision = jnp.zeros_like(state.vertices)
-    if params.enable_self_collision and params.self_collision_stiffness > 0:
-        f_collision = self_collision_penalty(
-            state.vertices,
-            topo,
-            min_dist=params.self_collision_min_dist,
-            stiffness=params.self_collision_stiffness,
-            n_sample=params.self_collision_n_sample,
-            use_spatial_hash=params.self_collision_use_spatial_hash,
-            hash_cell_size=params.self_collision_hash_cell_size,
-            hash_neighbor_window=params.self_collision_hash_neighbor_window,
-            deterministic_fallback=params.self_collision_deterministic_fallback,
-            fallback_n_sample=params.self_collision_fallback_n_sample,
-        )
-    f_total = _clip_vectors_norm(
-        f_elastic + f_bending + f_skull + f_collision,
-        params.max_force_norm,
-    )
+    force_components = compute_force_components(state, topo, params)
+    f_total = _clip_vectors_norm(force_components.total, params.max_force_norm)
 
     # --- Damped Newmark explicit integration ---
     acc = _clip_vectors_norm(
