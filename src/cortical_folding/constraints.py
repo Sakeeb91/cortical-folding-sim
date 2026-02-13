@@ -129,6 +129,32 @@ def skull_penalty(
     return -stiffness * penetration * disp / safe_dist
 
 
+def self_collision_penalty_spatial_hash(
+    verts: jnp.ndarray,
+    topo: MeshTopology,
+    min_dist: float = 0.02,
+    stiffness: float = 50.0,
+    hash_cell_size: float = 0.02,
+    hash_neighbor_window: int = 8,
+) -> tuple[jnp.ndarray, jnp.ndarray]:
+    """Collision penalty using spatial-hash local neighborhood candidates."""
+    idx_a, idx_b, valid = _spatial_hash_neighbor_pairs(
+        verts=verts,
+        cell_size=hash_cell_size,
+        neighbor_window=max(1, int(hash_neighbor_window)),
+    )
+    forces, active_collision = _accumulate_repulsion_from_pairs(
+        verts=verts,
+        topo=topo,
+        idx_a=idx_a,
+        idx_b=idx_b,
+        min_dist=min_dist,
+        stiffness=stiffness,
+        pair_valid_mask=valid,
+    )
+    return forces, active_collision
+
+
 def self_collision_penalty(
     verts: jnp.ndarray,
     topo: MeshTopology,
