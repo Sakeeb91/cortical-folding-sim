@@ -434,6 +434,10 @@ def write_summary(rows: list[dict], path: Path, metadata: dict) -> None:
         "n_runs": len(rows),
         "n_anisotropic_runs": int(sum(1 for r in rows if float(r["anisotropy_strength"]) > 0)),
         "n_isotropic_runs": int(sum(1 for r in rows if float(r["anisotropy_strength"]) == 0)),
+        "n_collision_enabled_runs": int(sum(1 for r in rows if int(r["enable_self_collision"]) == 1)),
+        "n_spatial_hash_collision_runs": int(
+            sum(1 for r in rows if int(r["self_collision_use_spatial_hash"]) == 1)
+        ),
         "n_stable": len(stable_rows),
         "n_unstable": len(unstable_rows),
         "stability_rate": (len(stable_rows) / len(rows)) if rows else 0.0,
