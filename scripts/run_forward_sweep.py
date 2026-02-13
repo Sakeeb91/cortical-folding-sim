@@ -306,6 +306,21 @@ def run_single(
         "anisotropy_strength": cfg_get(cfg, "anisotropy_strength", 0.0),
         "anisotropy_high": cfg_get(cfg, "anisotropy_high", 0.0),
         "anisotropy_low": cfg_get(cfg, "anisotropy_low", 0.0),
+        "collision_mode": collision_mode_label(cfg),
+        "enable_self_collision": int(cfg_get(cfg, "enable_self_collision", False)),
+        "self_collision_use_spatial_hash": int(
+            cfg_get(cfg, "self_collision_use_spatial_hash", False)
+        ),
+        "self_collision_min_dist": cfg_get(cfg, "self_collision_min_dist", 0.02),
+        "self_collision_stiffness": cfg_get(cfg, "self_collision_stiffness", 50.0),
+        "self_collision_n_sample": cfg_get(cfg, "self_collision_n_sample", 256),
+        "self_collision_hash_cell_size": cfg_get(cfg, "self_collision_hash_cell_size", 0.02),
+        "self_collision_hash_neighbor_window": cfg_get(
+            cfg, "self_collision_hash_neighbor_window", 8
+        ),
+        "self_collision_deterministic_fallback": int(
+            cfg_get(cfg, "self_collision_deterministic_fallback", True)
+        ),
         "n_steps": n_steps,
         "dt": dt,
         "seed": seed,
