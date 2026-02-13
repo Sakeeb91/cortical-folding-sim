@@ -66,6 +66,52 @@ def _accumulate_repulsion_from_pairs(
     return forces, active_collision
 
 
+def _spatial_hash_neighbor_pairs(
+    verts: jnp.ndarray,
+    cell_size: float,
+    neighbor_window: int,
+) -> tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]:
+    """Build deterministic local candidate pairs from spatial-hash ordering."""
+    n_verts = verts.shape[0]
+    safe_cell_size = jnp.maximum(cell_size, 1e-6)
+    cell_coords = jnp.floor(verts / safe_cell_size).astype(jnp.int32)  # (V, 3)
+
+    # Hash vertices to grid keys, then sort with index tie-break for determinism.
+    coords64 = cell_coords.astype(jnp.int64)
+    hash_keys = (
+        coords64[:, 0] * 73856093
+        ^ coords64[:, 1] * 19349663
+        ^ coords64[:, 2] * 83492791
+    )
+    sort_keys = hash_keys * jnp.int64(n_verts + 1) + jnp.arange(n_verts, dtype=jnp.int64)
+    order = jnp.argsort(sort_keys)
+
+    sorted_idx = order
+    sorted_cells = cell_coords[order]
+    base_idx = jnp.arange(n_verts, dtype=jnp.int32)
+
+    pair_idx_a = jnp.zeros((neighbor_window, n_verts), dtype=jnp.int32)
+    pair_idx_b = jnp.zeros((neighbor_window, n_verts), dtype=jnp.int32)
+    pair_valid = jnp.zeros((neighbor_window, n_verts), dtype=bool)
+
+    for offset in range(1, neighbor_window + 1):
+        shifted_idx = jnp.roll(sorted_idx, -offset)
+        shifted_cells = jnp.roll(sorted_cells, -offset, axis=0)
+        in_range = base_idx < (n_verts - offset)
+        near_cell = jnp.all(jnp.abs(sorted_cells - shifted_cells) <= 1, axis=1)
+        valid = in_range & near_cell
+
+        pair_idx_a = pair_idx_a.at[offset - 1].set(sorted_idx)
+        pair_idx_b = pair_idx_b.at[offset - 1].set(shifted_idx)
+        pair_valid = pair_valid.at[offset - 1].set(valid)
+
+    return (
+        pair_idx_a.reshape(-1),
+        pair_idx_b.reshape(-1),
+        pair_valid.reshape(-1),
+    )
+
+
 def skull_penalty(
     verts: jnp.ndarray,
     skull_center: jnp.ndarray,
