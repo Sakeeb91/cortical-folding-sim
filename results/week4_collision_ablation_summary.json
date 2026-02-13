@@ -1,0 +1,33 @@
+{
+  "generated_at_utc": "2026-02-13T13:08:54.397632+00:00",
+  "seed": 42,
+  "git_commit": "78acd07",
+  "sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
+  "config_path": "configs/week4_collision_ablation.json",
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
+  "fail_fast_disp_max": 1.0,
+  "fail_fast_penetration_max": 0.5,
+  "output_csv": "results/week4_collision_ablation.csv",
+  "output_summary": "results/week4_collision_ablation_summary.json",
+  "n_runs": 3,
+  "n_anisotropic_runs": 0,
+  "n_isotropic_runs": 3,
+  "n_collision_enabled_runs": 2,
+  "n_spatial_hash_collision_runs": 1,
+  "n_stable": 3,
+  "n_unstable": 0,
+  "stability_rate": 1.0,
+  "fail_reason_counts": {
+    "none": 3
+  },
+  "gi_mean": 2.7100002765655518,
+  "gi_std": 0.09096457872706162,
+  "best_gi_run_id": 2,
+  "gi_plausible_count": 3,
+  "gi_plausible_rate": 1.0,
+  "collision_force_share_mean": 0.008826227177465328,
+  "collision_force_share_p95": 0.023830813379156383,
+  "collision_overlap_p95_mean": 0.0,
+  "collision_overlap_max_max": 0.12020762264728546
+}
