@@ -77,13 +77,13 @@ def _spatial_hash_neighbor_pairs(
     cell_coords = jnp.floor(verts / safe_cell_size).astype(jnp.int32)  # (V, 3)
 
     # Hash vertices to grid keys, then sort with index tie-break for determinism.
-    coords64 = cell_coords.astype(jnp.int64)
+    coords32 = cell_coords.astype(jnp.int32)
     hash_keys = (
-        coords64[:, 0] * 73856093
-        ^ coords64[:, 1] * 19349663
-        ^ coords64[:, 2] * 83492791
+        coords32[:, 0] * jnp.int32(73856093)
+        ^ coords32[:, 1] * jnp.int32(19349663)
+        ^ coords32[:, 2] * jnp.int32(83492791)
     )
-    sort_keys = hash_keys * jnp.int64(n_verts + 1) + jnp.arange(n_verts, dtype=jnp.int64)
+    sort_keys = hash_keys * jnp.int32(n_verts + 1) + jnp.arange(n_verts, dtype=jnp.int32)
     order = jnp.argsort(sort_keys)
 
     sorted_idx = order
