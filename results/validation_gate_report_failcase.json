@@ -1,0 +1,67 @@
+{
+  "generated_at_utc": "2026-02-13T12:21:53.784597+00:00",
+  "n_rows": 4,
+  "n_failures": 1,
+  "passed": false,
+  "thresholds": {
+    "min_stability_rate": 1.0,
+    "min_gi_plausible_rate": 0.95,
+    "max_outside_skull_frac_p95": 0.05,
+    "max_skull_penetration_p95": 0.01,
+    "max_disp_p95": 0.2
+  },
+  "checks": [
+    {
+      "name": "stability_rate",
+      "passed": true,
+      "observed": 1.0,
+      "threshold": 1.0,
+      "comparator": ">=",
+      "message": "PASS: stability_rate observed=1.000000 >= threshold=1.000000"
+    },
+    {
+      "name": "gi_plausible_rate",
+      "passed": false,
+      "observed": 0.0,
+      "threshold": 0.95,
+      "comparator": ">=",
+      "message": "FAIL: gi_plausible_rate observed=0.000000 >= threshold=0.950000"
+    },
+    {
+      "name": "outside_skull_frac_p95",
+      "passed": true,
+      "observed": 0.0,
+      "threshold": 0.05,
+      "comparator": "<=",
+      "message": "PASS: outside_skull_frac_p95 observed=0.000000 <= threshold=0.050000"
+    },
+    {
+      "name": "skull_penetration_p95",
+      "passed": true,
+      "observed": 0.0,
+      "threshold": 0.01,
+      "comparator": "<=",
+      "message": "PASS: skull_penetration_p95 observed=0.000000 <= threshold=0.010000"
+    },
+    {
+      "name": "disp_p95",
+      "passed": true,
+      "observed": 0.13830174691975117,
+      "threshold": 0.2,
+      "comparator": "<=",
+      "message": "PASS: disp_p95 observed=0.138302 <= threshold=0.200000"
+    }
+  ],
+  "summary_ref": {
+    "stability_rate": 1.0,
+    "gi_plausible_rate": 0.0,
+    "git_commit": "ede664e",
+    "seed": 42,
+    "sweep_config_hash": "c8d503703216a80fa37e3cd8302376040c98dd7d9f819daf78c4b7208ec0204c"
+  },
+  "metadata": {
+    "input_csv": "results/forward_sweep.csv",
+    "input_summary": "results/forward_sweep_summary.json",
+    "gate_config": "configs/validation_gates_failcase.json"
+  }
+}
