@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 
 from cortical_folding.validation import (
@@ -36,6 +37,11 @@ def parse_args() -> argparse.Namespace:
         "--output-report",
         default="results/validation_gate_report.json",
         help="Path to write gate report JSON.",
+    )
+    parser.add_argument(
+        "--fail-on-failure",
+        action="store_true",
+        help="Return non-zero exit code if any gate fails.",
     )
     return parser.parse_args()
 
@@ -73,6 +79,17 @@ def main() -> None:
     with output_path.open("w") as f:
         json.dump(report, f, indent=2)
     print(f"Saved report: {output_path}")
+    for check in report["checks"]:
+        print(check["message"])
+    if report["passed"]:
+        print("All validation gates passed.")
+    else:
+        print(
+            "Validation gates failed. Review report and adjust physics "
+            "params, thresholds, or model stability."
+        )
+        if args.fail_on_failure:
+            sys.exit(1)
 
 
 if __name__ == "__main__":
