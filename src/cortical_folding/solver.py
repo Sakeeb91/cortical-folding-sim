@@ -206,6 +206,7 @@ def simulate(
     topo: MeshTopology,
     growth_rates: jnp.ndarray,
     params: SimParams,
+    face_anisotropy: jnp.ndarray | None = None,
     n_steps: int = 200,
     save_every: int = 1,
 ) -> tuple[SimState, jnp.ndarray]:
@@ -215,11 +216,13 @@ def simulate(
     """
     initial_edge_lengths = initial_state.rest_lengths
     initial_areas = initial_state.rest_areas
+    if face_anisotropy is None:
+        face_anisotropy = jnp.zeros(topo.faces.shape[0], dtype=initial_state.vertices.dtype)
 
     @jax.checkpoint
     def step_fn(state, _):
         new_state = simulation_step(
-            state, topo, growth_rates, params,
+            state, topo, growth_rates, face_anisotropy, params,
             initial_edge_lengths, initial_areas,
         )
         return new_state, new_state.vertices
