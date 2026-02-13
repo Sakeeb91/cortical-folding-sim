@@ -82,6 +82,17 @@ def _edge_axis_alignment(verts: jnp.ndarray, topo: MeshTopology, axis: jnp.ndarr
     return jnp.abs(jnp.sum(edge_dirs * axis[None, :], axis=1))
 
 
+def _edge_face_values(face_values: jnp.ndarray, topo: MeshTopology) -> jnp.ndarray:
+    """Average face values onto edges using adjacent faces."""
+    ef = topo.edge_faces
+    valid0 = ef[:, 0] >= 0
+    valid1 = ef[:, 1] >= 0
+    v0 = jnp.where(valid0, face_values[jnp.maximum(ef[:, 0], 0)], 0.0)
+    v1 = jnp.where(valid1, face_values[jnp.maximum(ef[:, 1], 0)], 0.0)
+    denom = valid0.astype(jnp.float32) + valid1.astype(jnp.float32)
+    return (v0 + v1) / jnp.maximum(denom, 1.0)
+
+
 def make_initial_state(
     vertices: jnp.ndarray, topo: MeshTopology
 ) -> SimState:
