@@ -106,6 +106,7 @@ def build_quick_grid() -> list[dict]:
     """Small debug grid for rapid local checks."""
     return [
         {
+            "label": "quick_uniform",
             "growth_mode": "uniform",
             "uniform_rate": 0.30,
             "high_rate": 0.30,
@@ -117,6 +118,7 @@ def build_quick_grid() -> list[dict]:
             "tau": 500.0,
         },
         {
+            "label": "quick_uniform_high",
             "growth_mode": "uniform",
             "uniform_rate": 0.50,
             "high_rate": 0.50,
@@ -128,6 +130,7 @@ def build_quick_grid() -> list[dict]:
             "tau": 500.0,
         },
         {
+            "label": "quick_regional_iso",
             "growth_mode": "regional",
             "uniform_rate": 0.0,
             "high_rate": 0.80,
@@ -139,6 +142,7 @@ def build_quick_grid() -> list[dict]:
             "tau": 500.0,
         },
         {
+            "label": "quick_regional_aniso",
             "growth_mode": "regional",
             "uniform_rate": 0.0,
             "high_rate": 0.90,
@@ -148,6 +152,10 @@ def build_quick_grid() -> list[dict]:
             "carrying_cap_factor": 4.0,
             "damping": 0.9,
             "tau": 500.0,
+            "anisotropy_mode": "regional",
+            "anisotropy_strength": 0.35,
+            "anisotropy_high": 1.0,
+            "anisotropy_low": 0.0,
         },
     ]
 
