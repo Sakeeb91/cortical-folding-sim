@@ -69,6 +69,19 @@ def _finite_or_previous(new_val: jnp.ndarray, previous_val: jnp.ndarray) -> jnp.
     return jnp.where(jnp.isfinite(new_val), new_val, previous_val)
 
 
+def _normalize_axis(axis: jnp.ndarray) -> jnp.ndarray:
+    """Return unit axis with safe fallback."""
+    norm = jnp.linalg.norm(axis)
+    return axis / jnp.maximum(norm, 1e-12)
+
+
+def _edge_axis_alignment(verts: jnp.ndarray, topo: MeshTopology, axis: jnp.ndarray) -> jnp.ndarray:
+    """Return absolute edge direction alignment to an axis. Shape (E,)."""
+    edge_vecs = verts[topo.edges[:, 1]] - verts[topo.edges[:, 0]]
+    edge_dirs = edge_vecs / jnp.maximum(jnp.linalg.norm(edge_vecs, axis=1, keepdims=True), 1e-12)
+    return jnp.abs(jnp.sum(edge_dirs * axis[None, :], axis=1))
+
+
 def make_initial_state(
     vertices: jnp.ndarray, topo: MeshTopology
 ) -> SimState:
