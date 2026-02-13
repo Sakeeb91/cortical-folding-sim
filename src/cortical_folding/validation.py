@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -129,3 +130,48 @@ def evaluate_gate_checks(
             )
         )
     return results
+
+
+def build_gate_report(
+    *,
+    rows: list[dict],
+    summary: dict,
+    thresholds: GateThresholds,
+    checks: list[GateCheckResult],
+    metadata: dict | None = None,
+) -> dict:
+    """Build normalized gate report payload for JSON export."""
+    payload = {
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "n_rows": len(rows),
+        "n_failures": int(sum(0 if c.passed else 1 for c in checks)),
+        "passed": bool(all(c.passed for c in checks)),
+        "thresholds": {
+            "min_stability_rate": thresholds.min_stability_rate,
+            "min_gi_plausible_rate": thresholds.min_gi_plausible_rate,
+            "max_outside_skull_frac_p95": thresholds.max_outside_skull_frac_p95,
+            "max_skull_penetration_p95": thresholds.max_skull_penetration_p95,
+            "max_disp_p95": thresholds.max_disp_p95,
+        },
+        "checks": [
+            {
+                "name": c.name,
+                "passed": c.passed,
+                "observed": c.observed,
+                "threshold": c.threshold,
+                "comparator": c.comparator,
+                "message": c.message,
+            }
+            for c in checks
+        ],
+        "summary_ref": {
+            "stability_rate": float(summary.get("stability_rate", 0.0)),
+            "gi_plausible_rate": float(summary.get("gi_plausible_rate", 0.0)),
+            "git_commit": summary.get("git_commit", "unknown"),
+            "seed": summary.get("seed", "unknown"),
+            "sweep_config_hash": summary.get("sweep_config_hash", "unknown"),
+        },
+    }
+    if metadata:
+        payload["metadata"] = metadata
+    return payload
