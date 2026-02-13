@@ -158,6 +158,8 @@ def run_single(
     seed: int,
     gi_plausible_min: float,
     gi_plausible_max: float,
+    fail_fast_disp_max: float,
+    fail_fast_penetration_max: float,
     sweep_config_hash: str,
     git_commit: str,
 ) -> dict:
@@ -196,6 +198,9 @@ def run_single(
 
     final_verts_np = np.asarray(final_state.vertices)
     stable = bool(np.isfinite(final_verts_np).all())
+    fail_reason = "none"
+    if not stable:
+        fail_reason = "non_finite_vertices"
 
     row = {
         "run_id": run_id,
@@ -214,6 +219,7 @@ def run_single(
         "run_config_hash": config_hash(cfg),
         "sweep_config_hash": sweep_config_hash,
         "git_commit": git_commit,
+        "fail_reason": fail_reason,
         "stable": int(stable),
         "runtime_s": runtime_s,
     }
@@ -268,6 +274,12 @@ def run_single(
             "skull_penetration_max": float(np.max(penetration)),
         }
     )
+    if row["disp_p95"] > fail_fast_disp_max:
+        row["stable"] = 0
+        row["fail_reason"] = "dispersion_explosion"
+    if row["skull_penetration_max"] > fail_fast_penetration_max:
+        row["stable"] = 0
+        row["fail_reason"] = "penetration_explosion"
     return row
 
 
@@ -361,6 +373,8 @@ def main() -> None:
             seed=args.seed,
             gi_plausible_min=args.gi_plausible_min,
             gi_plausible_max=args.gi_plausible_max,
+            fail_fast_disp_max=args.fail_fast_disp_max,
+            fail_fast_penetration_max=args.fail_fast_penetration_max,
             sweep_config_hash=sweep_config_hash,
             git_commit=git_commit,
         )
