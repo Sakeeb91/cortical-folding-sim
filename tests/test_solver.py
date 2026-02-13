@@ -138,3 +138,49 @@ def test_spatial_hash_collision_reduces_overlap_outliers(setup):
         return float(np.percentile(overlap, 95))
 
     assert overlap_p95(final_collision.vertices) <= overlap_p95(final_no_collision.vertices) + 1e-6
+
+
+def test_two_layer_mode_is_deterministic(setup):
+    """Two-layer approximation path should be deterministic for fixed params."""
+    verts, topo, params, _ = setup
+    growth = create_uniform_growth(topo.faces.shape[0], rate=0.8)
+    state = make_initial_state(verts, topo)
+
+    layered_dict = params._asdict()
+    layered_dict.update(
+        {
+            "enable_two_layer_approx": True,
+            "outer_layer_growth_scale": 1.2,
+            "inner_layer_growth_scale": 0.8,
+            "two_layer_coupling": 0.15,
+        }
+    )
+    layered_params = SimParams(**layered_dict)
+
+    final1, _ = simulate(state, topo, growth, layered_params, n_steps=50)
+    final2, _ = simulate(state, topo, growth, layered_params, n_steps=50)
+    np.testing.assert_allclose(np.asarray(final1.vertices), np.asarray(final2.vertices), atol=1e-8)
+
+
+def test_two_layer_mode_changes_growth_outcome_vs_single_layer(setup):
+    """Layered approximation should measurably alter final geometry."""
+    verts, topo, params, _ = setup
+    growth = create_uniform_growth(topo.faces.shape[0], rate=0.8)
+    state = make_initial_state(verts, topo)
+
+    single_layer_final, _ = simulate(state, topo, growth, params, n_steps=60)
+
+    layered_dict = params._asdict()
+    layered_dict.update(
+        {
+            "enable_two_layer_approx": True,
+            "outer_layer_growth_scale": 1.35,
+            "inner_layer_growth_scale": 0.65,
+            "two_layer_coupling": 0.0,
+        }
+    )
+    layered_params = SimParams(**layered_dict)
+    layered_final, _ = simulate(state, topo, growth, layered_params, n_steps=60)
+
+    vertex_delta = np.asarray(layered_final.vertices) - np.asarray(single_layer_final.vertices)
+    assert float(np.linalg.norm(vertex_delta)) > 1e-3
