@@ -114,6 +114,7 @@ def simulation_step(
     state: SimState,
     topo: MeshTopology,
     growth_rates: jnp.ndarray,
+    face_anisotropy: jnp.ndarray,
     params: SimParams,
     initial_edge_lengths: jnp.ndarray,
     initial_areas: jnp.ndarray,
