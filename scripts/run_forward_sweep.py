@@ -351,6 +351,14 @@ def run_single(
                 "skull_penetration_mean": float("nan"),
                 "skull_penetration_p95": float("nan"),
                 "skull_penetration_max": float("nan"),
+                "collision_force_l2": float("nan"),
+                "total_force_l2": float("nan"),
+                "collision_force_share": float("nan"),
+                "collision_overlap_mean": float("nan"),
+                "collision_overlap_p95": float("nan"),
+                "collision_overlap_max": float("nan"),
+                "collision_overlap_count": float("nan"),
+                "collision_overlap_frac": float("nan"),
             }
         )
         return row
