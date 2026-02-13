@@ -171,6 +171,17 @@ Run:
 python3.11 -m pytest tests -v
 ```
 
+Intentional gate-failure smoke test (should fail with actionable diagnostics):
+
+```bash
+python3.11 scripts/check_forward_sweep_gates.py \
+  --input-csv results/forward_sweep.csv \
+  --input-summary results/forward_sweep_summary.json \
+  --gate-config configs/validation_gates_failcase.json \
+  --output-report results/validation_gate_report_failcase.json \
+  --fail-on-failure
+```
+
 ## References
 
 1. Nie, J., Li, G., and Shen, D. (2010). *A computational model of cerebral cortex folding*. Journal of Theoretical Biology.
