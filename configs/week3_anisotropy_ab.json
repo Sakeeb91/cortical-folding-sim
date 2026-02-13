@@ -1,0 +1,36 @@
+[
+  {
+    "label": "isotropic_baseline",
+    "growth_mode": "regional",
+    "uniform_rate": 0.0,
+    "high_rate": 0.8,
+    "low_rate": 0.1,
+    "Kc": 2.0,
+    "Kb": 3.0,
+    "carrying_cap_factor": 4.0,
+    "damping": 0.9,
+    "tau": 500.0,
+    "anisotropy_mode": "none",
+    "anisotropy_strength": 0.0,
+    "anisotropy_axis": [0.0, 0.0, 1.0],
+    "anisotropy_high": 0.0,
+    "anisotropy_low": 0.0
+  },
+  {
+    "label": "anisotropic_z_bias",
+    "growth_mode": "regional",
+    "uniform_rate": 0.0,
+    "high_rate": 0.8,
+    "low_rate": 0.1,
+    "Kc": 2.0,
+    "Kb": 3.0,
+    "carrying_cap_factor": 4.0,
+    "damping": 0.9,
+    "tau": 500.0,
+    "anisotropy_mode": "regional",
+    "anisotropy_strength": 0.35,
+    "anisotropy_axis": [0.0, 0.0, 1.0],
+    "anisotropy_high": 1.0,
+    "anisotropy_low": 0.0
+  }
+]
