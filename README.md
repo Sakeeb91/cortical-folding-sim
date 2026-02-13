@@ -120,6 +120,24 @@ Generated artifacts:
 4. `results/week4_collision_comparison.json`
 5. `docs/assets/week4_collision_ablation.png`
 
+### Week 5 layered approximation + core ablations
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/run_week5_layered_ablation.py --n-steps 140
+MPLBACKEND=Agg python3.11 scripts/plot_week5_layered_ablation.py
+MPLBACKEND=Agg python3.11 scripts/validate_week5_hardened.py --n-steps 140
+```
+
+Generated artifacts:
+
+1. `results/week5_layered_ablation.csv`
+2. `results/week5_layered_ablation_summary.json`
+3. `results/week5_layered_ablation_manifest.json`
+4. `results/week5_layered_comparison.json`
+5. `results/week5_hardened_validation.json`
+6. `results/week5_matrix_check.csv`
+7. `docs/assets/week5_layered_ablation.png`
+
 ## Visualization Outputs
 
 The current repository already includes generated sample outputs:
@@ -143,6 +161,8 @@ The current repository already includes generated sample outputs:
 ![Week 3 anisotropy delta](docs/assets/week3_anisotropy_delta.png)
 
 ![Week 4 collision ablation](docs/assets/week4_collision_ablation.png)
+
+![Week 5 layered ablation](docs/assets/week5_layered_ablation.png)
 
 ## Robustness Features
 
