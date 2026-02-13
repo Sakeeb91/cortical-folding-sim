@@ -6,6 +6,28 @@ import jax.numpy as jnp
 from .mesh import MeshTopology
 
 
+def _deterministic_pair_indices(n_verts: int, n_sample: int) -> tuple[jnp.ndarray, jnp.ndarray]:
+    """Return deterministic pseudo-random pair indices."""
+    idx_a = jnp.arange(n_sample, dtype=jnp.int32) % n_verts
+    idx_b = (idx_a * 1103515245 + 12345) % n_verts
+    return idx_a, idx_b
+
+
+def _pair_adjacency_mask(
+    idx_a: jnp.ndarray,
+    idx_b: jnp.ndarray,
+    edges: jnp.ndarray,
+) -> jnp.ndarray:
+    """Return mask for pairs that correspond to existing mesh edges."""
+    a_col = idx_a[:, None]
+    b_col = idx_b[:, None]
+    return jnp.any(
+        ((a_col == edges[None, :, 0]) & (b_col == edges[None, :, 1]))
+        | ((a_col == edges[None, :, 1]) & (b_col == edges[None, :, 0])),
+        axis=1,
+    )
+
+
 def skull_penalty(
     verts: jnp.ndarray,
     skull_center: jnp.ndarray,
