@@ -469,6 +469,18 @@ def write_summary(rows: list[dict], path: Path, metadata: dict) -> None:
                 "best_gi_run_id": int(max(stable_rows, key=lambda r: r["gi"])["run_id"]),
                 "gi_plausible_count": plausible_count,
                 "gi_plausible_rate": float(plausible_count / len(stable_rows)),
+                "collision_force_share_mean": float(
+                    np.mean([r["collision_force_share"] for r in stable_rows])
+                ),
+                "collision_force_share_p95": float(
+                    np.percentile([r["collision_force_share"] for r in stable_rows], 95)
+                ),
+                "collision_overlap_p95_mean": float(
+                    np.mean([r["collision_overlap_p95"] for r in stable_rows])
+                ),
+                "collision_overlap_max_max": float(
+                    np.max([r["collision_overlap_max"] for r in stable_rows])
+                ),
             }
         )
 
