@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-02-13T12:22:03.521519+00:00",
-  "n_rows": 4,
+  "generated_at_utc": "2026-02-13T15:36:46.141646+00:00",
+  "n_rows": 16,
   "n_failures": 0,
   "passed": true,
   "thresholds": {
@@ -22,42 +22,42 @@
     {
       "name": "gi_plausible_rate",
       "passed": true,
-      "observed": 1.0,
+      "observed": 0.5625,
       "threshold": 0.5,
       "comparator": ">=",
-      "message": "PASS: gi_plausible_rate observed=1.000000 >= threshold=0.500000"
+      "message": "PASS: gi_plausible_rate observed=0.562500 >= threshold=0.500000"
     },
     {
       "name": "outside_skull_frac_p95",
       "passed": true,
-      "observed": 0.0,
+      "observed": 0.37538940809968846,
       "threshold": 0.4,
       "comparator": "<=",
-      "message": "PASS: outside_skull_frac_p95 observed=0.000000 <= threshold=0.400000"
+      "message": "PASS: outside_skull_frac_p95 observed=0.375389 <= threshold=0.400000"
     },
     {
       "name": "skull_penetration_p95",
       "passed": true,
-      "observed": 0.0,
+      "observed": 0.21300530806183815,
       "threshold": 0.25,
       "comparator": "<=",
-      "message": "PASS: skull_penetration_p95 observed=0.000000 <= threshold=0.250000"
+      "message": "PASS: skull_penetration_p95 observed=0.213005 <= threshold=0.250000"
     },
     {
       "name": "disp_p95",
       "passed": true,
-      "observed": 0.13830174691975117,
+      "observed": 0.7730795294046402,
       "threshold": 0.8,
       "comparator": "<=",
-      "message": "PASS: disp_p95 observed=0.138302 <= threshold=0.800000"
+      "message": "PASS: disp_p95 observed=0.773080 <= threshold=0.800000"
     }
   ],
   "summary_ref": {
     "stability_rate": 1.0,
-    "gi_plausible_rate": 1.0,
-    "git_commit": "546d1af",
+    "gi_plausible_rate": 0.5625,
+    "git_commit": "609f522",
     "seed": 42,
-    "sweep_config_hash": "c8d503703216a80fa37e3cd8302376040c98dd7d9f819daf78c4b7208ec0204c"
+    "sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440"
   },
   "metadata": {
     "input_csv": "results/forward_sweep.csv",

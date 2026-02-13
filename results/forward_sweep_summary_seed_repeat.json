@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-13T15:36:45.859270+00:00",
+  "generated_at_utc": "2026-02-13T15:36:53.072813+00:00",
   "seed": 42,
   "git_commit": "609f522",
   "sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
@@ -9,7 +9,7 @@
   "fail_fast_disp_max": 1.0,
   "fail_fast_penetration_max": 0.5,
   "output_csv": "results/forward_sweep.csv",
-  "output_summary": "results/forward_sweep_summary.json",
+  "output_summary": "results/forward_sweep_summary_seed_repeat.json",
   "n_runs": 16,
   "n_anisotropic_runs": 0,
   "n_isotropic_runs": 16,

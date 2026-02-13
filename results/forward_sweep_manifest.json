@@ -1,24 +1,36 @@
 {
-  "generated_at_utc": "2026-02-13T12:22:03.310369+00:00",
+  "generated_at_utc": "2026-02-13T15:36:53.073072+00:00",
   "seed": 42,
-  "git_commit": "546d1af",
-  "sweep_config_hash": "c8d503703216a80fa37e3cd8302376040c98dd7d9f819daf78c4b7208ec0204c",
+  "git_commit": "609f522",
+  "sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
   "config_path": "configs/forward_sweep_baseline.json",
-  "gi_plausible_min": 0.45,
-  "gi_plausible_max": 1.2,
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
   "fail_fast_disp_max": 1.0,
   "fail_fast_penetration_max": 0.5,
   "output_csv": "results/forward_sweep.csv",
-  "output_summary": "results/forward_sweep_summary.json",
-  "n_runs": 4,
+  "output_summary": "results/forward_sweep_summary_seed_repeat.json",
+  "n_runs": 16,
   "run_config_hashes": [
-    "a7964039c0c364c6efa274ddb39d49d358b6545c2a60f91c8bf21e4925b7d6aa",
-    "92be8c635b0de2326b67ec159f23927e33fc7d05c66fe99037f135e0562ebe99",
-    "96cb5413e7cac217531d78d6bf3788b574e30e3f6847aafc0cdbccd8e6e48616",
-    "2170f1dc50c387c4947bf1591d0bf409d35ed3c615047014683579f045a4b161"
+    "d6e1bd6348b128dd4839189fc4be83e42bdcf9a7aaf5d1a1b7d595cf385ec1a8",
+    "3d25c1f853c2d945920b7b62d538c71a233051d516759a31ec3ca59aa9b8ed0a",
+    "f190c98d585da305b338c077ff221efe4397baf6ce660e4b7b9a298c98b5ca1c",
+    "d90bd54980f17c7486a91fc5371b0307d137f29a4cb6b7ce19aa702c7ec82f73",
+    "b0bacea075b01a8266e5a40a72fc5a49cfdc1f2cbdee47e2c7672d1a16373016",
+    "99938fd736a0a99d225fa14ce107d93c2ede67bf85b3c1c20fec973873ccbf2b",
+    "41a1e3ebcfa30b48a47acd78d09bc6c2b7fd3d66bfdd31ca989cd70e5d04573c",
+    "86f22eabf46d7deb6205243da63e986ad4fc26ec5217f6565b10a7c4f4d5e16a",
+    "df40aeb894c51f1a9cca75152ce03b5a02c7df0189d03e3d6d76052130cc3e9b",
+    "e637576db85638f0054e9bcdef5ffc92d5a851729c4241dcd17034d0fc1fb6d9",
+    "6aeb58a511d0404f6efc34bc1480e414d78a1e609548d62372e306abe52f9773",
+    "65d34d90ba5c0157e9ca3b121bf40532bedecd1a643208f858de633624c01f89",
+    "31f25fc881811fdba81c2ea8066fb70a17afffbd0419684edd04f6cee68988e5",
+    "cd2518826bed386e03f76a4411aa6f01b1ad679f78f72862991c932090469e3e",
+    "a2c63318cfe9349930c93f98b1d4ed12c59a3e359263c0ce6d709dfdbfb46ba4",
+    "1602b75b3f380057a8ac0e386e43768ca42db7684453c7f2f3b29b9689c81a50"
   ],
   "output_files": {
     "csv": "results/forward_sweep.csv",
-    "summary": "results/forward_sweep_summary.json"
+    "summary": "results/forward_sweep_summary_seed_repeat.json"
   }
 }
