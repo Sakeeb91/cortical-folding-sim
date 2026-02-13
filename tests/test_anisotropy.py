@@ -47,3 +47,24 @@ def test_zero_anisotropy_matches_isotropic_trajectory():
         state, topo, growth, params, face_anisotropy=explicit_zero, n_steps=20
     )
     assert jnp.allclose(no_aniso_state.vertices, zero_state.vertices)
+
+
+def test_anisotropy_changes_curvature_distribution():
+    verts, faces = create_icosphere(subdivisions=2, radius=1.0)
+    topo = build_topology(verts, faces)
+    growth = create_uniform_growth(topo.faces.shape[0], rate=0.6)
+    state = make_initial_state(verts, topo)
+    iso_params = SimParams(dt=0.02, anisotropy_strength=0.0)
+    aniso_params = SimParams(
+        dt=0.02, anisotropy_strength=0.4, anisotropy_axis=jnp.array([0.0, 0.0, 1.0])
+    )
+    face_aniso = create_regional_anisotropy(
+        verts, topo.faces, high_value=1.0, low_value=0.0, axis=2, threshold=0.0
+    )
+    iso_state, _ = simulate(state, topo, growth, iso_params, n_steps=40)
+    aniso_state, _ = simulate(
+        state, topo, growth, aniso_params, face_anisotropy=face_aniso, n_steps=40
+    )
+    iso_disp = jnp.mean(jnp.linalg.norm(iso_state.vertices - verts, axis=1))
+    aniso_disp = jnp.mean(jnp.linalg.norm(aniso_state.vertices - verts, axis=1))
+    assert float(jnp.abs(aniso_disp - iso_disp)) > 1e-4
