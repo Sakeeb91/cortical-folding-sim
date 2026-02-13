@@ -1,7 +1,7 @@
 # Differentiable Cortical Folding Simulator
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-18%20passing-2EA44F)](#testing)
+[![Tests](https://img.shields.io/badge/tests-40%20passing-2EA44F)](#testing)
 [![Framework](https://img.shields.io/badge/JAX-differentiable%20physics-F7931E)](https://github.com/jax-ml/jax)
 
 A research-focused simulator for cortical folding that is differentiable end-to-end in JAX.
@@ -105,6 +105,21 @@ Generated artifacts:
 4. `results/week3_anisotropy_comparison.json`
 5. `docs/assets/week3_anisotropy_delta.png`
 
+### Week 4 collision/contact ablation
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/run_week4_collision_ablation.py --n-steps 140
+MPLBACKEND=Agg python3.11 scripts/plot_week4_collision.py
+```
+
+Generated artifacts:
+
+1. `results/week4_collision_ablation.csv`
+2. `results/week4_collision_ablation_summary.json`
+3. `results/week4_collision_ablation_manifest.json`
+4. `results/week4_collision_comparison.json`
+5. `docs/assets/week4_collision_ablation.png`
+
 ## Visualization Outputs
 
 The current repository already includes generated sample outputs:
@@ -127,6 +142,8 @@ The current repository already includes generated sample outputs:
 
 ![Week 3 anisotropy delta](docs/assets/week3_anisotropy_delta.png)
 
+![Week 4 collision ablation](docs/assets/week4_collision_ablation.png)
+
 ## Robustness Features
 
 The solver now includes configurable numerical safety rails:
@@ -134,7 +151,7 @@ The solver now includes configurable numerical safety rails:
 1. Per-vertex clipping for force, acceleration, velocity, and step displacement
 2. Growth-rate and rest-geometry lower/upper bounds
 3. Finite-value guards that fall back to the previous state on numerical overflow
-4. Optional self-collision penalty with deterministic sampling and adjacency filtering
+4. Optional self-collision penalty via sampled pairs or spatial-hash neighborhoods with deterministic fallback
 5. Trajectory subsampling (`save_every`) for memory-aware long simulations
 
 ## Project Layout
