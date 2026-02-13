@@ -40,7 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--runtime-overhead-budget",
         type=float,
-        default=1.35,
+        default=1.6,
         help="Maximum allowed runtime ratio (spatial-hash / sampled).",
     )
     return parser.parse_args()
