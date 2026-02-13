@@ -33,6 +33,11 @@ def create_uniform_growth(n_faces: int, rate: float = 0.5) -> jnp.ndarray:
     return jnp.full(n_faces, rate)
 
 
+def create_uniform_anisotropy(n_faces: int, value: float = 0.0) -> jnp.ndarray:
+    """Uniform anisotropy weight per face."""
+    return jnp.full(n_faces, value)
+
+
 def create_regional_growth(
     vertices: jnp.ndarray,
     faces: jnp.ndarray,
