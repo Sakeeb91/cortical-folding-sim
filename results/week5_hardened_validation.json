@@ -1,0 +1,104 @@
+{
+  "week5_comparison": "results/week5_repro_run1_comparison.json",
+  "week5_summary": "results/week5_repro_run1_ablation_summary.json",
+  "reproducibility": {
+    "seed": 42,
+    "atol": 1e-06,
+    "first_summary": "results/week5_repro_run1_ablation_summary.json",
+    "second_summary": "results/week5_repro_run2_ablation_summary.json",
+    "first_comparison": "results/week5_repro_run1_comparison.json",
+    "second_comparison": "results/week5_repro_run2_comparison.json",
+    "mismatches": [],
+    "passed": true
+  },
+  "matrix": {
+    "seeds": [
+      11,
+      23,
+      37
+    ],
+    "labels": [
+      "layered_on_reference",
+      "layered_clip_tight"
+    ],
+    "n_records": 6,
+    "stability_rate": 1.0,
+    "failure_reason_counts": {},
+    "by_label": {
+      "layered_on_reference": {
+        "n": 3,
+        "stable_rate": 1.0,
+        "mean_gi": 2.234426736831665,
+        "mean_disp_p95": 0.680706799030304
+      },
+      "layered_clip_tight": {
+        "n": 3,
+        "stable_rate": 1.0,
+        "mean_gi": 1.1972328424453735,
+        "mean_disp_p95": 0.5904030203819275
+      }
+    },
+    "matrix_csv": "results/week5_matrix_check.csv",
+    "passed": true
+  },
+  "regression_vs_week4": {
+    "week4_reference_label": "collision_spatial_hash",
+    "week5_reference_label": "layered_on_reference",
+    "checks": [
+      {
+        "name": "outside_skull_frac",
+        "week4": 0.32866043613707163,
+        "week5": 0.2819314641744548,
+        "delta": -0.04672897196261683,
+        "max_increase_allowed": 0.03,
+        "passed": true,
+        "status": "acceptable"
+      },
+      {
+        "name": "skull_penetration_p95",
+        "week4": 0.13023385405540466,
+        "week5": 0.1490265130996704,
+        "delta": 0.018792659044265747,
+        "max_increase_allowed": 0.03,
+        "passed": true,
+        "status": "acceptable"
+      },
+      {
+        "name": "disp_p95",
+        "week4": 0.6894176006317139,
+        "week5": 0.680706799030304,
+        "delta": -0.008710801601409912,
+        "max_increase_allowed": 0.08,
+        "passed": true,
+        "status": "acceptable"
+      },
+      {
+        "name": "gi",
+        "week4": 2.581366777420044,
+        "week5": 2.234426736831665,
+        "delta": -0.3469400405883789,
+        "max_drop_allowed": -0.4,
+        "passed": true,
+        "status": "acceptable"
+      },
+      {
+        "name": "stable",
+        "week4": 1,
+        "week5": 1,
+        "delta": 0,
+        "passed": true,
+        "status": "acceptable"
+      }
+    ],
+    "passed": true
+  },
+  "runtime_budget_vs_week4": {
+    "week4_reference_runtime_s": 0.42929283319972456,
+    "week5_reference_runtime_s": 0.49005970801226795,
+    "runtime_ratio_week5_over_week4": 1.1415511047776383,
+    "runtime_delta_s": 0.06076687481254339,
+    "budget_ratio": 1.35,
+    "passed": true
+  },
+  "passed": true
+}
