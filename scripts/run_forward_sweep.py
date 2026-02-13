@@ -170,35 +170,50 @@ def run_single(
     git_commit: str,
 ) -> dict:
     """Execute one config and return a flat metrics row."""
-    if cfg["growth_mode"] == "uniform":
-        growth = create_uniform_growth(topo.faces.shape[0], rate=cfg["uniform_rate"])
+    if cfg_get(cfg, "growth_mode", "uniform") == "uniform":
+        growth = create_uniform_growth(topo.faces.shape[0], rate=cfg_get(cfg, "uniform_rate", 0.5))
     else:
         growth = create_regional_growth(
             verts,
             topo.faces,
-            high_rate=cfg["high_rate"],
-            low_rate=cfg["low_rate"],
+            high_rate=cfg_get(cfg, "high_rate", 0.8),
+            low_rate=cfg_get(cfg, "low_rate", 0.1),
             axis=2,
             threshold=0.0,
         )
+    anisotropy_mode = cfg_get(cfg, "anisotropy_mode", "none")
+    anisotropy_axis = jnp.array(cfg_get(cfg, "anisotropy_axis", [0.0, 0.0, 1.0]))
+    face_anisotropy = create_anisotropy_field(
+        mode=anisotropy_mode,
+        vertices=verts,
+        faces=topo.faces,
+        high_value=cfg_get(cfg, "anisotropy_high", 1.0),
+        low_value=cfg_get(cfg, "anisotropy_low", 0.0),
+        axis=2,
+        threshold=0.0,
+    )
 
     params = SimParams(
-        Kc=cfg["Kc"],
-        Kb=cfg["Kb"],
-        damping=cfg["damping"],
+        Kc=cfg_get(cfg, "Kc", 2.0),
+        Kb=cfg_get(cfg, "Kb", 3.0),
+        damping=cfg_get(cfg, "damping", 0.9),
         skull_center=skull_center,
         skull_radius=skull_radius,
         skull_stiffness=100.0,
-        carrying_cap_factor=cfg["carrying_cap_factor"],
-        tau=cfg["tau"],
+        carrying_cap_factor=cfg_get(cfg, "carrying_cap_factor", 4.0),
+        tau=cfg_get(cfg, "tau", 500.0),
         dt=dt,
+        anisotropy_strength=cfg_get(cfg, "anisotropy_strength", 0.0),
+        anisotropy_axis=anisotropy_axis,
     )
 
     initial_state = make_initial_state(verts, topo)
     initial_area = float(jnp.sum(compute_face_areas(verts, topo)))
 
     t0 = time.perf_counter()
-    final_state, _ = simulate(initial_state, topo, growth, params, n_steps=n_steps)
+    final_state, _ = simulate(
+        initial_state, topo, growth, params, face_anisotropy=face_anisotropy, n_steps=n_steps
+    )
     jax.block_until_ready(final_state.vertices)
     runtime_s = time.perf_counter() - t0
 
