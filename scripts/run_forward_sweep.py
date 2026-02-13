@@ -545,8 +545,10 @@ def main() -> None:
         print(
             f"[{idx:02d}/{len(grid):02d}] "
             f"mode={row['growth_mode']:<8} "
+            f"collision={row['collision_mode']:<12} "
             f"Kc={row['Kc']:.2f} Kb={row['Kb']:.2f} "
-            f"GI={row['gi']:.3f} stable={row['stable']}"
+            f"GI={row['gi']:.3f} stable={row['stable']} "
+            f"collision_share={row['collision_force_share']:.4f}"
         )
 
     csv_path = Path(args.output_csv)
