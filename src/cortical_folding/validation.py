@@ -28,6 +28,16 @@ class GateMetrics:
     disp_p95: float
 
 
+@dataclass(frozen=True)
+class GateCheckResult:
+    name: str
+    passed: bool
+    observed: float
+    threshold: float
+    comparator: str
+    message: str
+
+
 def load_gate_thresholds(path: str | Path) -> GateThresholds:
     """Load gate thresholds from JSON."""
     with Path(path).open() as f:
@@ -57,3 +67,65 @@ def compute_gate_metrics(rows: list[dict], summary: dict) -> GateMetrics:
         skull_penetration_p95=skull_pen_p95,
         disp_p95=disp_p95,
     )
+
+
+def evaluate_gate_checks(
+    metrics: GateMetrics, thresholds: GateThresholds
+) -> list[GateCheckResult]:
+    """Evaluate each gate and return detailed pass/fail results."""
+    checks = [
+        (
+            "stability_rate",
+            metrics.stability_rate,
+            thresholds.min_stability_rate,
+            ">=",
+            metrics.stability_rate >= thresholds.min_stability_rate,
+        ),
+        (
+            "gi_plausible_rate",
+            metrics.gi_plausible_rate,
+            thresholds.min_gi_plausible_rate,
+            ">=",
+            metrics.gi_plausible_rate >= thresholds.min_gi_plausible_rate,
+        ),
+        (
+            "outside_skull_frac_p95",
+            metrics.outside_skull_frac_p95,
+            thresholds.max_outside_skull_frac_p95,
+            "<=",
+            metrics.outside_skull_frac_p95 <= thresholds.max_outside_skull_frac_p95,
+        ),
+        (
+            "skull_penetration_p95",
+            metrics.skull_penetration_p95,
+            thresholds.max_skull_penetration_p95,
+            "<=",
+            metrics.skull_penetration_p95 <= thresholds.max_skull_penetration_p95,
+        ),
+        (
+            "disp_p95",
+            metrics.disp_p95,
+            thresholds.max_disp_p95,
+            "<=",
+            metrics.disp_p95 <= thresholds.max_disp_p95,
+        ),
+    ]
+
+    results = []
+    for name, observed, threshold, comparator, passed in checks:
+        verdict = "PASS" if passed else "FAIL"
+        msg = (
+            f"{verdict}: {name} observed={observed:.6f} "
+            f"{comparator} threshold={threshold:.6f}"
+        )
+        results.append(
+            GateCheckResult(
+                name=name,
+                passed=passed,
+                observed=float(observed),
+                threshold=float(threshold),
+                comparator=comparator,
+                message=msg,
+            )
+        )
+    return results
