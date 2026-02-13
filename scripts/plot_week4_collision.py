@@ -31,9 +31,9 @@ def main() -> None:
 
     labels = ["baseline", "sampled", "spatial-hash"]
     overlap = [
-        data["baseline_collision_overlap_p95"],
-        data["sampled_collision_overlap_p95"],
-        data["spatial_hash_collision_overlap_p95"],
+        data["baseline_collision_overlap_count"],
+        data["sampled_collision_overlap_count"],
+        data["spatial_hash_collision_overlap_count"],
     ]
     runtime = [
         1.0,
@@ -44,8 +44,8 @@ def main() -> None:
     fig, axes = plt.subplots(1, 2, figsize=(10, 4.2))
 
     axes[0].bar(labels, overlap, color=["#7f8c8d", "#2980b9", "#27ae60"])
-    axes[0].set_title("Collision overlap p95")
-    axes[0].set_ylabel("Overlap depth")
+    axes[0].set_title("Collision overlap count")
+    axes[0].set_ylabel("Pair count")
     axes[0].grid(axis="y", alpha=0.25)
 
     axes[1].bar(labels, runtime, color=["#7f8c8d", "#2980b9", "#27ae60"])
