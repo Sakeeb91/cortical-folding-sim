@@ -1,0 +1,7 @@
+{
+  "min_stability_rate": 0.95,
+  "min_gi_plausible_rate": 0.50,
+  "max_outside_skull_frac_p95": 0.40,
+  "max_skull_penetration_p95": 0.25,
+  "max_disp_p95": 0.80
+}
