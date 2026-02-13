@@ -7,6 +7,13 @@ import csv
 import json
 from pathlib import Path
 
+from cortical_folding.validation import (
+    build_gate_report,
+    compute_gate_metrics,
+    evaluate_gate_checks,
+    load_gate_thresholds,
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -47,11 +54,25 @@ def main() -> None:
     args = parse_args()
     rows = load_rows(args.input_csv)
     summary = load_json(args.input_summary)
-    gate_config = load_json(args.gate_config)
-    print(
-        f"Loaded rows={len(rows)} summary_keys={len(summary)} "
-        f"gate_keys={len(gate_config)}"
+    thresholds = load_gate_thresholds(args.gate_config)
+    metrics = compute_gate_metrics(rows, summary)
+    checks = evaluate_gate_checks(metrics, thresholds)
+    report = build_gate_report(
+        rows=rows,
+        summary=summary,
+        thresholds=thresholds,
+        checks=checks,
+        metadata={
+            "input_csv": args.input_csv,
+            "input_summary": args.input_summary,
+            "gate_config": args.gate_config,
+        },
     )
+    output_path = Path(args.output_report)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w") as f:
+        json.dump(report, f, indent=2)
+    print(f"Saved report: {output_path}")
 
 
 if __name__ == "__main__":
