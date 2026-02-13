@@ -107,6 +107,6 @@ def create_target_folded(
     """
     initial_state = make_initial_state(vertices, topo)
     final_state, trajectory = simulate(
-        initial_state, topo, growth_rates, params, n_steps
+        initial_state, topo, growth_rates, params, n_steps=n_steps
     )
     return final_state.vertices, trajectory
