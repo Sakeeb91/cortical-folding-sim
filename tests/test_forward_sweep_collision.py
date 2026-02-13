@@ -52,3 +52,32 @@ def test_forward_sweep_emits_collision_diagnostic_columns(tmp_path: Path):
         summary = json.load(f)
     assert "collision_force_share_mean" in summary
     assert "collision_overlap_max_max" in summary
+
+
+def test_week4_collision_ablation_script_writes_acceptance_fields(tmp_path: Path):
+    csv_path = tmp_path / "week4.csv"
+    summary_path = tmp_path / "week4_summary.json"
+    manifest_path = tmp_path / "week4_manifest.json"
+    output_json = tmp_path / "week4_comparison.json"
+
+    cmd = [
+        "python3.11",
+        "scripts/run_week4_collision_ablation.py",
+        "--n-steps",
+        "30",
+        "--output-csv",
+        str(csv_path),
+        "--output-summary",
+        str(summary_path),
+        "--output-manifest",
+        str(manifest_path),
+        "--output-json",
+        str(output_json),
+    ]
+    subprocess.check_call(cmd)
+
+    with output_json.open() as f:
+        payload = json.load(f)
+    assert "acceptance_collision_outliers_reduced" in payload
+    assert "acceptance_runtime_within_budget" in payload
+    assert "acceptance_week4_passed" in payload
