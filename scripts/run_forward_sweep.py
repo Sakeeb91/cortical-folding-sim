@@ -71,6 +71,18 @@ def parse_args() -> argparse.Namespace:
         help="Upper bound for GI plausibility flag.",
     )
     parser.add_argument(
+        "--fail-fast-disp-max",
+        type=float,
+        default=1.0,
+        help="Mark run unstable if displacement p95 exceeds this threshold.",
+    )
+    parser.add_argument(
+        "--fail-fast-penetration-max",
+        type=float,
+        default=0.5,
+        help="Mark run unstable if max skull penetration exceeds this threshold.",
+    )
+    parser.add_argument(
         "--max-runs",
         type=int,
         default=None,
