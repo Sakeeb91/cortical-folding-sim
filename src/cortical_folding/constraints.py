@@ -28,6 +28,44 @@ def _pair_adjacency_mask(
     )
 
 
+def _accumulate_repulsion_from_pairs(
+    verts: jnp.ndarray,
+    topo: MeshTopology,
+    idx_a: jnp.ndarray,
+    idx_b: jnp.ndarray,
+    min_dist: float,
+    stiffness: float,
+    pair_valid_mask: jnp.ndarray | None = None,
+) -> tuple[jnp.ndarray, jnp.ndarray]:
+    """Scatter-add pairwise repulsion forces and return active collision mask."""
+    if pair_valid_mask is None:
+        pair_valid_mask = jnp.ones_like(idx_a, dtype=bool)
+
+    safe_idx_a = jnp.where(pair_valid_mask, idx_a, 0)
+    safe_idx_b = jnp.where(pair_valid_mask, idx_b, 0)
+
+    va = verts[safe_idx_a]  # (N, 3)
+    vb = verts[safe_idx_b]  # (N, 3)
+    diff = va - vb  # (N, 3)
+    dist = jnp.linalg.norm(diff, axis=1, keepdims=True)  # (N, 1)
+    safe_dist = jnp.maximum(dist, 1e-12)
+
+    # Ignore trivial, invalid, and topological-neighbor pairs.
+    same = safe_idx_a == safe_idx_b
+    is_adjacent = _pair_adjacency_mask(safe_idx_a, safe_idx_b, topo.edges)
+    valid = pair_valid_mask & (~same) & (~is_adjacent)
+
+    gap = jnp.maximum(min_dist - dist, 0.0)
+    repulsion = stiffness * gap * diff / safe_dist  # (N, 3)
+    repulsion = jnp.where(valid[:, None], repulsion, 0.0)
+
+    forces = jnp.zeros_like(verts)
+    forces = forces.at[safe_idx_a].add(repulsion)
+    forces = forces.at[safe_idx_b].add(-repulsion)
+    active_collision = valid & (gap[:, 0] > 0.0)
+    return forces, active_collision
+
+
 def skull_penalty(
     verts: jnp.ndarray,
     skull_center: jnp.ndarray,
@@ -61,38 +99,19 @@ def self_collision_penalty(
     """
     if key is None:
         # Deterministic pseudo-randomized pairing when no key is passed.
-        idx_a = jnp.arange(n_sample) % verts.shape[0]
-        idx_b = (idx_a * 1103515245 + 12345) % verts.shape[0]
+        idx_a, idx_b = _deterministic_pair_indices(verts.shape[0], n_sample)
     else:
         n_verts = verts.shape[0]
         k1, k2 = jax.random.split(key)
         idx_a = jax.random.randint(k1, (n_sample,), 0, n_verts)
         idx_b = jax.random.randint(k2, (n_sample,), 0, n_verts)
 
-    n_verts = verts.shape[0]
-
-    va = verts[idx_a]  # (n_sample, 3)
-    vb = verts[idx_b]  # (n_sample, 3)
-    diff = va - vb  # (n_sample, 3)
-    dist = jnp.linalg.norm(diff, axis=1, keepdims=True)  # (n_sample, 1)
-    safe_dist = jnp.maximum(dist, 1e-12)
-
-    # Ignore trivial and topological-neighbor pairs.
-    same = (idx_a == idx_b)[:, None]
-    edges = topo.edges
-    a_col = idx_a[:, None]
-    b_col = idx_b[:, None]
-    is_adjacent = jnp.any(
-        ((a_col == edges[None, :, 0]) & (b_col == edges[None, :, 1]))
-        | ((a_col == edges[None, :, 1]) & (b_col == edges[None, :, 0])),
-        axis=1,
-    )[:, None]
-
-    gap = jnp.maximum(min_dist - dist, 0.0)
-    repulsion = stiffness * gap * diff / safe_dist  # (n_sample, 3)
-    repulsion = jnp.where(same | is_adjacent, 0.0, repulsion)
-
-    forces = jnp.zeros_like(verts)
-    forces = forces.at[idx_a].add(repulsion)
-    forces = forces.at[idx_b].add(-repulsion)
+    forces, _ = _accumulate_repulsion_from_pairs(
+        verts=verts,
+        topo=topo,
+        idx_a=idx_a,
+        idx_b=idx_b,
+        min_dist=min_dist,
+        stiffness=stiffness,
+    )
     return forces
