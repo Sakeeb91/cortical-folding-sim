@@ -58,6 +58,14 @@ class SimParams(NamedTuple):
     # Anisotropic rest-length growth controls
     anisotropy_strength: float = 0.0
     anisotropy_axis: jnp.ndarray = jnp.array([0.0, 0.0, 1.0])
+    # Experimental two-layer approximation controls
+    enable_two_layer_approx: bool = False
+    two_layer_axis: jnp.ndarray = jnp.array([0.0, 0.0, 1.0])
+    two_layer_threshold: float = 0.0
+    two_layer_transition_sharpness: float = 6.0
+    outer_layer_growth_scale: float = 1.15
+    inner_layer_growth_scale: float = 0.85
+    two_layer_coupling: float = 0.1
 
 
 class ForceComponents(NamedTuple):
@@ -106,6 +114,23 @@ def _edge_face_values(face_values: jnp.ndarray, topo: MeshTopology) -> jnp.ndarr
     v1 = jnp.where(valid1, face_values[jnp.maximum(ef[:, 1], 0)], 0.0)
     denom = valid0.astype(jnp.float32) + valid1.astype(jnp.float32)
     return (v0 + v1) / jnp.maximum(denom, 1.0)
+
+
+def _face_layer_blend(
+    verts: jnp.ndarray,
+    topo: MeshTopology,
+    axis: jnp.ndarray,
+    threshold: float,
+    sharpness: float,
+) -> jnp.ndarray:
+    """Compute smooth per-face layer blend in [0, 1]."""
+    centroids = (
+        verts[topo.faces[:, 0]] + verts[topo.faces[:, 1]] + verts[topo.faces[:, 2]]
+    ) / 3.0
+    unit_axis = _normalize_axis(axis)
+    signed_dist = jnp.sum(centroids * unit_axis[None, :], axis=1) - threshold
+    safe_sharpness = jnp.maximum(sharpness, 1e-6)
+    return jax.nn.sigmoid(safe_sharpness * signed_dist)
 
 
 def make_initial_state(
@@ -166,6 +191,7 @@ def simulation_step(
     topo: MeshTopology,
     growth_rates: jnp.ndarray,
     face_anisotropy: jnp.ndarray,
+    face_layer_blend: jnp.ndarray,
     params: SimParams,
     initial_edge_lengths: jnp.ndarray,
     initial_areas: jnp.ndarray,
@@ -173,6 +199,17 @@ def simulation_step(
     """Single timestep: forces → integrate → grow."""
     dt = params.dt
     safe_growth_rates = jnp.clip(growth_rates, 0.0, params.max_growth_rate)
+    if params.enable_two_layer_approx:
+        inner_scale = jnp.maximum(params.inner_layer_growth_scale, 0.0)
+        outer_scale = jnp.maximum(params.outer_layer_growth_scale, 0.0)
+        layer_scale = inner_scale + (outer_scale - inner_scale) * face_layer_blend
+        safe_growth_rates = safe_growth_rates * layer_scale
+        coupling = jnp.clip(params.two_layer_coupling, 0.0, 1.0)
+        safe_growth_rates = (
+            (1.0 - coupling) * safe_growth_rates
+            + coupling * jnp.mean(safe_growth_rates)
+        )
+        safe_growth_rates = jnp.clip(safe_growth_rates, 0.0, params.max_growth_rate)
 
     # --- Forces ---
     force_components = compute_force_components(state, topo, params)
@@ -251,11 +288,21 @@ def simulate(
     initial_areas = initial_state.rest_areas
     if face_anisotropy is None:
         face_anisotropy = jnp.zeros(topo.faces.shape[0], dtype=initial_state.vertices.dtype)
+    if params.enable_two_layer_approx:
+        face_layer_blend = _face_layer_blend(
+            initial_state.vertices,
+            topo,
+            params.two_layer_axis,
+            params.two_layer_threshold,
+            params.two_layer_transition_sharpness,
+        ).astype(initial_state.vertices.dtype)
+    else:
+        face_layer_blend = jnp.zeros(topo.faces.shape[0], dtype=initial_state.vertices.dtype)
 
     @jax.checkpoint
     def step_fn(state, _):
         new_state = simulation_step(
-            state, topo, growth_rates, face_anisotropy, params,
+            state, topo, growth_rates, face_anisotropy, face_layer_blend, params,
             initial_edge_lengths, initial_areas,
         )
         return new_state, new_state.vertices
