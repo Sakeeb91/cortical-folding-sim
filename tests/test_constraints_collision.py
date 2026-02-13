@@ -69,3 +69,32 @@ def test_spatial_hash_can_fall_back_to_deterministic_sampling():
         fallback_n_sample=64,
     )
     np.testing.assert_allclose(np.asarray(fallback), np.asarray(sampled), atol=1e-8)
+
+
+def test_spatial_hash_repels_close_nonadjacent_vertices():
+    verts = np.array(
+        [
+            [0.00, 0.00, 0.00],
+            [0.70, 0.00, 0.00],
+            [0.00, 0.70, 0.00],
+            [0.01, 0.00, 0.00],
+            [0.70, 0.00, 0.00],
+            [0.00, 0.70, 0.00],
+        ],
+        dtype=np.float32,
+    )
+    faces = np.array([[0, 1, 2], [3, 4, 5]], dtype=np.int32)
+    topo = build_topology(verts, faces)
+    forces = self_collision_penalty(
+        jnp.asarray(verts),
+        topo,
+        min_dist=0.05,
+        stiffness=100.0,
+        use_spatial_hash=True,
+        hash_cell_size=0.05,
+        hash_neighbor_window=4,
+        deterministic_fallback=False,
+    )
+    force_norms = np.linalg.norm(np.asarray(forces), axis=1)
+    assert force_norms[0] > 0.0
+    assert force_norms[3] > 0.0
