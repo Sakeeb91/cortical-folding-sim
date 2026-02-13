@@ -369,6 +369,15 @@ def run_single(
     disp = np.linalg.norm(final_verts_np - np.asarray(verts), axis=1)
     radii = np.linalg.norm(final_verts_np - np.asarray(skull_center), axis=1)
     penetration = np.maximum(radii - skull_radius, 0.0)
+    force_components = compute_force_components(final_state, topo, params)
+    collision_force_l2 = float(np.linalg.norm(np.asarray(force_components.collision)))
+    total_force_l2 = float(np.linalg.norm(np.asarray(force_components.total)))
+    collision_force_share = collision_force_l2 / max(total_force_l2, 1e-12)
+    overlap_stats = compute_nonadjacent_overlap_stats(
+        final_verts_np,
+        np.asarray(topo.edges),
+        float(params.self_collision_min_dist),
+    )
 
     row.update(
         {
@@ -388,6 +397,10 @@ def run_single(
             "skull_penetration_mean": float(np.mean(penetration)),
             "skull_penetration_p95": float(np.percentile(penetration, 95)),
             "skull_penetration_max": float(np.max(penetration)),
+            "collision_force_l2": collision_force_l2,
+            "total_force_l2": total_force_l2,
+            "collision_force_share": collision_force_share,
+            **overlap_stats,
         }
     )
     if row["disp_p95"] > fail_fast_disp_max:
