@@ -257,6 +257,19 @@ def run_single(
         carrying_cap_factor=cfg_get(cfg, "carrying_cap_factor", 4.0),
         tau=cfg_get(cfg, "tau", 500.0),
         dt=dt,
+        enable_self_collision=cfg_get(cfg, "enable_self_collision", False),
+        self_collision_min_dist=cfg_get(cfg, "self_collision_min_dist", 0.02),
+        self_collision_stiffness=cfg_get(cfg, "self_collision_stiffness", 50.0),
+        self_collision_n_sample=cfg_get(cfg, "self_collision_n_sample", 256),
+        self_collision_use_spatial_hash=cfg_get(cfg, "self_collision_use_spatial_hash", False),
+        self_collision_hash_cell_size=cfg_get(cfg, "self_collision_hash_cell_size", 0.02),
+        self_collision_hash_neighbor_window=cfg_get(
+            cfg, "self_collision_hash_neighbor_window", 8
+        ),
+        self_collision_deterministic_fallback=cfg_get(
+            cfg, "self_collision_deterministic_fallback", True
+        ),
+        self_collision_fallback_n_sample=cfg_get(cfg, "self_collision_fallback_n_sample", 256),
         anisotropy_strength=cfg_get(cfg, "anisotropy_strength", 0.0),
         anisotropy_axis=anisotropy_axis,
     )
