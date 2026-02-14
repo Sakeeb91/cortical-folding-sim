@@ -1,0 +1,33 @@
+{
+  "generated_at_utc": "2026-02-14T22:50:19.607511+00:00",
+  "commands": [
+    {
+      "id": "tests",
+      "command": "python3.11 -m pytest tests -q"
+    },
+    {
+      "id": "ci_quick",
+      "command": "./scripts/run_validation_quick.sh"
+    },
+    {
+      "id": "ci_full",
+      "command": "./scripts/run_validation_full.sh"
+    },
+    {
+      "id": "week6_regen",
+      "command": "MPLBACKEND=Agg python3.11 scripts/regenerate_week6_figures.py --n-steps 140"
+    },
+    {
+      "id": "week7_regen",
+      "command": "MPLBACKEND=Agg python3.11 scripts/regenerate_week7_animation_pack.py --n-steps 140"
+    },
+    {
+      "id": "week8_regen",
+      "command": "MPLBACKEND=Agg python3.11 scripts/regenerate_week8_final_package.py --n-steps 140"
+    },
+    {
+      "id": "week8_validate",
+      "command": "MPLBACKEND=Agg python3.11 scripts/validate_week8_hardened.py --n-steps 140"
+    }
+  ]
+}
