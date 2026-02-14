@@ -1,7 +1,7 @@
 {
-  "generated_at_utc": "2026-02-13T12:47:28.442275+00:00",
+  "generated_at_utc": "2026-02-14T21:47:06.630736+00:00",
   "seed": 42,
-  "git_commit": "580bc60",
+  "git_commit": "ca1c4cf",
   "sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
   "config_path": "configs/week3_anisotropy_ab.json",
   "gi_plausible_min": 0.8,
