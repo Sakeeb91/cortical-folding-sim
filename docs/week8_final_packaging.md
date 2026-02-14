@@ -32,6 +32,7 @@ From `results/week8_submission_packet_summary.json`, `results/week8_final_packag
 5. Regression check vs Week 7 baseline artifacts: `pass` (all checks marked acceptable).
 6. Runtime budget check vs Week 7 path: `pass` (`runtime_ratio_week8_over_week7=0.9987` <= `1.25`).
 7. CI parity checks (`run_validation_quick.sh`, `run_validation_full.sh`): `pass`.
+8. Runtime-budget threshold assumption used for Week 8 hardening: `1.25` (carried from Week 7 default).
 
 ## Artifacts
 
