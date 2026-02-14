@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-14T22:31:50.363410+00:00",
+  "generated_at_utc": "2026-02-14T22:52:52.437288+00:00",
   "n_rows": 16,
   "n_failures": 0,
   "passed": true,
@@ -55,7 +55,7 @@
   "summary_ref": {
     "stability_rate": 1.0,
     "gi_plausible_rate": 0.5625,
-    "git_commit": "b0f483d",
+    "git_commit": "227bd17",
     "seed": 42,
     "sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440"
   },
