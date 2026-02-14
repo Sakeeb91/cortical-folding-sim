@@ -1,7 +1,7 @@
 # Differentiable Cortical Folding Simulator
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-47%20passing-2EA44F)](#testing)
+[![Tests](https://img.shields.io/badge/tests-52%20passing-2EA44F)](#testing)
 [![Framework](https://img.shields.io/badge/JAX-differentiable%20physics-F7931E)](https://github.com/jax-ml/jax)
 
 A research-focused simulator for cortical folding that is differentiable end-to-end in JAX.
@@ -155,6 +155,26 @@ Generated artifacts:
 6. `results/week6_hardened_validation.json`
 7. `results/week6_matrix_check.csv`
 
+### Week 7 animation comparison pack + results index
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/regenerate_week7_animation_pack.py --n-steps 140
+MPLBACKEND=Agg python3.11 scripts/validate_week7_hardened.py --n-steps 140
+```
+
+Generated artifacts:
+
+1. `docs/assets/week7_baseline_vs_improved.gif`
+2. `docs/assets/week7_baseline_vs_improved.mp4`
+3. `docs/assets/week7_baseline_vs_improved.meta.json`
+4. `docs/assets/week7_animation_manifest.json`
+5. `docs/results_index.md`
+6. `results/week7_animation_comparison_summary.json`
+7. `results/week7_animation_pack_summary.json`
+8. `results/week7_results_index_summary.json`
+9. `results/week7_hardened_validation.json`
+10. `results/week7_matrix_check.csv`
+
 ## Visualization Outputs
 
 The current repository already includes generated sample outputs:
@@ -180,6 +200,8 @@ The current repository already includes generated sample outputs:
 ![Week 4 collision ablation](docs/assets/week4_collision_ablation.png)
 
 ![Week 5 layered ablation](docs/assets/week5_layered_ablation.png)
+
+![Week 7 baseline vs improved animation](docs/assets/week7_baseline_vs_improved.gif)
 
 ## Robustness Features
 
