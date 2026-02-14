@@ -1,0 +1,31 @@
+{
+  "morphology_deltas": [
+    {
+      "comparison": "Week 3 anisotropic vs isotropic",
+      "delta_gi": 1.2514684200286865,
+      "delta_curv_p90": -0.4493253231048584,
+      "delta_disp_p95": 0.02519458532333374,
+      "stable_both": true
+    },
+    {
+      "comparison": "Week 4 spatial-hash collision vs sampled",
+      "delta_collision_overlap_count": 15.0,
+      "runtime_ratio_spatial_over_sampled": 1.4840939467728427,
+      "acceptance_collision_outliers_reduced": true
+    },
+    {
+      "comparison": "Week 5 layered vs non-layered",
+      "delta_gi": 0.0910639762878418,
+      "delta_outside_skull_frac": -0.006230529595015577,
+      "delta_disp_p95": -0.0011176466941833496,
+      "runtime_ratio_layered_over_baseline": 1.0022230972040578
+    }
+  ],
+  "final_reference_metrics": {
+    "forward_stability_rate": 1.0,
+    "forward_gi_plausible_rate": 0.5625,
+    "week7_delta_gi_improved_minus_baseline": 0.0910639762878418,
+    "week7_delta_disp_p95_improved_minus_baseline": -0.0011176466941833496,
+    "week7_delta_outside_skull_frac_improved_minus_baseline": -0.006230529595015577
+  }
+}
