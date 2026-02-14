@@ -208,3 +208,117 @@ def save_simulation_animation(
     anim.save(output_path, writer=writer, dpi=dpi)
     plt.close(fig)
     return output_path
+
+
+def save_comparison_animation(
+    baseline_trajectory: jnp.ndarray,
+    improved_trajectory: jnp.ndarray,
+    faces: jnp.ndarray,
+    output_paths: list[str] | tuple[str, ...],
+    fps: int = 20,
+    stride: int = 1,
+    rotate: bool = False,
+    dpi: int = 120,
+    baseline_title: str = "Baseline",
+    improved_title: str = "Improved",
+    title: str = "Baseline vs Improved",
+):
+    """Save a side-by-side animation for baseline and improved trajectories.
+
+    The same frame pipeline is used for all outputs in `output_paths`.
+    Supported suffixes are `.gif` and `.mp4`.
+    """
+    if stride < 1:
+        raise ValueError("stride must be >= 1")
+    if fps < 1:
+        raise ValueError("fps must be >= 1")
+    if not output_paths:
+        raise ValueError("output_paths must contain at least one output file")
+    output_specs: list[tuple[str, str]] = []
+    for output_path in output_paths:
+        suffix = Path(output_path).suffix.lower()
+        if suffix not in {".gif", ".mp4"}:
+            raise ValueError("comparison outputs must end with .gif or .mp4")
+        output_specs.append((output_path, suffix))
+
+    baseline_np = np.asarray(baseline_trajectory)[::stride]
+    improved_np = np.asarray(improved_trajectory)[::stride]
+    faces_np = np.asarray(faces)
+    n_frames = min(baseline_np.shape[0], improved_np.shape[0])
+    if n_frames == 0:
+        raise ValueError("comparison trajectories are empty after applying stride")
+
+    baseline_np = baseline_np[:n_frames]
+    improved_np = improved_np[:n_frames]
+
+    all_pts = np.concatenate(
+        [baseline_np.reshape(-1, 3), improved_np.reshape(-1, 3)],
+        axis=0,
+    )
+    margin = 0.1
+    mins = all_pts.min(axis=0) - margin
+    maxs = all_pts.max(axis=0) + margin
+
+    fig = plt.figure(figsize=(12, 6))
+    ax_base = fig.add_subplot(121, projection="3d")
+    ax_improved = fig.add_subplot(122, projection="3d")
+    for ax, panel_title in (
+        (ax_base, baseline_title),
+        (ax_improved, improved_title),
+    ):
+        ax.set_box_aspect([1, 1, 1])
+        ax.set_xlim(mins[0], maxs[0])
+        ax.set_ylim(mins[1], maxs[1])
+        ax.set_zlim(mins[2], maxs[2])
+        ax.set_title(panel_title)
+    fig.suptitle(title)
+
+    base_poly = Poly3DCollection(
+        baseline_np[0][faces_np],
+        alpha=0.85,
+        edgecolor="k",
+        linewidth=0.06,
+    )
+    base_poly.set_facecolor("skyblue")
+    ax_base.add_collection3d(base_poly)
+
+    improved_poly = Poly3DCollection(
+        improved_np[0][faces_np],
+        alpha=0.85,
+        edgecolor="k",
+        linewidth=0.06,
+    )
+    improved_poly.set_facecolor("salmon")
+    ax_improved.add_collection3d(improved_poly)
+
+    frame_text = fig.text(0.02, 0.96, "Step 0")
+
+    def update(frame_idx: int):
+        base_poly.set_verts(baseline_np[frame_idx][faces_np])
+        improved_poly.set_verts(improved_np[frame_idx][faces_np])
+        if rotate:
+            azim = 45 + 0.9 * frame_idx
+            ax_base.view_init(elev=20, azim=azim)
+            ax_improved.view_init(elev=20, azim=azim)
+        frame_text.set_text(f"Step {frame_idx * stride}")
+        return base_poly, improved_poly, frame_text
+
+    anim = animation.FuncAnimation(
+        fig,
+        update,
+        frames=n_frames,
+        interval=1000 / fps,
+        blit=False,
+    )
+
+    saved_paths: list[str] = []
+    for output_path, suffix in output_specs:
+        if suffix == ".gif":
+            writer = animation.PillowWriter(fps=fps)
+        else:
+            writer = animation.FFMpegWriter(fps=fps, bitrate=1800)
+        anim.save(output_path, writer=writer, dpi=dpi)
+        saved_paths.append(output_path)
+
+    plt.close(fig)
+    return saved_paths
