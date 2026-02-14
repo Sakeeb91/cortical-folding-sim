@@ -1,0 +1,88 @@
+{
+  "generated_at_utc": "2026-02-14T21:47:03.634416+00:00",
+  "seed": 42,
+  "n_steps": 140,
+  "dry_run": false,
+  "manifest_json": "results/week6_repro_run1_figure_manifest.json",
+  "steps": [
+    {
+      "name": "run_week3",
+      "command": [
+        "python3.11",
+        "scripts/run_anisotropy_comparison.py",
+        "--n-steps",
+        "140"
+      ],
+      "elapsed_s": 3.2523443340323865,
+      "executed": true
+    },
+    {
+      "name": "plot_week3",
+      "command": [
+        "python3.11",
+        "scripts/plot_week3_anisotropy.py"
+      ],
+      "elapsed_s": 0.26723195891827345,
+      "executed": true
+    },
+    {
+      "name": "run_week4",
+      "command": [
+        "python3.11",
+        "scripts/run_week4_collision_ablation.py",
+        "--n-steps",
+        "140"
+      ],
+      "elapsed_s": 5.648543666116893,
+      "executed": true
+    },
+    {
+      "name": "plot_week4",
+      "command": [
+        "python3.11",
+        "scripts/plot_week4_collision.py"
+      ],
+      "elapsed_s": 0.2680897500831634,
+      "executed": true
+    },
+    {
+      "name": "run_week5",
+      "command": [
+        "python3.11",
+        "scripts/run_week5_layered_ablation.py",
+        "--n-steps",
+        "140",
+        "--seed",
+        "42"
+      ],
+      "elapsed_s": 7.885349708143622,
+      "executed": true
+    },
+    {
+      "name": "plot_week5",
+      "command": [
+        "python3.11",
+        "scripts/plot_week5_layered_ablation.py"
+      ],
+      "elapsed_s": 0.31351691693998873,
+      "executed": true
+    },
+    {
+      "name": "build_manifest",
+      "command": [
+        "python3.11",
+        "scripts/build_week6_figure_manifest.py",
+        "--output-json",
+        "results/week6_repro_run1_figure_manifest.json",
+        "--fail-on-missing-run-ids"
+      ],
+      "elapsed_s": 0.2072103749960661,
+      "executed": true
+    }
+  ],
+  "n_steps_executed": 7,
+  "figures_missing_source_run_ids": [],
+  "all_figures_have_source_run_ids": true,
+  "acceptance_one_command_regeneration_succeeds": true,
+  "acceptance_all_figures_mapped_source_run_ids": true
+}
