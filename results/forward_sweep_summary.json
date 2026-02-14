@@ -1,7 +1,7 @@
 {
-  "generated_at_utc": "2026-02-13T15:36:45.859270+00:00",
+  "generated_at_utc": "2026-02-14T21:49:15.110690+00:00",
   "seed": 42,
-  "git_commit": "609f522",
+  "git_commit": "ca1c4cf",
   "sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
   "config_path": "configs/forward_sweep_baseline.json",
   "gi_plausible_min": 0.8,
