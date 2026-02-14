@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-14T22:29:24.155565+00:00",
+  "generated_at_utc": "2026-02-14T22:50:19.580917+00:00",
   "seed": 42,
   "n_steps": 140,
   "dry_run": false,
@@ -18,7 +18,7 @@
         "--n-steps",
         "140"
       ],
-      "elapsed_s": 7.417127375025302,
+      "elapsed_s": 7.925642458023503,
       "executed": true
     },
     {
@@ -35,7 +35,7 @@
         "--output-metadata",
         "docs/assets/week7_baseline_vs_improved.meta.json"
       ],
-      "elapsed_s": 9.865243540843949,
+      "elapsed_s": 9.974044125061482,
       "executed": true
     },
     {
@@ -48,7 +48,7 @@
         "--output-json",
         "results/week7_results_index_summary.json"
       ],
-      "elapsed_s": 0.02191908285021782,
+      "elapsed_s": 0.02139387489296496,
       "executed": true
     },
     {
@@ -66,7 +66,7 @@
         "docs/assets/week7_animation_manifest.json",
         "--fail-on-missing-run-ids"
       ],
-      "elapsed_s": 0.020498208003118634,
+      "elapsed_s": 0.020914915949106216,
       "executed": true
     }
   ],

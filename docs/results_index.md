@@ -10,5 +10,5 @@ This index maps planned paper claims to concrete reproducible artifacts.
 | C4 | Figure outputs regenerate deterministically with mapped source run IDs. | `results/week6_figure_pipeline_summary.json`<br>`docs/assets/week6_figure_manifest.json`<br>`docs/week6_figure_pipeline.md` | - |
 | C5 | Week 7 baseline-vs-improved comparison animations are reproducible in GIF and MP4 formats. | `results/week7_animation_comparison_summary.json`<br>`docs/assets/week7_animation_manifest.json`<br>`docs/assets/week7_baseline_vs_improved.gif`<br>`docs/assets/week7_baseline_vs_improved.mp4` | - |
 
-Generated at UTC: `2026-02-14T22:29:24.132216+00:00`
+Generated at UTC: `2026-02-14T22:50:19.557128+00:00`
 Acceptance (all claims have >=1 linked artifact): `true`

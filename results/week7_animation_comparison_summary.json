@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-14T22:29:23.969887+00:00",
+  "generated_at_utc": "2026-02-14T22:50:19.386634+00:00",
   "dry_run": false,
   "seed": 42,
   "n_steps": 140,
@@ -11,7 +11,7 @@
   "skull_radius": 1.5,
   "config_path": "configs/week5_layered_ablation.json",
   "sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
-  "git_commit": "b0f483d",
+  "git_commit": "227bd17",
   "source_csv": "results/week5_layered_ablation.csv",
   "source_summary": "results/week5_layered_ablation_summary.json",
   "baseline_label": "layered_off_reference",
@@ -26,7 +26,7 @@
     "gi": 2.1433627605438232,
     "disp_p95": 0.6818244457244873,
     "outside_skull_frac": 0.2881619937694704,
-    "runtime_s": 0.4644300830550492,
+    "runtime_s": 0.46036608307622373,
     "gi_plausible": 1
   },
   "improved_metrics": {
@@ -35,7 +35,7 @@
     "gi": 2.234426736831665,
     "disp_p95": 0.680706799030304,
     "outside_skull_frac": 0.2819314641744548,
-    "runtime_s": 0.49238637485541403,
+    "runtime_s": 0.4869209169410169,
     "gi_plausible": 1
   },
   "delta_gi_improved_minus_baseline": 0.0910639762878418,
@@ -45,7 +45,7 @@
   "output_mp4": "docs/assets/week7_baseline_vs_improved.mp4",
   "output_metadata": "docs/assets/week7_baseline_vs_improved.meta.json",
   "source_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
-  "source_git_commit": "b0f483d",
+  "source_git_commit": "227bd17",
   "commands": [
     [
       "python3.11",
