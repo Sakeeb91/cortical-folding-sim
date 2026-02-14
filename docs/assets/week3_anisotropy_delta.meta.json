@@ -1,0 +1,25 @@
+{
+  "generated_at_utc": "2026-02-14T21:47:07.019289+00:00",
+  "figure_id": "week3_anisotropy_delta",
+  "style_version": "week6_standard_v1",
+  "output_png": "docs/assets/week3_anisotropy_delta.png",
+  "source_run_ids": [
+    1,
+    2
+  ],
+  "source_run_labels": [
+    "isotropic_baseline",
+    "anisotropic_z_bias"
+  ],
+  "source_run_config_hashes": [
+    "2068b1d0afac502ae6319c12009ac6524abfbfa434bf3a50a14ab6ba37a889d5",
+    "ae4be1b3bc73d8cfb4f23fe1faf84508787e1cdb48f6007ac8f94db6e49c8103"
+  ],
+  "source_sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+  "source_git_commit": "ca1c4cf",
+  "source_artifacts": {
+    "csv": "results/week3_anisotropy_ab.csv",
+    "summary": "results/week3_anisotropy_ab_summary.json",
+    "comparison": "results/week3_anisotropy_comparison.json"
+  }
+}
