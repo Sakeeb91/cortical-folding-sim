@@ -1,0 +1,78 @@
+{
+  "generated_at_utc": "2026-02-14T22:30:01.936385+00:00",
+  "seed": 42,
+  "n_steps": 140,
+  "dry_run": false,
+  "animation_summary_json": "results/week7_repro_run2_animation_summary.json",
+  "results_index_doc": "results/week7_repro_run2_results_index.md",
+  "results_index_json": "results/week7_repro_run2_results_index_summary.json",
+  "manifest_json": "results/week7_repro_run2_animation_manifest.json",
+  "steps": [
+    {
+      "name": "run_week5",
+      "command": [
+        "python3.11",
+        "scripts/run_week5_layered_ablation.py",
+        "--seed",
+        "42",
+        "--n-steps",
+        "140"
+      ],
+      "elapsed_s": 7.429576833965257,
+      "executed": true
+    },
+    {
+      "name": "generate_week7_animation",
+      "command": [
+        "python3.11",
+        "scripts/generate_week7_comparison_animation.py",
+        "--seed",
+        "42",
+        "--n-steps",
+        "140",
+        "--output-summary",
+        "results/week7_repro_run2_animation_summary.json",
+        "--output-metadata",
+        "docs/assets/week7_baseline_vs_improved.meta.json"
+      ],
+      "elapsed_s": 9.984612582949921,
+      "executed": true
+    },
+    {
+      "name": "build_results_index",
+      "command": [
+        "python3.11",
+        "scripts/build_results_index.py",
+        "--output-doc",
+        "results/week7_repro_run2_results_index.md",
+        "--output-json",
+        "results/week7_repro_run2_results_index_summary.json"
+      ],
+      "elapsed_s": 0.021413624985143542,
+      "executed": true
+    },
+    {
+      "name": "build_week7_manifest",
+      "command": [
+        "python3.11",
+        "scripts/build_week7_animation_manifest.py",
+        "--input-summary",
+        "results/week7_repro_run2_animation_summary.json",
+        "--input-metadata",
+        "docs/assets/week7_baseline_vs_improved.meta.json",
+        "--input-results-index",
+        "results/week7_repro_run2_results_index_summary.json",
+        "--output-json",
+        "results/week7_repro_run2_animation_manifest.json",
+        "--fail-on-missing-run-ids"
+      ],
+      "elapsed_s": 0.020993499783799052,
+      "executed": true
+    }
+  ],
+  "n_steps_executed": 4,
+  "acceptance_animation_regeneration_succeeds": true,
+  "acceptance_results_index_claims_linked": true,
+  "acceptance_animation_outputs_mapped": true,
+  "animation_acceptance_both_runs_stable": true
+}

@@ -1,0 +1,65 @@
+{
+  "n_runs": 8,
+  "seed": 42,
+  "config_path": "configs/week5_layered_ablation.json",
+  "baseline_label": "layered_off_reference",
+  "layered_label": "layered_on_reference",
+  "n_layered_runs": 7,
+  "layered_stability_rate": 1.0,
+  "reduced_grid_all_stable": true,
+  "baseline_gi": 2.1433627605438232,
+  "layered_gi": 2.234426736831665,
+  "delta_gi_layered_minus_baseline": 0.0910639762878418,
+  "baseline_outside_skull_frac": 0.2881619937694704,
+  "layered_outside_skull_frac": 0.2819314641744548,
+  "delta_outside_skull_frac_layered_minus_baseline": -0.006230529595015577,
+  "baseline_disp_p95": 0.6818244457244873,
+  "layered_disp_p95": 0.680706799030304,
+  "delta_disp_p95_layered_minus_baseline": -0.0011176466941833496,
+  "baseline_runtime_s": 0.4774710829369724,
+  "layered_runtime_s": 0.4804364580195397,
+  "runtime_ratio_layered_over_baseline": 1.006210585705687,
+  "runtime_budget_ratio": 1.25,
+  "robust_region_definition": {
+    "stable": 1,
+    "gi_plausible": 1,
+    "max_outside_skull_frac": 0.34,
+    "max_disp_p95": 0.8,
+    "min_gi": 2.0
+  },
+  "robust_region_count": 4,
+  "robust_region_labels": [
+    "layered_on_reference",
+    "layered_clip_relaxed",
+    "layered_damping_low",
+    "layered_damping_high"
+  ],
+  "failure_reason_counts": {
+    "none": 8
+  },
+  "clipping_ablation": {
+    "n_runs": 2,
+    "stable_rate": 1.0,
+    "best_label": "layered_clip_relaxed",
+    "best_gi": 3.0928099155426025,
+    "worst_disp_p95": 0.7281850576400757
+  },
+  "damping_ablation": {
+    "n_runs": 2,
+    "stable_rate": 1.0,
+    "best_label": "layered_damping_low",
+    "best_gi": 2.3812975883483887,
+    "worst_disp_p95": 0.6677829623222351
+  },
+  "dt_ablation": {
+    "n_runs": 2,
+    "stable_rate": 1.0,
+    "best_label": "layered_dt_large",
+    "best_gi": 4.331405162811279,
+    "worst_disp_p95": 0.7244571447372437
+  },
+  "acceptance_layered_mode_stable_on_reduced_grid": true,
+  "acceptance_robust_parameter_region_found": true,
+  "acceptance_runtime_within_budget": true,
+  "acceptance_week5_passed": true
+}
