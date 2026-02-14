@@ -1,0 +1,171 @@
+{
+  "generated_at_utc": "2026-02-14T22:50:19.609625+00:00",
+  "n_artifacts": 26,
+  "n_missing_artifacts": 0,
+  "all_artifacts_present": true,
+  "reference_config_hashes": {
+    "forward_sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
+    "week3_sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+    "week4_sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
+    "week5_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+    "week7_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30"
+  },
+  "artifacts": [
+    {
+      "path": "PLAN.md",
+      "exists": true,
+      "size_bytes": 10863,
+      "sha256": "5230834c469112c22483fb02efb788492cf140b6f97c9f3cfd345a1c1e3d1ca9"
+    },
+    {
+      "path": "results/forward_sweep_summary.json",
+      "exists": true,
+      "size_bytes": 1033,
+      "sha256": "afafd243f568581e9bf8420e047220d78168993670d71b38b0b0d580b7c3eb5e"
+    },
+    {
+      "path": "results/forward_sweep_manifest.json",
+      "exists": true,
+      "size_bytes": 1808,
+      "sha256": "7bbaee589e5f992a814637aadb42d24c12d8b0adb19c05f101644f0c963eab5b"
+    },
+    {
+      "path": "results/validation_gate_report.json",
+      "exists": true,
+      "size_bytes": 1904,
+      "sha256": "f3954a64f8cb4a2c74f16b4382de61b46b066c1ddc786dc129f5f1a6b35b5c67"
+    },
+    {
+      "path": "results/week3_anisotropy_comparison.json",
+      "exists": true,
+      "size_bytes": 587,
+      "sha256": "8d0cce0918bf4ac20b82099ef839c5bac69c4d632f839f441ce7eb7392b6ca5e"
+    },
+    {
+      "path": "results/week4_collision_comparison.json",
+      "exists": true,
+      "size_bytes": 1161,
+      "sha256": "bdfd500fb4e480c1ffb5bc6a1e8d02265cf3c475ec42a748c825ed67ed335081"
+    },
+    {
+      "path": "results/week5_layered_comparison.json",
+      "exists": true,
+      "size_bytes": 2026,
+      "sha256": "d99cf7059f5e56cb08f1565f2c4c5f62efce1ca803d7755a400ba30232eeebc6"
+    },
+    {
+      "path": "results/week6_figure_pipeline_summary.json",
+      "exists": true,
+      "size_bytes": 2059,
+      "sha256": "ed650d2fb006628898a9ab05cbea54191a3e6ec5530f8589f6b50f020ee8ce2c"
+    },
+    {
+      "path": "docs/assets/week6_figure_manifest.json",
+      "exists": true,
+      "size_bytes": 3648,
+      "sha256": "96dcb0bd70574346fb81e58deef9712516f2bd54540783cf2875109c0fb340c8"
+    },
+    {
+      "path": "results/week7_animation_pack_summary.json",
+      "exists": true,
+      "size_bytes": 2276,
+      "sha256": "3ac4734232982d3abe1c03b6c33a26924a8785bbd3f12c0c02625ef972818173"
+    },
+    {
+      "path": "results/week7_animation_comparison_summary.json",
+      "exists": true,
+      "size_bytes": 2669,
+      "sha256": "19ff0680579720b9dbfd71564bec7136d3893148ac03aecdd0e4e42b0d9d0d10"
+    },
+    {
+      "path": "docs/assets/week7_animation_manifest.json",
+      "exists": true,
+      "size_bytes": 1602,
+      "sha256": "9e910a311537a3a1720141b8699f971cddbf8c8f0d8bc89967f81712ad7f1e18"
+    },
+    {
+      "path": "results/week7_results_index_summary.json",
+      "exists": true,
+      "size_bytes": 3246,
+      "sha256": "f76e81302df135a02cb0cfc1a2bef5f97e4776c2bc3829c0bea3411ba655339a"
+    },
+    {
+      "path": "results/week7_hardened_validation.json",
+      "exists": true,
+      "size_bytes": 6309,
+      "sha256": "84fa402e4aad971b53e6e31cf7c5edc441d086341cd1fdb218d5d68710889c7a"
+    },
+    {
+      "path": "docs/results_index.md",
+      "exists": true,
+      "size_bytes": 1470,
+      "sha256": "fe64adfad764519f1034b247cbef255558d97620dbe5024e2a6f2f926bb04d38"
+    },
+    {
+      "path": "docs/assets/week3_anisotropy_delta.png",
+      "exists": true,
+      "size_bytes": 29024,
+      "sha256": "1f19e19ead8ba0e041a00b3fa23b1be6bcd12109b60d4af7435fee191200ed2e"
+    },
+    {
+      "path": "docs/assets/week4_collision_ablation.png",
+      "exists": true,
+      "size_bytes": 53018,
+      "sha256": "43c300d1152519b9a7184268a84ee296e4b8731436233da349f54d7582465494"
+    },
+    {
+      "path": "docs/assets/week5_layered_ablation.png",
+      "exists": true,
+      "size_bytes": 123041,
+      "sha256": "41b28bdee211cd77df091939e1da83b761fe88c79d18b28bd7103961b4bdef60"
+    },
+    {
+      "path": "docs/assets/week7_baseline_vs_improved.gif",
+      "exists": true,
+      "size_bytes": 1734022,
+      "sha256": "a662cbce980f8e1272e4be65350529825aaecf9073cc0b41994e372568f49af0"
+    },
+    {
+      "path": "docs/assets/week7_baseline_vs_improved.mp4",
+      "exists": true,
+      "size_bytes": 291513,
+      "sha256": "f5ebc2cc1f630d28687462597f52b31d1771a705ed667aab51b222c7a7549310"
+    },
+    {
+      "path": "docs/week8_methods_results_packet.md",
+      "exists": true,
+      "size_bytes": 1418,
+      "sha256": "61512cd53d97b2c8bf91668c23f16aac9ed23e0d3c028e1fa3d6daf6471a2f6d"
+    },
+    {
+      "path": "docs/assets/week8_figure_captions.md",
+      "exists": true,
+      "size_bytes": 792,
+      "sha256": "c75a0f1bcee42432be9e1853b6765460c7b416ce35c58baeef73ab7fce03ee1c"
+    },
+    {
+      "path": "results/week8_methods_settings_freeze.json",
+      "exists": true,
+      "size_bytes": 1635,
+      "sha256": "d60cfe3d6cf86650943832b79832357e8c72b2587344db116aecb50b49dd2b43"
+    },
+    {
+      "path": "results/week8_final_tables.json",
+      "exists": true,
+      "size_bytes": 1102,
+      "sha256": "bab39064f623bf61d380cb5ef294e8cccdf07e5561801b7a31d468e1b371ae68"
+    },
+    {
+      "path": "results/week8_figure_captions.json",
+      "exists": true,
+      "size_bytes": 1232,
+      "sha256": "6ab1d4561d5d7d3d46c6a30c53c94e5933e68f0a8cbfb8bf642608980a0bf1c2"
+    },
+    {
+      "path": "results/week8_reproducibility_commands.json",
+      "exists": true,
+      "size_bytes": 896,
+      "sha256": "e02fa7ac7e115751512b5979777638d16b2527d287e52c921e0e9957bb2c32e1"
+    }
+  ]
+}
