@@ -1,7 +1,7 @@
 # Differentiable Cortical Folding Simulator
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-40%20passing-2EA44F)](#testing)
+[![Tests](https://img.shields.io/badge/tests-47%20passing-2EA44F)](#testing)
 [![Framework](https://img.shields.io/badge/JAX-differentiable%20physics-F7931E)](https://github.com/jax-ml/jax)
 
 A research-focused simulator for cortical folding that is differentiable end-to-end in JAX.
@@ -137,6 +137,23 @@ Generated artifacts:
 5. `results/week5_hardened_validation.json`
 6. `results/week5_matrix_check.csv`
 7. `docs/assets/week5_layered_ablation.png`
+
+### Week 6 figure pipeline standardization
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/regenerate_week6_figures.py --n-steps 140
+MPLBACKEND=Agg python3.11 scripts/validate_week6_hardened.py --n-steps 140
+```
+
+Generated artifacts:
+
+1. `docs/assets/week3_anisotropy_delta.meta.json`
+2. `docs/assets/week4_collision_ablation.meta.json`
+3. `docs/assets/week5_layered_ablation.meta.json`
+4. `docs/assets/week6_figure_manifest.json`
+5. `results/week6_figure_pipeline_summary.json`
+6. `results/week6_hardened_validation.json`
+7. `results/week6_matrix_check.csv`
 
 ## Visualization Outputs
 
