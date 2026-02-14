@@ -1,0 +1,116 @@
+{
+  "generated_at_utc": "2026-02-14T22:51:00.025428+00:00",
+  "inputs": {
+    "plan_path": "PLAN.md",
+    "forward_summary": "results/forward_sweep_summary.json",
+    "forward_manifest": "results/forward_sweep_manifest.json",
+    "forward_gate_report": "results/validation_gate_report.json",
+    "week3_comparison": "results/week3_anisotropy_comparison.json",
+    "week4_comparison": "results/week4_collision_comparison.json",
+    "week5_comparison": "results/week5_layered_comparison.json",
+    "week6_summary": "results/week6_figure_pipeline_summary.json",
+    "week6_manifest": "docs/assets/week6_figure_manifest.json",
+    "week7_pack_summary": "results/week8_repro_run2_week7_animation_pack_summary.json",
+    "week7_animation_summary": "results/week8_repro_run2_week7_animation_summary.json",
+    "week7_manifest": "results/week8_repro_run2_week7_animation_manifest.json",
+    "week7_results_index": "results/week8_repro_run2_results_index_summary.json",
+    "week7_hardened_validation": "results/week7_hardened_validation.json"
+  },
+  "output_paths": {
+    "packet_doc": "results/week8_repro_run2_methods_results_packet.md",
+    "captions_doc": "results/week8_repro_run2_figure_captions.md",
+    "methods_settings_json": "results/week8_repro_run2_methods_settings_freeze.json",
+    "tables_json": "results/week8_repro_run2_final_tables.json",
+    "captions_json": "results/week8_repro_run2_figure_captions.json",
+    "commands_json": "results/week8_repro_run2_repro_commands.json",
+    "bundle_json": "results/week8_repro_run2_frozen_artifact_bundle.json"
+  },
+  "reference_config_hashes": {
+    "forward_sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
+    "week3_sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+    "week4_sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
+    "week5_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+    "week7_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30"
+  },
+  "key_metrics": {
+    "forward_stability_rate": 1.0,
+    "forward_gi_plausible_rate": 0.5625,
+    "week5_delta_gi_layered_minus_baseline": 0.0910639762878418,
+    "week5_delta_outside_skull_frac_layered_minus_baseline": -0.006230529595015577,
+    "week5_delta_disp_p95_layered_minus_baseline": -0.0011176466941833496,
+    "week7_delta_gi_improved_minus_baseline": 0.0910639762878418,
+    "week7_delta_disp_p95_improved_minus_baseline": -0.0011176466941833496,
+    "week7_delta_outside_skull_frac_improved_minus_baseline": -0.006230529595015577,
+    "week7_runtime_ratio_week7_over_week6": 0.9766801835403697
+  },
+  "top_level_success_criteria": [
+    {
+      "id": "S1",
+      "description": "Stability rate >= 95% on benchmark grid.",
+      "passed": true,
+      "observed": {
+        "forward_stability_rate": 1.0,
+        "validation_gate_passed": true
+      },
+      "waived": false,
+      "waiver_reason": "",
+      "effective_pass": true
+    },
+    {
+      "id": "S2",
+      "description": "Improved realism beats baseline on at least two morphology metrics.",
+      "passed": true,
+      "observed": {
+        "n_improved_metrics": 3,
+        "improvements": {
+          "gi_increase": true,
+          "outside_skull_frac_decrease": true,
+          "disp_p95_decrease": true
+        },
+        "week7_delta_gi": 0.0910639762878418,
+        "week7_delta_disp_p95": -0.0011176466941833496,
+        "week7_delta_outside_skull_frac": -0.006230529595015577
+      },
+      "waived": false,
+      "waiver_reason": "",
+      "effective_pass": true
+    },
+    {
+      "id": "S3",
+      "description": "Main figures and animations regenerate from one documented command path.",
+      "passed": true,
+      "observed": {
+        "week6_regen": true,
+        "week6_figure_mapping": true,
+        "week7_regen": true,
+        "week7_animation_mapping": true
+      },
+      "waived": false,
+      "waiver_reason": "",
+      "effective_pass": true
+    },
+    {
+      "id": "S4",
+      "description": "Every reported metric links to saved config + summary artifact.",
+      "passed": true,
+      "observed": {
+        "forward_gate_passed": true,
+        "week6_manifest_mapped": true,
+        "week7_manifest_mapped": true,
+        "results_index_claims_linked": true
+      },
+      "waived": false,
+      "waiver_reason": "",
+      "effective_pass": true
+    }
+  ],
+  "waivers_used": {},
+  "acceptance_top_level_success_criteria_met_or_waived": true,
+  "acceptance_methods_settings_frozen": true,
+  "acceptance_final_tables_generated": true,
+  "acceptance_figure_captions_generated": true,
+  "acceptance_submission_repro_commands_ready": true,
+  "acceptance_artifact_bundle_complete": true,
+  "acceptance_draft_packet_complete": true,
+  "passed": true
+}

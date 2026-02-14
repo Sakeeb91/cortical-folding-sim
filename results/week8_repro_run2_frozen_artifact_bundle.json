@@ -1,0 +1,171 @@
+{
+  "generated_at_utc": "2026-02-14T22:51:00.025266+00:00",
+  "n_artifacts": 26,
+  "n_missing_artifacts": 0,
+  "all_artifacts_present": true,
+  "reference_config_hashes": {
+    "forward_sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
+    "week3_sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+    "week4_sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
+    "week5_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+    "week7_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30"
+  },
+  "artifacts": [
+    {
+      "path": "PLAN.md",
+      "exists": true,
+      "size_bytes": 10863,
+      "sha256": "5230834c469112c22483fb02efb788492cf140b6f97c9f3cfd345a1c1e3d1ca9"
+    },
+    {
+      "path": "results/forward_sweep_summary.json",
+      "exists": true,
+      "size_bytes": 1033,
+      "sha256": "afafd243f568581e9bf8420e047220d78168993670d71b38b0b0d580b7c3eb5e"
+    },
+    {
+      "path": "results/forward_sweep_manifest.json",
+      "exists": true,
+      "size_bytes": 1808,
+      "sha256": "7bbaee589e5f992a814637aadb42d24c12d8b0adb19c05f101644f0c963eab5b"
+    },
+    {
+      "path": "results/validation_gate_report.json",
+      "exists": true,
+      "size_bytes": 1904,
+      "sha256": "f3954a64f8cb4a2c74f16b4382de61b46b066c1ddc786dc129f5f1a6b35b5c67"
+    },
+    {
+      "path": "results/week3_anisotropy_comparison.json",
+      "exists": true,
+      "size_bytes": 587,
+      "sha256": "8d0cce0918bf4ac20b82099ef839c5bac69c4d632f839f441ce7eb7392b6ca5e"
+    },
+    {
+      "path": "results/week4_collision_comparison.json",
+      "exists": true,
+      "size_bytes": 1161,
+      "sha256": "bdfd500fb4e480c1ffb5bc6a1e8d02265cf3c475ec42a748c825ed67ed335081"
+    },
+    {
+      "path": "results/week5_layered_comparison.json",
+      "exists": true,
+      "size_bytes": 2026,
+      "sha256": "3b13dc07638884aaca532caaa7141080e7e18b842369830dd3df0660ad3fcfac"
+    },
+    {
+      "path": "results/week6_figure_pipeline_summary.json",
+      "exists": true,
+      "size_bytes": 2059,
+      "sha256": "ed650d2fb006628898a9ab05cbea54191a3e6ec5530f8589f6b50f020ee8ce2c"
+    },
+    {
+      "path": "docs/assets/week6_figure_manifest.json",
+      "exists": true,
+      "size_bytes": 3648,
+      "sha256": "96dcb0bd70574346fb81e58deef9712516f2bd54540783cf2875109c0fb340c8"
+    },
+    {
+      "path": "results/week8_repro_run2_week7_animation_pack_summary.json",
+      "exists": true,
+      "size_bytes": 2392,
+      "sha256": "cd732760198e8a3b2eec271a9d1857081c0330c6874b02cf298470a81ee41da5"
+    },
+    {
+      "path": "results/week8_repro_run2_week7_animation_summary.json",
+      "exists": true,
+      "size_bytes": 2674,
+      "sha256": "c5271946137114bccc878f4c6c13acabbf0d1ee301f3c1ceba9811cfef834fc4"
+    },
+    {
+      "path": "results/week8_repro_run2_week7_animation_manifest.json",
+      "exists": true,
+      "size_bytes": 1619,
+      "sha256": "6b7c3112b324f8ff2dfc0e5093d79958280725cfe76e1f334c257c27c859520c"
+    },
+    {
+      "path": "results/week8_repro_run2_results_index_summary.json",
+      "exists": true,
+      "size_bytes": 3266,
+      "sha256": "61a5960809921ec13e6eef54c50f915a1179831f7f18c862205207419ed74330"
+    },
+    {
+      "path": "results/week7_hardened_validation.json",
+      "exists": true,
+      "size_bytes": 6309,
+      "sha256": "84fa402e4aad971b53e6e31cf7c5edc441d086341cd1fdb218d5d68710889c7a"
+    },
+    {
+      "path": "docs/results_index.md",
+      "exists": true,
+      "size_bytes": 1470,
+      "sha256": "fe64adfad764519f1034b247cbef255558d97620dbe5024e2a6f2f926bb04d38"
+    },
+    {
+      "path": "docs/assets/week3_anisotropy_delta.png",
+      "exists": true,
+      "size_bytes": 29024,
+      "sha256": "1f19e19ead8ba0e041a00b3fa23b1be6bcd12109b60d4af7435fee191200ed2e"
+    },
+    {
+      "path": "docs/assets/week4_collision_ablation.png",
+      "exists": true,
+      "size_bytes": 53018,
+      "sha256": "43c300d1152519b9a7184268a84ee296e4b8731436233da349f54d7582465494"
+    },
+    {
+      "path": "docs/assets/week5_layered_ablation.png",
+      "exists": true,
+      "size_bytes": 123041,
+      "sha256": "41b28bdee211cd77df091939e1da83b761fe88c79d18b28bd7103961b4bdef60"
+    },
+    {
+      "path": "docs/assets/week7_baseline_vs_improved.gif",
+      "exists": true,
+      "size_bytes": 1734022,
+      "sha256": "a662cbce980f8e1272e4be65350529825aaecf9073cc0b41994e372568f49af0"
+    },
+    {
+      "path": "docs/assets/week7_baseline_vs_improved.mp4",
+      "exists": true,
+      "size_bytes": 291513,
+      "sha256": "f5ebc2cc1f630d28687462597f52b31d1771a705ed667aab51b222c7a7549310"
+    },
+    {
+      "path": "results/week8_repro_run2_methods_results_packet.md",
+      "exists": true,
+      "size_bytes": 1418,
+      "sha256": "61512cd53d97b2c8bf91668c23f16aac9ed23e0d3c028e1fa3d6daf6471a2f6d"
+    },
+    {
+      "path": "results/week8_repro_run2_figure_captions.md",
+      "exists": true,
+      "size_bytes": 792,
+      "sha256": "c75a0f1bcee42432be9e1853b6765460c7b416ce35c58baeef73ab7fce03ee1c"
+    },
+    {
+      "path": "results/week8_repro_run2_methods_settings_freeze.json",
+      "exists": true,
+      "size_bytes": 1635,
+      "sha256": "8a6d3862f224a2ec7ad4e4c48d4b6280c111757920ba5ee766ad6816564a9fe5"
+    },
+    {
+      "path": "results/week8_repro_run2_final_tables.json",
+      "exists": true,
+      "size_bytes": 1102,
+      "sha256": "5521b315c95bad26955d80e13dd4582e93cf5803f3f4e2f2c9f4d2e78a7eeeb3"
+    },
+    {
+      "path": "results/week8_repro_run2_figure_captions.json",
+      "exists": true,
+      "size_bytes": 1232,
+      "sha256": "d8a8510e3fa04c68e73677f8ad2dd520e4e397d3c27270c0e7202d016e5fc515"
+    },
+    {
+      "path": "results/week8_repro_run2_repro_commands.json",
+      "exists": true,
+      "size_bytes": 896,
+      "sha256": "e4d436e05f6ad838763616127825510306842ea3617425aabcb42ab6ed29bce0"
+    }
+  ]
+}
