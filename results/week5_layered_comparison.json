@@ -16,9 +16,9 @@
   "baseline_disp_p95": 0.6818244457244873,
   "layered_disp_p95": 0.680706799030304,
   "delta_disp_p95_layered_minus_baseline": -0.0011176466941833496,
-  "baseline_runtime_s": 0.48028183286078274,
-  "layered_runtime_s": 0.4914754161145538,
-  "runtime_ratio_layered_over_baseline": 1.0233062807874636,
+  "baseline_runtime_s": 0.5024258748162538,
+  "layered_runtime_s": 0.5026021669618785,
+  "runtime_ratio_layered_over_baseline": 1.0003508819001194,
   "runtime_budget_ratio": 1.25,
   "robust_region_definition": {
     "stable": 1,
