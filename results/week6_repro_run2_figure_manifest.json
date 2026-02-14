@@ -1,0 +1,97 @@
+{
+  "generated_at_utc": "2026-02-14T21:47:21.218572+00:00",
+  "style_version": "week6_standard_v1",
+  "n_figures": 3,
+  "n_figures_with_source_run_ids": 3,
+  "figures_missing_source_run_ids": [],
+  "all_figures_have_source_run_ids": true,
+  "figures": [
+    {
+      "figure_id": "week3_anisotropy_delta",
+      "output_file": "docs/assets/week3_anisotropy_delta.png",
+      "output_exists": true,
+      "output_metadata_sidecar": "docs/assets/week3_anisotropy_delta.meta.json",
+      "metadata_sidecar_exists": true,
+      "source_run_ids": [
+        1,
+        2
+      ],
+      "source_run_labels": [
+        "isotropic_baseline",
+        "anisotropic_z_bias"
+      ],
+      "source_run_config_hashes": [
+        "2068b1d0afac502ae6319c12009ac6524abfbfa434bf3a50a14ab6ba37a889d5",
+        "ae4be1b3bc73d8cfb4f23fe1faf84508787e1cdb48f6007ac8f94db6e49c8103"
+      ],
+      "source_sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+      "source_git_commit": "ca1c4cf",
+      "source_artifacts": {
+        "csv": "results/week3_anisotropy_ab.csv",
+        "summary": "results/week3_anisotropy_ab_summary.json",
+        "manifest": "results/week3_anisotropy_ab_manifest.json",
+        "comparison": "results/week3_anisotropy_comparison.json"
+      },
+      "has_source_run_ids": true
+    },
+    {
+      "figure_id": "week4_collision_ablation",
+      "output_file": "docs/assets/week4_collision_ablation.png",
+      "output_exists": true,
+      "output_metadata_sidecar": "docs/assets/week4_collision_ablation.meta.json",
+      "metadata_sidecar_exists": true,
+      "source_run_ids": [
+        1,
+        2,
+        3
+      ],
+      "source_run_labels": [
+        "collision_disabled_baseline",
+        "collision_sampled_deterministic",
+        "collision_spatial_hash"
+      ],
+      "source_run_config_hashes": [
+        "e8887dd5ba4be1f41960b93166b5e322fbe95501dd8826de1cc4b93ac116dc9e",
+        "74b123c22d1980e687157511bc9f1a68067d542fc6b3c99255bbf2c5f826038a",
+        "04bc26c43033303d3d46bb25c4fb22d9955b94e694345565536b6dd770bad525"
+      ],
+      "source_sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
+      "source_git_commit": "ca1c4cf",
+      "source_artifacts": {
+        "csv": "results/week4_collision_ablation.csv",
+        "summary": "results/week4_collision_ablation_summary.json",
+        "manifest": "results/week4_collision_ablation_manifest.json",
+        "comparison": "results/week4_collision_comparison.json"
+      },
+      "has_source_run_ids": true
+    },
+    {
+      "figure_id": "week5_layered_ablation",
+      "output_file": "docs/assets/week5_layered_ablation.png",
+      "output_exists": true,
+      "output_metadata_sidecar": "docs/assets/week5_layered_ablation.meta.json",
+      "metadata_sidecar_exists": true,
+      "source_run_ids": [
+        1,
+        2
+      ],
+      "source_run_labels": [
+        "layered_off_reference",
+        "layered_on_reference"
+      ],
+      "source_run_config_hashes": [
+        "8d667f8695b804bf9ddc836eb491ed807a27fee5ab2dda876fc961cfd6e7bbda",
+        "f85657b5cd4a9a7cc06df3ce73bc679e7e053ff216ff792a90470c9375739e1c"
+      ],
+      "source_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+      "source_git_commit": "ca1c4cf",
+      "source_artifacts": {
+        "csv": "results/week5_layered_ablation.csv",
+        "summary": "results/week5_layered_ablation_summary.json",
+        "manifest": "results/week5_layered_ablation_manifest.json",
+        "comparison": "results/week5_layered_comparison.json"
+      },
+      "has_source_run_ids": true
+    }
+  ]
+}
