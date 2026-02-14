@@ -1,7 +1,7 @@
 # Differentiable Cortical Folding Simulator
 
 [![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-52%20passing-2EA44F)](#testing)
+[![Tests](https://img.shields.io/badge/tests-54%20passing-2EA44F)](#testing)
 [![Framework](https://img.shields.io/badge/JAX-differentiable%20physics-F7931E)](https://github.com/jax-ml/jax)
 
 A research-focused simulator for cortical folding that is differentiable end-to-end in JAX.
@@ -174,6 +174,28 @@ Generated artifacts:
 8. `results/week7_results_index_summary.json`
 9. `results/week7_hardened_validation.json`
 10. `results/week7_matrix_check.csv`
+
+### Week 8 final packaging for writing
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/regenerate_week8_final_package.py --n-steps 140
+MPLBACKEND=Agg python3.11 scripts/validate_week8_hardened.py --n-steps 140
+```
+
+Generated artifacts:
+
+1. `docs/week8_methods_results_packet.md`
+2. `docs/assets/week8_figure_captions.md`
+3. `docs/week8_final_packaging.md`
+4. `results/week8_methods_settings_freeze.json`
+5. `results/week8_final_tables.json`
+6. `results/week8_figure_captions.json`
+7. `results/week8_reproducibility_commands.json`
+8. `results/week8_frozen_artifact_bundle.json`
+9. `results/week8_submission_packet_summary.json`
+10. `results/week8_final_packaging_summary.json`
+11. `results/week8_hardened_validation.json`
+12. `results/week8_matrix_check.csv`
 
 ## Visualization Outputs
 
