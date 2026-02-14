@@ -1,7 +1,7 @@
 {
-  "generated_at_utc": "2026-02-13T12:47:28.442125+00:00",
+  "generated_at_utc": "2026-02-14T21:47:06.630529+00:00",
   "seed": 42,
-  "git_commit": "580bc60",
+  "git_commit": "ca1c4cf",
   "sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
   "config_path": "configs/week3_anisotropy_ab.json",
   "gi_plausible_min": 0.8,
@@ -13,15 +13,22 @@
   "n_runs": 2,
   "n_anisotropic_runs": 1,
   "n_isotropic_runs": 1,
+  "n_two_layer_runs": 0,
+  "n_collision_enabled_runs": 0,
+  "n_spatial_hash_collision_runs": 0,
   "n_stable": 2,
   "n_unstable": 0,
   "stability_rate": 1.0,
   "fail_reason_counts": {
     "none": 2
   },
-  "gi_mean": 2.278922736644745,
-  "gi_std": 0.5802672505378723,
+  "gi_mean": 3.3955241441726685,
+  "gi_std": 0.6257342100143433,
   "best_gi_run_id": 2,
-  "gi_plausible_count": 2,
-  "gi_plausible_rate": 1.0
+  "gi_plausible_count": 1,
+  "gi_plausible_rate": 0.5,
+  "collision_force_share_mean": 0.0,
+  "collision_force_share_p95": 0.0,
+  "collision_overlap_p95_mean": 0.0,
+  "collision_overlap_max_max": 0.0
 }
