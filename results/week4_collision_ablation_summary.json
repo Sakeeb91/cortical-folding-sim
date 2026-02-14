@@ -1,7 +1,7 @@
 {
-  "generated_at_utc": "2026-02-13T13:08:54.397632+00:00",
+  "generated_at_utc": "2026-02-14T21:47:12.263419+00:00",
   "seed": 42,
-  "git_commit": "78acd07",
+  "git_commit": "ca1c4cf",
   "sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
   "config_path": "configs/week4_collision_ablation.json",
   "gi_plausible_min": 0.8,
@@ -13,6 +13,7 @@
   "n_runs": 3,
   "n_anisotropic_runs": 0,
   "n_isotropic_runs": 3,
+  "n_two_layer_runs": 0,
   "n_collision_enabled_runs": 2,
   "n_spatial_hash_collision_runs": 1,
   "n_stable": 3,
