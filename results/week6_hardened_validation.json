@@ -1,0 +1,160 @@
+{
+  "week6_pipeline_summary": "results/week6_repro_run1_pipeline_summary.json",
+  "week6_figure_manifest": "results/week6_repro_run1_figure_manifest.json",
+  "reproducibility": {
+    "seed": 42,
+    "atol": 1e-06,
+    "first_summary": "results/week6_repro_run1_pipeline_summary.json",
+    "second_summary": "results/week6_repro_run2_pipeline_summary.json",
+    "first_manifest": "results/week6_repro_run1_figure_manifest.json",
+    "second_manifest": "results/week6_repro_run2_figure_manifest.json",
+    "first_week5_summary": "results/week6_repro_run1_week5_summary.json",
+    "second_week5_summary": "results/week6_repro_run2_week5_summary.json",
+    "mismatches": [],
+    "passed": true
+  },
+  "matrix": {
+    "seeds": [
+      11,
+      23,
+      37
+    ],
+    "labels": [
+      "layered_on_reference",
+      "layered_clip_tight"
+    ],
+    "n_records": 6,
+    "stability_rate": 1.0,
+    "failure_reason_counts": {},
+    "by_label": {
+      "layered_on_reference": {
+        "n": 3,
+        "stable_rate": 1.0,
+        "mean_gi": 2.234426736831665,
+        "mean_disp_p95": 0.680706799030304
+      },
+      "layered_clip_tight": {
+        "n": 3,
+        "stable_rate": 1.0,
+        "mean_gi": 1.1972328424453735,
+        "mean_disp_p95": 0.5904030203819275
+      }
+    },
+    "matrix_csv": "results/week6_matrix_check.csv",
+    "passed": true
+  },
+  "regression_vs_week5": {
+    "week5_reference_summary": "results/week5_layered_ablation_summary.json",
+    "week5_reference_comparison": "results/week5_layered_comparison.json",
+    "week6_comparison": "results/week6_repro_run1_week5_comparison.json",
+    "checks": [
+      {
+        "name": "layered_outside_skull_frac",
+        "week5": 0.2819314641744548,
+        "week6": 0.2819314641744548,
+        "delta": 0.0,
+        "max_increase_allowed": 0.03,
+        "passed": true,
+        "status": "acceptable"
+      },
+      {
+        "name": "layered_disp_p95",
+        "week5": 0.680706799030304,
+        "week6": 0.680706799030304,
+        "delta": 0.0,
+        "max_increase_allowed": 0.08,
+        "passed": true,
+        "status": "acceptable"
+      },
+      {
+        "name": "layered_gi",
+        "week5": 2.234426736831665,
+        "week6": 2.234426736831665,
+        "delta": 0.0,
+        "max_drop_allowed": -0.4,
+        "passed": true,
+        "status": "acceptable"
+      },
+      {
+        "name": "robust_region_count",
+        "week5": 4,
+        "week6": 4,
+        "delta": 0,
+        "passed": true,
+        "status": "acceptable"
+      }
+    ],
+    "passed": true
+  },
+  "runtime_budget_vs_week5": {
+    "week5_reference_runtime_s": 0.49774820799939334,
+    "week6_reference_runtime_s": 0.4934187079779804,
+    "runtime_ratio_week6_over_week5": 0.9913018270044315,
+    "runtime_delta_s": -0.004329500021412969,
+    "budget_ratio": 1.35,
+    "passed": true,
+    "week6_pipeline_total_runtime_s": 17.842286709230393
+  },
+  "ci_parity": {
+    "checks": [
+      {
+        "name": "validation_quick",
+        "command": [
+          "./scripts/run_validation_quick.sh"
+        ],
+        "returncode": 0,
+        "passed": true,
+        "elapsed_s": 43.746309417067096,
+        "stdout_tail": "...............................................                          [100%]\n47 passed in 38.92s\nRunning forward sweep with 4 configs (subdivisions=3, steps=80)\n[01/04] mode=uniform  collision=disabled     Kc=2.00 Kb=3.00 GI=0.511 stable=1 collision_share=0.0000\n[02/04] mode=uniform  collision=disabled     Kc=2.00 Kb=3.00 GI=0.541 stable=1 collision_share=0.0000\n[03/04] mode=regional collision=disabled     Kc=2.00 Kb=3.00 GI=0.525 stable=1 collision_share=0.0000\n[04/04] mode=regional collision=disabled     Kc=1.80 Kb=2.50 GI=0.558 stable=1 collision_share=0.0000\nSaved CSV: results/forward_sweep.csv\nSaved summary: results/forward_sweep_summary.json\nSaved manifest: results/forward_sweep_manifest.json\nSaved report: results/validation_gate_report.json\nPASS: stability_rate observed=1.000000 >= threshold=0.950000\nPASS: gi_plausible_rate observed=1.000000 >= threshold=0.500000\nPASS: outside_skull_frac_p95 observed=0.000000 <= threshold=0.400000\nPASS: skull_penetration_p95 observed=0.000000 <= threshold=0.250000\nPASS: disp_p95 observed=0.161669 <= threshold=0.800000\nAll validation gates passed.\n",
+        "stderr_tail": ""
+      },
+      {
+        "name": "validation_full",
+        "command": [
+          "./scripts/run_validation_full.sh"
+        ],
+        "returncode": 0,
+        "passed": true,
+        "elapsed_s": 54.03657012502663,
+        "stdout_tail": ".213005 <= threshold=0.250000\nPASS: disp_p95 observed=0.773080 <= threshold=0.800000\nAll validation gates passed.\nRunning forward sweep with 16 configs (subdivisions=3, steps=120)\n[01/16] mode=uniform  collision=disabled     Kc=1.60 Kb=2.50 GI=0.788 stable=1 collision_share=0.0000\n[02/16] mode=regional collision=disabled     Kc=1.60 Kb=2.50 GI=0.822 stable=1 collision_share=0.0000\n[03/16] mode=uniform  collision=disabled     Kc=1.60 Kb=2.50 GI=0.864 stable=1 collision_share=0.0000\n[04/16] mode=regional collision=disabled     Kc=1.60 Kb=2.50 GI=0.896 stable=1 collision_share=0.0000\n[05/16] mode=uniform  collision=disabled     Kc=1.60 Kb=3.50 GI=3.850 stable=1 collision_share=0.0000\n[06/16] mode=regional collision=disabled     Kc=1.60 Kb=3.50 GI=3.858 stable=1 collision_share=0.0000\n[07/16] mode=uniform  collision=disabled     Kc=1.60 Kb=3.50 GI=4.452 stable=1 collision_share=0.0000\n[08/16] mode=regional collision=disabled     Kc=1.60 Kb=3.50 GI=3.899 stable=1 collision_share=0.0000\n[09/16] mode=uniform  collision=disabled     Kc=2.00 Kb=2.50 GI=0.796 stable=1 collision_share=0.0000\n[10/16] mode=regional collision=disabled     Kc=2.00 Kb=2.50 GI=0.827 stable=1 collision_share=0.0000\n[11/16] mode=uniform  collision=disabled     Kc=2.00 Kb=2.50 GI=0.770 stable=1 collision_share=0.0000\n[12/16] mode=regional collision=disabled     Kc=2.00 Kb=2.50 GI=0.845 stable=1 collision_share=0.0000\n[13/16] mode=uniform  collision=disabled     Kc=2.00 Kb=3.50 GI=3.178 stable=1 collision_share=0.0000\n[14/16] mode=regional collision=disabled     Kc=2.00 Kb=3.50 GI=3.153 stable=1 collision_share=0.0000\n[15/16] mode=uniform  collision=disabled     Kc=2.00 Kb=3.50 GI=3.318 stable=1 collision_share=0.0000\n[16/16] mode=regional collision=disabled     Kc=2.00 Kb=3.50 GI=3.091 stable=1 collision_share=0.0000\nSaved CSV: results/forward_sweep.csv\nSaved summary: results/forward_sweep_summary_seed_repeat.json\nSaved manifest: results/forward_sweep_manifest.json\nSeeded reproducibility check passed.\n",
+        "stderr_tail": ""
+      }
+    ],
+    "passed": true
+  },
+  "baseline_snapshot_week5_summary": {
+    "generated_at_utc": "2026-02-14T21:43:02.734115+00:00",
+    "seed": 42,
+    "git_commit": "bb42a90",
+    "sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+    "config_path": "configs/week5_layered_ablation.json",
+    "gi_plausible_min": 0.8,
+    "gi_plausible_max": 3.5,
+    "fail_fast_disp_max": 1.0,
+    "fail_fast_penetration_max": 0.5,
+    "output_csv": "results/week5_layered_ablation.csv",
+    "output_summary": "results/week5_layered_ablation_summary.json",
+    "n_runs": 8,
+    "n_anisotropic_runs": 0,
+    "n_isotropic_runs": 8,
+    "n_two_layer_runs": 7,
+    "n_collision_enabled_runs": 8,
+    "n_spatial_hash_collision_runs": 8,
+    "n_stable": 8,
+    "n_unstable": 0,
+    "stability_rate": 1.0,
+    "fail_reason_counts": {
+      "none": 8
+    },
+    "gi_mean": 2.278075732290745,
+    "gi_std": 1.0461321366892575,
+    "best_gi_run_id": 8,
+    "gi_plausible_count": 6,
+    "gi_plausible_rate": 0.75,
+    "collision_force_share_mean": 0.03973853812680268,
+    "collision_force_share_p95": 0.08233552436871315,
+    "collision_overlap_p95_mean": 0.0,
+    "collision_overlap_max_max": 0.12598633766174316
+  },
+  "passed": true
+}
