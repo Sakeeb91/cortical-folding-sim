@@ -1,0 +1,42 @@
+{
+  "generated_at_utc": "2026-02-14T22:50:19.607065+00:00",
+  "configs": [
+    {
+      "path": "configs/forward_sweep_baseline.json",
+      "exists": true,
+      "sha256": "6746d96c452b5f442209c764f449c8dd1fb2e3e4987c28bfea188246a415f660"
+    },
+    {
+      "path": "configs/forward_sweep_week3.json",
+      "exists": true,
+      "sha256": "9fe840dcd8452a523b6fe346c700a31b928d4f193dd1dd492d7050d4e6cde0a9"
+    },
+    {
+      "path": "configs/week3_anisotropy_ab.json",
+      "exists": true,
+      "sha256": "3e9b09620a104ab364660c7edb393ea8d2699d793690978173c7ee268029dc35"
+    },
+    {
+      "path": "configs/week4_collision_ablation.json",
+      "exists": true,
+      "sha256": "a82ea18135c7048c4c4b378e01f6eb4604fc21d6035fd49f32669431b84e542b"
+    },
+    {
+      "path": "configs/week5_layered_ablation.json",
+      "exists": true,
+      "sha256": "d2a392b028d888a4028c9ee5874e24b4f3c8c5acfdd8e88a3574420a14c56ec7"
+    },
+    {
+      "path": "configs/validation_gates_default.json",
+      "exists": true,
+      "sha256": "8111d2f5138726442dddac1e68092de7b4c63ab185a1da013a8a4bd761914024"
+    }
+  ],
+  "reference_config_hashes": {
+    "forward_sweep_config_hash": "dbd527e51a54be405e23d1c3ff8577c5189c5ace316f959684cdbc243a9e0440",
+    "week3_sweep_config_hash": "92d23ec62b5c7d565a459505a9d92a0b53a247d36b25682ba585c73b8a779a2b",
+    "week4_sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
+    "week5_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+    "week7_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30"
+  }
+}
