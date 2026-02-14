@@ -183,7 +183,10 @@ def main() -> None:
         repro_mismatches.append("config_hash_mismatch:week5_sweep_config_hash")
 
     week3_keys = ["delta_gi", "delta_curv_p90", "delta_disp_p95"]
-    week4_keys = ["runtime_ratio_spatial_over_sampled", "reduction_overlap_count_vs_sampled"]
+    week4_keys = [
+        "reduction_overlap_count_vs_sampled",
+        "spatial_hash_collision_overlap_count",
+    ]
     week5_keys = ["layered_gi", "layered_disp_p95", "robust_region_count"]
     repro_mismatches.extend(compare_repro(run1_week3, run2_week3, week3_keys, atol=args.atol))
     repro_mismatches.extend(compare_repro(run1_week4, run2_week4, week4_keys, atol=args.atol))
