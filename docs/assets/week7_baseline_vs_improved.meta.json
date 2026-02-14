@@ -1,6 +1,6 @@
 {
   "figure_id": "week7_baseline_vs_improved_animation",
-  "generated_at_utc": "2026-02-14T22:30:01.747799+00:00",
+  "generated_at_utc": "2026-02-14T22:50:59.804276+00:00",
   "output_files": [
     "docs/assets/week7_baseline_vs_improved.gif",
     "docs/assets/week7_baseline_vs_improved.mp4"
@@ -13,7 +13,7 @@
     "config": "configs/week5_layered_ablation.json",
     "source_csv": "results/week5_layered_ablation.csv",
     "source_summary": "results/week5_layered_ablation_summary.json",
-    "comparison_summary": "results/week7_repro_run2_animation_summary.json"
+    "comparison_summary": "results/week8_repro_run2_week7_animation_summary.json"
   },
   "source_run_ids": [
     1,
@@ -28,6 +28,6 @@
     "f85657b5cd4a9a7cc06df3ce73bc679e7e053ff216ff792a90470c9375739e1c"
   ],
   "source_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
-  "source_git_commit": "b0f483d",
+  "source_git_commit": "227bd17",
   "week7_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30"
 }

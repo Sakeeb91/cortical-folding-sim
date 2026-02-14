@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-14T22:29:24.152933+00:00",
+  "generated_at_utc": "2026-02-14T22:50:19.578110+00:00",
   "n_assets": 1,
   "n_assets_with_source_run_ids": 1,
   "assets_missing_source_run_ids": [],
@@ -32,7 +32,7 @@
         "f85657b5cd4a9a7cc06df3ce73bc679e7e053ff216ff792a90470c9375739e1c"
       ],
       "source_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
-      "source_git_commit": "b0f483d",
+      "source_git_commit": "227bd17",
       "source_artifacts": {
         "animation_summary": "results/week7_animation_comparison_summary.json",
         "results_index": "results/week7_results_index_summary.json",
