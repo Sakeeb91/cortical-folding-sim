@@ -1,0 +1,46 @@
+{
+  "generated_at_utc": "2026-02-14T22:50:42.252126+00:00",
+  "n_assets": 1,
+  "n_assets_with_source_run_ids": 1,
+  "assets_missing_source_run_ids": [],
+  "all_assets_have_source_run_ids": true,
+  "results_index_all_claims_have_linked_artifacts": true,
+  "assets": [
+    {
+      "asset_id": "week7_baseline_vs_improved_animation",
+      "output_files": [
+        "docs/assets/week7_baseline_vs_improved.gif",
+        "docs/assets/week7_baseline_vs_improved.mp4"
+      ],
+      "output_exists": [
+        true,
+        true
+      ],
+      "all_outputs_exist": true,
+      "output_metadata_sidecar": "docs/assets/week7_baseline_vs_improved.meta.json",
+      "metadata_sidecar_exists": true,
+      "source_run_ids": [
+        1,
+        2
+      ],
+      "source_run_labels": [
+        "layered_off_reference",
+        "layered_on_reference"
+      ],
+      "source_run_config_hashes": [
+        "8d667f8695b804bf9ddc836eb491ed807a27fee5ab2dda876fc961cfd6e7bbda",
+        "f85657b5cd4a9a7cc06df3ce73bc679e7e053ff216ff792a90470c9375739e1c"
+      ],
+      "source_sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
+      "source_git_commit": "227bd17",
+      "source_artifacts": {
+        "animation_summary": "results/week8_repro_run1_week7_animation_summary.json",
+        "results_index": "results/week8_repro_run1_results_index_summary.json",
+        "source_csv": "results/week5_layered_ablation.csv",
+        "source_summary": "results/week5_layered_ablation_summary.json",
+        "config": "configs/week5_layered_ablation.json"
+      },
+      "has_source_run_ids": true
+    }
+  ]
+}
