@@ -1,0 +1,28 @@
+{
+  "generated_at_utc": "2026-02-14T21:47:12.781045+00:00",
+  "figure_id": "week4_collision_ablation",
+  "style_version": "week6_standard_v1",
+  "output_png": "docs/assets/week4_collision_ablation.png",
+  "source_run_ids": [
+    1,
+    2,
+    3
+  ],
+  "source_run_labels": [
+    "collision_disabled_baseline",
+    "collision_sampled_deterministic",
+    "collision_spatial_hash"
+  ],
+  "source_run_config_hashes": [
+    "e8887dd5ba4be1f41960b93166b5e322fbe95501dd8826de1cc4b93ac116dc9e",
+    "74b123c22d1980e687157511bc9f1a68067d542fc6b3c99255bbf2c5f826038a",
+    "04bc26c43033303d3d46bb25c4fb22d9955b94e694345565536b6dd770bad525"
+  ],
+  "source_sweep_config_hash": "876758d2383a01947f95493a32b29022bbe6e6937a337ec7f97ce597266a4590",
+  "source_git_commit": "ca1c4cf",
+  "source_artifacts": {
+    "csv": "results/week4_collision_ablation.csv",
+    "summary": "results/week4_collision_ablation_summary.json",
+    "comparison": "results/week4_collision_comparison.json"
+  }
+}
