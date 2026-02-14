@@ -1,7 +1,7 @@
 {
-  "generated_at_utc": "2026-02-14T21:47:20.426897+00:00",
+  "generated_at_utc": "2026-02-14T22:29:51.630153+00:00",
   "seed": 42,
-  "git_commit": "ca1c4cf",
+  "git_commit": "b0f483d",
   "sweep_config_hash": "0df1bc67427d103fc4824c013be7f15f44067458101e09776d4d30e681952e30",
   "config_path": "configs/week5_layered_ablation.json",
   "gi_plausible_min": 0.8,
