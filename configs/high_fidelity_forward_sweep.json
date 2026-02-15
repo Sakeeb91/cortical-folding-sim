@@ -1,0 +1,52 @@
+[
+  {
+    "label": "hf_uniform_low",
+    "growth_mode": "uniform",
+    "uniform_rate": 0.32,
+    "Kc": 2.0,
+    "Kb": 3.2,
+    "damping": 0.92,
+    "carrying_cap_factor": 4.0,
+    "tau": 520.0
+  },
+  {
+    "label": "hf_uniform_mid",
+    "growth_mode": "uniform",
+    "uniform_rate": 0.48,
+    "Kc": 1.9,
+    "Kb": 3.1,
+    "damping": 0.92,
+    "carrying_cap_factor": 4.1,
+    "tau": 520.0
+  },
+  {
+    "label": "hf_regional_aniso",
+    "growth_mode": "regional",
+    "high_rate": 0.90,
+    "low_rate": 0.18,
+    "Kc": 1.9,
+    "Kb": 2.8,
+    "damping": 0.92,
+    "carrying_cap_factor": 4.2,
+    "tau": 520.0,
+    "anisotropy_mode": "regional",
+    "anisotropy_strength": 0.35,
+    "anisotropy_high": 1.0,
+    "anisotropy_low": 0.0
+  },
+  {
+    "label": "hf_regional_layered",
+    "growth_mode": "regional",
+    "high_rate": 1.05,
+    "low_rate": 0.22,
+    "Kc": 2.0,
+    "Kb": 2.9,
+    "damping": 0.92,
+    "carrying_cap_factor": 4.2,
+    "tau": 520.0,
+    "enable_two_layer_approx": true,
+    "outer_layer_growth_scale": 1.23,
+    "inner_layer_growth_scale": 0.78,
+    "two_layer_coupling": 0.12
+  }
+]
