@@ -148,6 +148,16 @@ def build_params(cfg: dict, skull_radius: float) -> SimParams:
         self_collision_hash_neighbor_window=cfg_get(cfg, "self_collision_hash_neighbor_window", 8),
         self_collision_deterministic_fallback=cfg_get(cfg, "self_collision_deterministic_fallback", True),
         self_collision_fallback_n_sample=cfg_get(cfg, "self_collision_fallback_n_sample", 256),
+        self_collision_blend_sampled_weight=cfg_get(
+            cfg, "self_collision_blend_sampled_weight", 0.0
+        ),
+        enable_adaptive_substepping=cfg_get(cfg, "enable_adaptive_substepping", False),
+        adaptive_substep_min=cfg_get(cfg, "adaptive_substep_min", 1),
+        adaptive_substep_max=cfg_get(cfg, "adaptive_substep_max", 4),
+        adaptive_target_disp=cfg_get(cfg, "adaptive_target_disp", 0.01),
+        adaptive_force_safety_scale=cfg_get(cfg, "adaptive_force_safety_scale", 1.0),
+        fail_on_nonfinite=cfg_get(cfg, "fail_on_nonfinite", False),
+        high_fidelity=cfg_get(cfg, "high_fidelity", False),
         anisotropy_strength=cfg_get(cfg, "anisotropy_strength", 0.0),
         anisotropy_axis=jnp.array(cfg_get(cfg, "anisotropy_axis", [0.0, 0.0, 1.0])),
         enable_two_layer_approx=cfg_get(cfg, "enable_two_layer_approx", False),
