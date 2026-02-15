@@ -19,6 +19,10 @@ from cortical_folding.benchmarking import (
     is_gi_plausible,
     load_grid_config,
 )
+from cortical_folding.high_fidelity import (
+    HIGH_FIDELITY_PROFILE_VERSION,
+    apply_high_fidelity_profile,
+)
 from cortical_folding.losses import gyrification_index
 from cortical_folding.mesh import build_topology, compute_face_areas, compute_mean_curvature
 from cortical_folding.solver import SimParams, compute_force_components, make_initial_state, simulate
@@ -63,6 +67,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skull-radius", type=float, default=1.5, help="Skull radius.")
     parser.add_argument("--n-steps", type=int, default=200, help="Simulation timesteps.")
     parser.add_argument("--dt", type=float, default=0.02, help="Simulation dt.")
+    parser.add_argument(
+        "--mode",
+        choices=("standard", "high_fidelity"),
+        default="standard",
+        help="Simulation profile mode.",
+    )
+    parser.add_argument(
+        "--high-fidelity",
+        action="store_true",
+        help="Alias for --mode high_fidelity.",
+    )
     parser.add_argument("--seed", type=int, default=42, help="Run seed metadata.")
     parser.add_argument(
         "--gi-plausible-min",
@@ -216,6 +231,7 @@ def run_single(
     n_steps: int,
     dt: float,
     seed: int,
+    mode: str,
     gi_plausible_min: float,
     gi_plausible_max: float,
     fail_fast_disp_max: float,
@@ -249,6 +265,7 @@ def run_single(
     )
     run_dt = cfg_get(cfg, "dt", dt)
 
+    high_fidelity = mode == "high_fidelity"
     params = SimParams(
         Kc=cfg_get(cfg, "Kc", 2.0),
         Kb=cfg_get(cfg, "Kb", 3.0),
@@ -272,6 +289,16 @@ def run_single(
             cfg, "self_collision_deterministic_fallback", True
         ),
         self_collision_fallback_n_sample=cfg_get(cfg, "self_collision_fallback_n_sample", 256),
+        self_collision_blend_sampled_weight=cfg_get(
+            cfg, "self_collision_blend_sampled_weight", 0.0
+        ),
+        enable_adaptive_substepping=cfg_get(cfg, "enable_adaptive_substepping", False),
+        adaptive_substep_min=cfg_get(cfg, "adaptive_substep_min", 1),
+        adaptive_substep_max=cfg_get(cfg, "adaptive_substep_max", 4),
+        adaptive_target_disp=cfg_get(cfg, "adaptive_target_disp", 0.01),
+        adaptive_force_safety_scale=cfg_get(cfg, "adaptive_force_safety_scale", 1.0),
+        fail_on_nonfinite=cfg_get(cfg, "fail_on_nonfinite", False),
+        high_fidelity=cfg_get(cfg, "high_fidelity", high_fidelity),
         anisotropy_strength=cfg_get(cfg, "anisotropy_strength", 0.0),
         anisotropy_axis=anisotropy_axis,
         enable_two_layer_approx=cfg_get(cfg, "enable_two_layer_approx", False),
@@ -309,6 +336,8 @@ def run_single(
     row = {
         "run_id": run_id,
         "label": cfg_get(cfg, "label", f"run_{run_id}"),
+        "simulation_mode": mode,
+        "profile_version": cfg_get(cfg, "profile_version", "standard_v1"),
         "growth_mode": cfg_get(cfg, "growth_mode", "uniform"),
         "uniform_rate": cfg_get(cfg, "uniform_rate", 0.0),
         "high_rate": cfg_get(cfg, "high_rate", 0.0),
@@ -337,6 +366,16 @@ def run_single(
         "self_collision_deterministic_fallback": int(
             cfg_get(cfg, "self_collision_deterministic_fallback", True)
         ),
+        "self_collision_blend_sampled_weight": cfg_get(
+            cfg, "self_collision_blend_sampled_weight", 0.0
+        ),
+        "enable_adaptive_substepping": int(cfg_get(cfg, "enable_adaptive_substepping", False)),
+        "adaptive_substep_min": cfg_get(cfg, "adaptive_substep_min", 1),
+        "adaptive_substep_max": cfg_get(cfg, "adaptive_substep_max", 4),
+        "adaptive_target_disp": cfg_get(cfg, "adaptive_target_disp", 0.01),
+        "adaptive_force_safety_scale": cfg_get(cfg, "adaptive_force_safety_scale", 1.0),
+        "fail_on_nonfinite": int(cfg_get(cfg, "fail_on_nonfinite", False)),
+        "high_fidelity": int(cfg_get(cfg, "high_fidelity", high_fidelity)),
         "enable_two_layer_approx": int(cfg_get(cfg, "enable_two_layer_approx", False)),
         "two_layer_threshold": cfg_get(cfg, "two_layer_threshold", 0.0),
         "two_layer_transition_sharpness": cfg_get(cfg, "two_layer_transition_sharpness", 6.0),
@@ -458,6 +497,12 @@ def write_summary(rows: list[dict], path: Path, metadata: dict) -> None:
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         **metadata,
         "n_runs": len(rows),
+        "simulation_mode": metadata["simulation_mode"],
+        "profile_version": metadata["profile_version"],
+        "n_high_fidelity_runs": int(sum(1 for r in rows if int(r["high_fidelity"]) == 1)),
+        "n_adaptive_substepping_runs": int(
+            sum(1 for r in rows if int(r["enable_adaptive_substepping"]) == 1)
+        ),
         "n_anisotropic_runs": int(sum(1 for r in rows if float(r["anisotropy_strength"]) > 0)),
         "n_isotropic_runs": int(sum(1 for r in rows if float(r["anisotropy_strength"]) == 0)),
         "n_two_layer_runs": int(sum(1 for r in rows if int(r["enable_two_layer_approx"]) == 1)),
@@ -533,12 +578,15 @@ def write_manifest(path: Path, metadata: dict, rows: list[dict]) -> None:
 
 def main() -> None:
     args = parse_args()
+    mode = "high_fidelity" if args.high_fidelity else args.mode
 
     verts, faces = create_icosphere(subdivisions=args.subdivisions, radius=args.radius)
     topo = build_topology(verts, faces)
     skull_center, skull_radius = create_skull(radius=args.skull_radius)
 
     grid = build_quick_grid() if args.quick else load_grid_config(args.config_path)
+    if mode == "high_fidelity":
+        grid = [apply_high_fidelity_profile(cfg) for cfg in grid]
     if args.max_runs is not None:
         grid = grid[: args.max_runs]
     sweep_config_hash = config_hash(grid)
@@ -561,6 +609,7 @@ def main() -> None:
             n_steps=args.n_steps,
             dt=args.dt,
             seed=args.seed,
+            mode=mode,
             gi_plausible_min=args.gi_plausible_min,
             gi_plausible_max=args.gi_plausible_max,
             fail_fast_disp_max=args.fail_fast_disp_max,
@@ -583,6 +632,10 @@ def main() -> None:
     manifest_path = Path(args.output_manifest)
     metadata = {
         "seed": args.seed,
+        "simulation_mode": mode,
+        "profile_version": HIGH_FIDELITY_PROFILE_VERSION
+        if mode == "high_fidelity"
+        else "standard_v1",
         "git_commit": git_commit,
         "sweep_config_hash": sweep_config_hash,
         "config_path": args.config_path,
