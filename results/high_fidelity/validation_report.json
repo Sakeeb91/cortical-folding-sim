@@ -1,0 +1,277 @@
+{
+  "generated_at_utc": "2026-02-15T13:29:17.399389+00:00",
+  "dry_run": false,
+  "seed": 42,
+  "n_steps": 120,
+  "output_dir": "results/high_fidelity",
+  "artifacts": {
+    "baseline_csv": "results/high_fidelity/baseline_forward_sweep.csv",
+    "baseline_summary": "results/high_fidelity/baseline_forward_sweep_summary.json",
+    "baseline_manifest": "results/high_fidelity/baseline_forward_sweep_manifest.json",
+    "high_fidelity_csv": "results/high_fidelity/high_fidelity_forward_sweep.csv",
+    "high_fidelity_summary": "results/high_fidelity/high_fidelity_forward_sweep_summary.json",
+    "high_fidelity_manifest": "results/high_fidelity/high_fidelity_forward_sweep_manifest.json",
+    "high_fidelity_rerun_summary": "results/high_fidelity/high_fidelity_forward_sweep_rerun_summary.json",
+    "runtime_stats": "results/high_fidelity/runtime_stats.json",
+    "config_hashes": "results/high_fidelity/config_hashes.json",
+    "matrix_csv": "results/high_fidelity/matrix_stability.csv"
+  },
+  "reproducibility": {
+    "seed": 42,
+    "atol": 1e-06,
+    "first_summary": "results/high_fidelity/high_fidelity_forward_sweep_summary.json",
+    "second_summary": "results/high_fidelity/high_fidelity_forward_sweep_rerun_summary.json",
+    "mismatch_count": 0,
+    "mismatches": [],
+    "passed": true
+  },
+  "matrix": {
+    "seeds": [
+      11,
+      23,
+      37
+    ],
+    "labels": [
+      "hf_matrix_reference",
+      "hf_matrix_layered"
+    ],
+    "n_records": 6,
+    "stability_rate": 1.0,
+    "passed": true,
+    "matrix_csv": "results/high_fidelity/matrix_stability.csv"
+  },
+  "regression_vs_baseline": {
+    "baseline_summary": "results/high_fidelity/baseline_forward_sweep_summary.json",
+    "high_fidelity_summary": "results/high_fidelity/high_fidelity_forward_sweep_summary.json",
+    "checks": [
+      {
+        "name": "stability_rate",
+        "baseline": 1.0,
+        "high_fidelity": 1.0,
+        "delta": 0.0,
+        "max_drop_allowed": -0.05,
+        "status": "pass",
+        "passed": true
+      },
+      {
+        "name": "disp_p95_mean",
+        "baseline": 0.5491980388760567,
+        "high_fidelity": 0.3229784443974495,
+        "delta": -0.22621959447860718,
+        "max_increase_allowed": 0.05,
+        "status": "pass",
+        "passed": true
+      },
+      {
+        "name": "outside_skull_frac_mean",
+        "baseline": 0.18165887850467285,
+        "high_fidelity": 0.0,
+        "delta": -0.18165887850467285,
+        "max_increase_allowed": 0.05,
+        "status": "pass",
+        "passed": true
+      },
+      {
+        "name": "gi_mean_absolute_floor",
+        "baseline": 2.212916385382414,
+        "high_fidelity": 0.6814252436161041,
+        "delta": -1.5314911417663097,
+        "min_allowed": 0.6,
+        "status": "pass",
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "runtime_budget": {
+    "baseline_runtime_s": 3.988744166912511,
+    "high_fidelity_runtime_s": 3.5406107103917748,
+    "runtime_ratio_hf_over_baseline": 0.8876504890340926,
+    "budget_ratio": 2.0,
+    "passed": true
+  },
+  "ci_parity": {
+    "checks": [
+      {
+        "command": [
+          "./scripts/run_validation_quick.sh"
+        ],
+        "returncode": 0,
+        "passed": true,
+        "elapsed_s": 50.197419124888256,
+        "stdout_tail": "..............................................................           [100%]\n62 passed in 45.47s\nRunning forward sweep with 4 configs (subdivisions=3, steps=80)\n[01/04] mode=uniform  collision=disabled     Kc=2.00 Kb=3.00 GI=0.511 stable=1 collision_share=0.0000\n[02/04] mode=uniform  collision=disabled     Kc=2.00 Kb=3.00 GI=0.541 stable=1 collision_share=0.0000\n[03/04] mode=regional collision=disabled     Kc=2.00 Kb=3.00 GI=0.525 stable=1 collision_share=0.0000\n[04/04] mode=regional collision=disabled     Kc=1.80 Kb=2.50 GI=0.558 stable=1 collision_share=0.0000\nSaved CSV: results/forward_sweep.csv\nSaved summary: results/forward_sweep_summary.json\nSaved manifest: results/forward_sweep_manifest.json\nSaved report: results/validation_gate_report.json\nPASS: stability_rate observed=1.000000 >= threshold=0.950000\nPASS: gi_plausible_rate observed=1.000000 >= threshold=0.500000\nPASS: outside_skull_frac_p95 observed=0.000000 <= threshold=0.400000\nPASS: skull_penetration_p95 observed=0.000000 <= threshold=0.250000\nPASS: disp_p95 observed=0.161669 <= threshold=0.800000\nAll validation gates passed.\n",
+        "stderr_tail": "",
+        "executed": true
+      },
+      {
+        "command": [
+          "./scripts/run_validation_full.sh"
+        ],
+        "returncode": 0,
+        "passed": true,
+        "elapsed_s": 61.12713604210876,
+        "stdout_tail": ".213005 <= threshold=0.250000\nPASS: disp_p95 observed=0.773080 <= threshold=0.800000\nAll validation gates passed.\nRunning forward sweep with 16 configs (subdivisions=3, steps=120)\n[01/16] mode=uniform  collision=disabled     Kc=1.60 Kb=2.50 GI=0.788 stable=1 collision_share=0.0000\n[02/16] mode=regional collision=disabled     Kc=1.60 Kb=2.50 GI=0.822 stable=1 collision_share=0.0000\n[03/16] mode=uniform  collision=disabled     Kc=1.60 Kb=2.50 GI=0.864 stable=1 collision_share=0.0000\n[04/16] mode=regional collision=disabled     Kc=1.60 Kb=2.50 GI=0.896 stable=1 collision_share=0.0000\n[05/16] mode=uniform  collision=disabled     Kc=1.60 Kb=3.50 GI=3.850 stable=1 collision_share=0.0000\n[06/16] mode=regional collision=disabled     Kc=1.60 Kb=3.50 GI=3.858 stable=1 collision_share=0.0000\n[07/16] mode=uniform  collision=disabled     Kc=1.60 Kb=3.50 GI=4.452 stable=1 collision_share=0.0000\n[08/16] mode=regional collision=disabled     Kc=1.60 Kb=3.50 GI=3.899 stable=1 collision_share=0.0000\n[09/16] mode=uniform  collision=disabled     Kc=2.00 Kb=2.50 GI=0.796 stable=1 collision_share=0.0000\n[10/16] mode=regional collision=disabled     Kc=2.00 Kb=2.50 GI=0.827 stable=1 collision_share=0.0000\n[11/16] mode=uniform  collision=disabled     Kc=2.00 Kb=2.50 GI=0.770 stable=1 collision_share=0.0000\n[12/16] mode=regional collision=disabled     Kc=2.00 Kb=2.50 GI=0.845 stable=1 collision_share=0.0000\n[13/16] mode=uniform  collision=disabled     Kc=2.00 Kb=3.50 GI=3.178 stable=1 collision_share=0.0000\n[14/16] mode=regional collision=disabled     Kc=2.00 Kb=3.50 GI=3.153 stable=1 collision_share=0.0000\n[15/16] mode=uniform  collision=disabled     Kc=2.00 Kb=3.50 GI=3.318 stable=1 collision_share=0.0000\n[16/16] mode=regional collision=disabled     Kc=2.00 Kb=3.50 GI=3.091 stable=1 collision_share=0.0000\nSaved CSV: results/forward_sweep.csv\nSaved summary: results/forward_sweep_summary_seed_repeat.json\nSaved manifest: results/forward_sweep_manifest.json\nSeeded reproducibility check passed.\n",
+        "stderr_tail": "",
+        "executed": true
+      }
+    ],
+    "passed": true
+  },
+  "commands": [
+    {
+      "command": [
+        "python3.11",
+        "scripts/run_forward_sweep.py",
+        "--config-path",
+        "configs/forward_sweep_baseline.json",
+        "--seed",
+        "42",
+        "--n-steps",
+        "120",
+        "--output-csv",
+        "results/high_fidelity/baseline_forward_sweep.csv",
+        "--output-summary",
+        "results/high_fidelity/baseline_forward_sweep_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/baseline_forward_sweep_manifest.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "elapsed_s": 7.126043667085469,
+      "stdout_tail": "Running forward sweep with 16 configs (subdivisions=3, steps=120)\n[01/16] mode=uniform  collision=disabled     Kc=1.60 Kb=2.50 GI=0.788 stable=1 collision_share=0.0000\n[02/16] mode=regional collision=disabled     Kc=1.60 Kb=2.50 GI=0.822 stable=1 collision_share=0.0000\n[03/16] mode=uniform  collision=disabled     Kc=1.60 Kb=2.50 GI=0.864 stable=1 collision_share=0.0000\n[04/16] mode=regional collision=disabled     Kc=1.60 Kb=2.50 GI=0.896 stable=1 collision_share=0.0000\n[05/16] mode=uniform  collision=disabled     Kc=1.60 Kb=3.50 GI=3.850 stable=1 collision_share=0.0000\n[06/16] mode=regional collision=disabled     Kc=1.60 Kb=3.50 GI=3.858 stable=1 collision_share=0.0000\n[07/16] mode=uniform  collision=disabled     Kc=1.60 Kb=3.50 GI=4.452 stable=1 collision_share=0.0000\n[08/16] mode=regional collision=disabled     Kc=1.60 Kb=3.50 GI=3.899 stable=1 collision_share=0.0000\n[09/16] mode=uniform  collision=disabled     Kc=2.00 Kb=2.50 GI=0.796 stable=1 collision_share=0.0000\n[10/16] mode=regional collision=disabled     Kc=2.00 Kb=2.50 GI=0.827 stable=1 collision_share=0.0000\n[11/16] mode=uniform  collision=disabled     Kc=2.00 Kb=2.50 GI=0.770 stable=1 collision_share=0.0000\n[12/16] mode=regional collision=disabled     Kc=2.00 Kb=2.50 GI=0.845 stable=1 collision_share=0.0000\n[13/16] mode=uniform  collision=disabled     Kc=2.00 Kb=3.50 GI=3.178 stable=1 collision_share=0.0000\n[14/16] mode=regional collision=disabled     Kc=2.00 Kb=3.50 GI=3.153 stable=1 collision_share=0.0000\n[15/16] mode=uniform  collision=disabled     Kc=2.00 Kb=3.50 GI=3.318 stable=1 collision_share=0.0000\n[16/16] mode=regional collision=disabled     Kc=2.00 Kb=3.50 GI=3.091 stable=1 collision_share=0.0000\nSaved CSV: results/high_fidelity/baseline_forward_sweep.csv\nSaved summary: results/high_fidelity/baseline_forward_sweep_summary.json\nSaved manifest: results/high_fidelity/baseline_forward_sweep_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true
+    },
+    {
+      "command": [
+        "python3.11",
+        "scripts/run_forward_sweep.py",
+        "--mode",
+        "high_fidelity",
+        "--config-path",
+        "configs/high_fidelity_forward_sweep.json",
+        "--seed",
+        "42",
+        "--n-steps",
+        "120",
+        "--output-csv",
+        "results/high_fidelity/high_fidelity_forward_sweep.csv",
+        "--output-summary",
+        "results/high_fidelity/high_fidelity_forward_sweep_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/high_fidelity_forward_sweep_manifest.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "elapsed_s": 7.6200089999474585,
+      "stdout_tail": "Running forward sweep with 4 configs (subdivisions=3, steps=120)\n[01/04] mode=uniform  collision=spatial_hash Kc=2.00 Kb=3.20 GI=0.623 stable=1 collision_share=0.0000\n[02/04] mode=uniform  collision=spatial_hash Kc=1.90 Kb=3.10 GI=0.659 stable=1 collision_share=0.0000\n[03/04] mode=regional collision=spatial_hash Kc=1.90 Kb=2.80 GI=0.707 stable=1 collision_share=0.0000\n[04/04] mode=regional collision=spatial_hash Kc=2.00 Kb=2.90 GI=0.738 stable=1 collision_share=0.0000\nSaved CSV: results/high_fidelity/high_fidelity_forward_sweep.csv\nSaved summary: results/high_fidelity/high_fidelity_forward_sweep_summary.json\nSaved manifest: results/high_fidelity/high_fidelity_forward_sweep_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true
+    },
+    {
+      "command": [
+        "python3.11",
+        "scripts/run_forward_sweep.py",
+        "--mode",
+        "high_fidelity",
+        "--config-path",
+        "configs/high_fidelity_forward_sweep.json",
+        "--seed",
+        "42",
+        "--n-steps",
+        "120",
+        "--output-csv",
+        "results/high_fidelity/high_fidelity_forward_sweep_rerun.csv",
+        "--output-summary",
+        "results/high_fidelity/high_fidelity_forward_sweep_rerun_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/high_fidelity_forward_sweep_rerun_manifest.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "elapsed_s": 7.563571834005415,
+      "stdout_tail": "Running forward sweep with 4 configs (subdivisions=3, steps=120)\n[01/04] mode=uniform  collision=spatial_hash Kc=2.00 Kb=3.20 GI=0.623 stable=1 collision_share=0.0000\n[02/04] mode=uniform  collision=spatial_hash Kc=1.90 Kb=3.10 GI=0.659 stable=1 collision_share=0.0000\n[03/04] mode=regional collision=spatial_hash Kc=1.90 Kb=2.80 GI=0.707 stable=1 collision_share=0.0000\n[04/04] mode=regional collision=spatial_hash Kc=2.00 Kb=2.90 GI=0.738 stable=1 collision_share=0.0000\nSaved CSV: results/high_fidelity/high_fidelity_forward_sweep_rerun.csv\nSaved summary: results/high_fidelity/high_fidelity_forward_sweep_rerun_summary.json\nSaved manifest: results/high_fidelity/high_fidelity_forward_sweep_rerun_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true
+    },
+    {
+      "command": [
+        "python3.11",
+        "scripts/run_forward_sweep.py",
+        "--mode",
+        "high_fidelity",
+        "--config-path",
+        "configs/high_fidelity_matrix.json",
+        "--seed",
+        "11",
+        "--n-steps",
+        "120",
+        "--output-csv",
+        "results/high_fidelity/matrix_seed_11.csv",
+        "--output-summary",
+        "results/high_fidelity/matrix_seed_11_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/matrix_seed_11_manifest.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "elapsed_s": 5.909784374991432,
+      "stdout_tail": "Running forward sweep with 2 configs (subdivisions=3, steps=120)\n[01/02] mode=regional collision=spatial_hash Kc=1.90 Kb=2.90 GI=0.678 stable=1 collision_share=0.0000\n[02/02] mode=regional collision=spatial_hash Kc=2.00 Kb=3.00 GI=0.744 stable=1 collision_share=0.0000\nSaved CSV: results/high_fidelity/matrix_seed_11.csv\nSaved summary: results/high_fidelity/matrix_seed_11_summary.json\nSaved manifest: results/high_fidelity/matrix_seed_11_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true
+    },
+    {
+      "command": [
+        "python3.11",
+        "scripts/run_forward_sweep.py",
+        "--mode",
+        "high_fidelity",
+        "--config-path",
+        "configs/high_fidelity_matrix.json",
+        "--seed",
+        "23",
+        "--n-steps",
+        "120",
+        "--output-csv",
+        "results/high_fidelity/matrix_seed_23.csv",
+        "--output-summary",
+        "results/high_fidelity/matrix_seed_23_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/matrix_seed_23_manifest.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "elapsed_s": 5.841158875031397,
+      "stdout_tail": "Running forward sweep with 2 configs (subdivisions=3, steps=120)\n[01/02] mode=regional collision=spatial_hash Kc=1.90 Kb=2.90 GI=0.678 stable=1 collision_share=0.0000\n[02/02] mode=regional collision=spatial_hash Kc=2.00 Kb=3.00 GI=0.744 stable=1 collision_share=0.0000\nSaved CSV: results/high_fidelity/matrix_seed_23.csv\nSaved summary: results/high_fidelity/matrix_seed_23_summary.json\nSaved manifest: results/high_fidelity/matrix_seed_23_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true
+    },
+    {
+      "command": [
+        "python3.11",
+        "scripts/run_forward_sweep.py",
+        "--mode",
+        "high_fidelity",
+        "--config-path",
+        "configs/high_fidelity_matrix.json",
+        "--seed",
+        "37",
+        "--n-steps",
+        "120",
+        "--output-csv",
+        "results/high_fidelity/matrix_seed_37.csv",
+        "--output-summary",
+        "results/high_fidelity/matrix_seed_37_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/matrix_seed_37_manifest.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "elapsed_s": 5.913321208907291,
+      "stdout_tail": "Running forward sweep with 2 configs (subdivisions=3, steps=120)\n[01/02] mode=regional collision=spatial_hash Kc=1.90 Kb=2.90 GI=0.678 stable=1 collision_share=0.0000\n[02/02] mode=regional collision=spatial_hash Kc=2.00 Kb=3.00 GI=0.744 stable=1 collision_share=0.0000\nSaved CSV: results/high_fidelity/matrix_seed_37.csv\nSaved summary: results/high_fidelity/matrix_seed_37_summary.json\nSaved manifest: results/high_fidelity/matrix_seed_37_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true
+    }
+  ],
+  "passed": true
+}
