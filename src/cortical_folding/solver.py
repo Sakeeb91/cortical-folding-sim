@@ -55,6 +55,14 @@ class SimParams(NamedTuple):
     self_collision_hash_neighbor_window: int = 8
     self_collision_deterministic_fallback: bool = True
     self_collision_fallback_n_sample: int = 256
+    self_collision_blend_sampled_weight: float = 0.0
+    enable_adaptive_substepping: bool = False
+    adaptive_substep_min: int = 1
+    adaptive_substep_max: int = 4
+    adaptive_target_disp: float = 0.01
+    adaptive_force_safety_scale: float = 1.0
+    fail_on_nonfinite: bool = False
+    high_fidelity: bool = False
     # Anisotropic rest-length growth controls
     anisotropy_strength: float = 0.0
     anisotropy_axis: jnp.ndarray = jnp.array([0.0, 0.0, 1.0])
@@ -80,11 +88,11 @@ class ForceComponents(NamedTuple):
 
 def _clip_vectors_norm(vectors: jnp.ndarray, max_norm: float) -> jnp.ndarray:
     """Clip per-vector L2 norm to avoid unstable updates."""
-    if max_norm <= 0:
-        return vectors
+    max_norm_arr = jnp.asarray(max_norm, dtype=vectors.dtype)
     norms = jnp.linalg.norm(vectors, axis=1, keepdims=True)
-    scale = jnp.minimum(1.0, max_norm / jnp.maximum(norms, 1e-12))
-    return vectors * scale
+    scale = jnp.minimum(1.0, max_norm_arr / jnp.maximum(norms, 1e-12))
+    clipped = vectors * scale
+    return jax.lax.cond(max_norm_arr <= 0, lambda _: vectors, lambda _: clipped, None)
 
 
 def _finite_or_previous(new_val: jnp.ndarray, previous_val: jnp.ndarray) -> jnp.ndarray:
@@ -176,6 +184,7 @@ def compute_force_components(
             hash_neighbor_window=params.self_collision_hash_neighbor_window,
             deterministic_fallback=params.self_collision_deterministic_fallback,
             fallback_n_sample=params.self_collision_fallback_n_sample,
+            sampled_blend_weight=params.self_collision_blend_sampled_weight,
         )
     return ForceComponents(
         elastic=f_elastic,
@@ -186,7 +195,35 @@ def compute_force_components(
     )
 
 
-def simulation_step(
+def _adaptive_substep_count(
+    state: SimState,
+    topo: MeshTopology,
+    params: SimParams,
+) -> jnp.ndarray:
+    """Compute deterministic adaptive substep count from current state."""
+    if not params.enable_adaptive_substepping:
+        return jnp.int32(1)
+    max_substeps = max(1, int(params.adaptive_substep_max))
+    min_substeps = min(max_substeps, max(1, int(params.adaptive_substep_min)))
+
+    # Estimate displacement with a conservative force safety multiplier.
+    force_components = compute_force_components(state, topo, params)
+    force_cap = params.max_force_norm * jnp.maximum(params.adaptive_force_safety_scale, 1e-6)
+    f_total = _clip_vectors_norm(force_components.total, force_cap)
+    acc = _clip_vectors_norm(
+        f_total - params.damping * state.velocities,
+        params.max_acc_norm,
+    )
+    pred_disp = params.dt * state.velocities + 0.5 * params.dt**2 * acc
+    pred_norm = jnp.linalg.norm(pred_disp, axis=1)
+    max_pred_disp = jnp.max(pred_norm)
+    target = jnp.maximum(params.adaptive_target_disp, 1e-6)
+    raw = jnp.ceil(max_pred_disp / target).astype(jnp.int32)
+    raw = jnp.maximum(raw, 1)
+    return jnp.clip(raw, min_substeps, max_substeps)
+
+
+def _simulation_substep(
     state: SimState,
     topo: MeshTopology,
     growth_rates: jnp.ndarray,
@@ -195,9 +232,9 @@ def simulation_step(
     params: SimParams,
     initial_edge_lengths: jnp.ndarray,
     initial_areas: jnp.ndarray,
+    dt: jnp.ndarray,
 ) -> SimState:
-    """Single timestep: forces → integrate → grow."""
-    dt = params.dt
+    """Single deterministic substep: forces → integrate → grow."""
     safe_growth_rates = jnp.clip(growth_rates, 0.0, params.max_growth_rate)
     if params.enable_two_layer_approx:
         inner_scale = jnp.maximum(params.inner_layer_growth_scale, 0.0)
@@ -257,10 +294,11 @@ def simulation_step(
     new_rest_lengths = jnp.maximum(new_rest_lengths, params.min_rest_length)
 
     # Finite guards to keep simulation recoverable in long runs.
-    new_verts = _finite_or_previous(new_verts, state.vertices)
-    new_vel = _finite_or_previous(new_vel, state.velocities)
-    new_rest_areas = _finite_or_previous(new_rest_areas, state.rest_areas)
-    new_rest_lengths = _finite_or_previous(new_rest_lengths, state.rest_lengths)
+    if not params.fail_on_nonfinite:
+        new_verts = _finite_or_previous(new_verts, state.vertices)
+        new_vel = _finite_or_previous(new_vel, state.velocities)
+        new_rest_areas = _finite_or_previous(new_rest_areas, state.rest_areas)
+        new_rest_lengths = _finite_or_previous(new_rest_lengths, state.rest_lengths)
 
     return SimState(
         vertices=new_verts,
@@ -269,6 +307,57 @@ def simulation_step(
         rest_areas=new_rest_areas,
         rest_curvatures=state.rest_curvatures,
     )
+
+
+def simulation_step(
+    state: SimState,
+    topo: MeshTopology,
+    growth_rates: jnp.ndarray,
+    face_anisotropy: jnp.ndarray,
+    face_layer_blend: jnp.ndarray,
+    params: SimParams,
+    initial_edge_lengths: jnp.ndarray,
+    initial_areas: jnp.ndarray,
+) -> SimState:
+    """Single timestep with optional deterministic adaptive substepping."""
+    if not params.enable_adaptive_substepping:
+        return _simulation_substep(
+            state=state,
+            topo=topo,
+            growth_rates=growth_rates,
+            face_anisotropy=face_anisotropy,
+            face_layer_blend=face_layer_blend,
+            params=params,
+            initial_edge_lengths=initial_edge_lengths,
+            initial_areas=initial_areas,
+            dt=jnp.asarray(params.dt, dtype=state.vertices.dtype),
+        )
+
+    max_substeps = max(1, int(params.adaptive_substep_max))
+    n_substeps = _adaptive_substep_count(state, topo, params)
+    dt_sub = jnp.asarray(params.dt, dtype=state.vertices.dtype) / jnp.maximum(
+        n_substeps.astype(state.vertices.dtype), 1.0
+    )
+
+    def substep_fn(carry: SimState, step_idx: jnp.ndarray) -> tuple[SimState, None]:
+        def run_one(sub_state: SimState) -> SimState:
+            return _simulation_substep(
+                state=sub_state,
+                topo=topo,
+                growth_rates=growth_rates,
+                face_anisotropy=face_anisotropy,
+                face_layer_blend=face_layer_blend,
+                params=params,
+                initial_edge_lengths=initial_edge_lengths,
+                initial_areas=initial_areas,
+                dt=dt_sub,
+            )
+
+        updated = jax.lax.cond(step_idx < n_substeps, run_one, lambda s: s, carry)
+        return updated, None
+
+    final_state, _ = jax.lax.scan(substep_fn, state, jnp.arange(max_substeps))
+    return final_state
 
 
 def simulate(
