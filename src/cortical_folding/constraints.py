@@ -166,6 +166,7 @@ def self_collision_penalty(
     hash_neighbor_window: int = 8,
     deterministic_fallback: bool = True,
     fallback_n_sample: int = 256,
+    sampled_blend_weight: float = 0.0,
     key=None,
 ) -> jnp.ndarray:
     """Approximate self-collision penalty via sampled or spatial-hash pairs.
@@ -183,7 +184,9 @@ def self_collision_penalty(
             hash_cell_size=cell_size,
             hash_neighbor_window=hash_neighbor_window,
         )
-        if deterministic_fallback:
+        blend_weight = jnp.clip(sampled_blend_weight, 0.0, 1.0)
+        need_sampled = deterministic_fallback or (sampled_blend_weight > 0.0)
+        if need_sampled:
             idx_a, idx_b = _deterministic_pair_indices(
                 verts.shape[0], max(1, int(fallback_n_sample))
             )
@@ -195,8 +198,11 @@ def self_collision_penalty(
                 min_dist=min_dist,
                 stiffness=stiffness,
             )
-            use_fallback = jnp.sum(active.astype(jnp.int32)) == 0
-            return jax.lax.cond(use_fallback, lambda _: sampled_forces, lambda _: hash_forces, None)
+            mixed_forces = (1.0 - blend_weight) * hash_forces + blend_weight * sampled_forces
+            if deterministic_fallback:
+                use_fallback = jnp.sum(active.astype(jnp.int32)) == 0
+                return jax.lax.cond(use_fallback, lambda _: sampled_forces, lambda _: mixed_forces, None)
+            return mixed_forces
         return hash_forces
 
     if key is None:
