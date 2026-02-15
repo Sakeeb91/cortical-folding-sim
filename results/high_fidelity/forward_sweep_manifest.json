@@ -1,0 +1,26 @@
+{
+  "generated_at_utc": "2026-02-15T13:22:42.952064+00:00",
+  "seed": 42,
+  "simulation_mode": "high_fidelity",
+  "profile_version": "hf_v1_2026_02_15",
+  "git_commit": "cfefb94",
+  "sweep_config_hash": "ad8beef081d7666398a972a4b2ba340e75a739832e06f5817932990365604912",
+  "config_path": "configs/high_fidelity_forward_sweep.json",
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
+  "fail_fast_disp_max": 1.0,
+  "fail_fast_penetration_max": 0.5,
+  "output_csv": "results/high_fidelity/forward_sweep.csv",
+  "output_summary": "results/high_fidelity/forward_sweep_summary.json",
+  "n_runs": 4,
+  "run_config_hashes": [
+    "2bf867a67ca12cfb8607b3269a20fdfdab25868fc99b5ed984c04b1c0fd2d8ec",
+    "9a6459d65ed4a880d356ebbbc14b9dd207de4021108188e4656f1766d20d9ab0",
+    "92895c6e5a1f33092b8f1fb689c6155516d1efd8fcd0e7b68cd8dbcc71539b4a",
+    "0ce74ae7f278b43601b67ebe8c71318f2d4158dfbad545a8d0b0c4db63a81fa5"
+  ],
+  "output_files": {
+    "csv": "results/high_fidelity/forward_sweep.csv",
+    "summary": "results/high_fidelity/forward_sweep_summary.json"
+  }
+}
