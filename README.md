@@ -94,6 +94,39 @@ python3.11 scripts/check_forward_sweep_gates.py \
 ./scripts/run_validation_full.sh
 ```
 
+### High-fidelity simulation mode
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/run_forward_sweep.py \
+  --mode high_fidelity \
+  --config-path configs/high_fidelity_forward_sweep.json \
+  --n-steps 120 \
+  --output-csv results/high_fidelity/forward_sweep.csv \
+  --output-summary results/high_fidelity/forward_sweep_summary.json \
+  --output-manifest results/high_fidelity/forward_sweep_manifest.json
+```
+
+### Publication render preset (GIF + MP4 from one pipeline)
+
+```bash
+MPLBACKEND=Agg python3.11 scripts/generate_high_fidelity_publication_render.py \
+  --config-path configs/high_fidelity_publication_render.json \
+  --n-steps 180 \
+  --with-metric-overlays \
+  --output-gif docs/assets/high_fidelity/publication_comparison.gif \
+  --output-mp4 docs/assets/high_fidelity/publication_comparison.mp4 \
+  --output-summary results/high_fidelity/publication_render_summary.json \
+  --output-manifest results/high_fidelity/publication_render_manifest.json
+```
+
+### High-fidelity hardened validation
+
+```bash
+python3.11 scripts/validate_high_fidelity.py \
+  --output-dir results/high_fidelity \
+  --n-steps 120
+```
+
 ### End-to-end packaging and validation
 
 The repository includes automated packaging and hardened validation workflows in `scripts/` that generate publication-style artifacts, reproducibility manifests, and gate reports.
