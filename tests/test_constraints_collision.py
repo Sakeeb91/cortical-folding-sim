@@ -98,3 +98,43 @@ def test_spatial_hash_repels_close_nonadjacent_vertices():
     force_norms = np.linalg.norm(np.asarray(forces), axis=1)
     assert force_norms[0] > 0.0
     assert force_norms[3] > 0.0
+
+
+def test_spatial_hash_sampled_blend_weight_changes_force_field():
+    verts = np.array(
+        [
+            [0.00, 0.00, 0.00],
+            [0.70, 0.00, 0.00],
+            [0.00, 0.70, 0.00],
+            [0.01, 0.00, 0.00],
+            [0.70, 0.00, 0.00],
+            [0.00, 0.70, 0.00],
+        ],
+        dtype=np.float32,
+    )
+    faces = np.array([[0, 1, 2], [3, 4, 5]], dtype=np.int32)
+    topo = build_topology(verts, faces)
+    pure_hash = self_collision_penalty(
+        jnp.asarray(verts),
+        topo,
+        min_dist=0.10,
+        stiffness=80.0,
+        use_spatial_hash=True,
+        hash_cell_size=0.08,
+        hash_neighbor_window=2,
+        deterministic_fallback=False,
+        sampled_blend_weight=0.0,
+    )
+    blended = self_collision_penalty(
+        jnp.asarray(verts),
+        topo,
+        min_dist=0.10,
+        stiffness=80.0,
+        use_spatial_hash=True,
+        hash_cell_size=0.08,
+        hash_neighbor_window=2,
+        deterministic_fallback=False,
+        sampled_blend_weight=0.5,
+        fallback_n_sample=64,
+    )
+    assert float(np.linalg.norm(np.asarray(blended) - np.asarray(pure_hash))) > 0.0
