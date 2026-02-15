@@ -1,0 +1,24 @@
+{
+  "generated_at_utc": "2026-02-15T13:27:25.799621+00:00",
+  "seed": 37,
+  "simulation_mode": "high_fidelity",
+  "profile_version": "hf_v1_2026_02_15",
+  "git_commit": "cfefb94",
+  "sweep_config_hash": "f5ed69ed7211c67d67e9099885e326f89280361733540ff7b680eb4153b24bf1",
+  "config_path": "configs/high_fidelity_matrix.json",
+  "gi_plausible_min": 0.8,
+  "gi_plausible_max": 3.5,
+  "fail_fast_disp_max": 1.0,
+  "fail_fast_penetration_max": 0.5,
+  "output_csv": "results/high_fidelity/matrix_seed_37.csv",
+  "output_summary": "results/high_fidelity/matrix_seed_37_summary.json",
+  "n_runs": 2,
+  "run_config_hashes": [
+    "b6812f4efd87bc4a9fe005e97262cc6b92bda0ad28ce6fe21f33394f490d7304",
+    "411b534fb47ae36192e861b33621cbab6222befe29101a14855ad8fd567c89af"
+  ],
+  "output_files": {
+    "csv": "results/high_fidelity/matrix_seed_37.csv",
+    "summary": "results/high_fidelity/matrix_seed_37_summary.json"
+  }
+}
