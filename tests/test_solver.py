@@ -184,3 +184,26 @@ def test_two_layer_mode_changes_growth_outcome_vs_single_layer(setup):
 
     vertex_delta = np.asarray(layered_final.vertices) - np.asarray(single_layer_final.vertices)
     assert float(np.linalg.norm(vertex_delta)) > 1e-3
+
+
+def test_adaptive_substepping_is_deterministic(setup):
+    """Adaptive substepping path should remain deterministic under fixed seedless setup."""
+    verts, topo, params, _ = setup
+    growth = create_uniform_growth(topo.faces.shape[0], rate=0.8)
+    state = make_initial_state(verts, topo)
+
+    hf_dict = params._asdict()
+    hf_dict.update(
+        {
+            "enable_adaptive_substepping": True,
+            "adaptive_substep_min": 1,
+            "adaptive_substep_max": 4,
+            "adaptive_target_disp": 0.008,
+            "high_fidelity": True,
+        }
+    )
+    hf_params = SimParams(**hf_dict)
+
+    final1, _ = simulate(state, topo, growth, hf_params, n_steps=40)
+    final2, _ = simulate(state, topo, growth, hf_params, n_steps=40)
+    np.testing.assert_allclose(np.asarray(final1.vertices), np.asarray(final2.vertices), atol=1e-8)
