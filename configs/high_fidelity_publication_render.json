@@ -1,0 +1,38 @@
+[
+  {
+    "label": "publication_baseline",
+    "growth_mode": "regional",
+    "high_rate": 0.95,
+    "low_rate": 0.18,
+    "Kc": 2.0,
+    "Kb": 3.0,
+    "damping": 0.9,
+    "carrying_cap_factor": 4.0,
+    "tau": 500.0,
+    "enable_self_collision": true,
+    "self_collision_min_dist": 0.03,
+    "self_collision_stiffness": 45.0,
+    "self_collision_n_sample": 512,
+    "self_collision_use_spatial_hash": false
+  },
+  {
+    "label": "publication_high_fidelity",
+    "growth_mode": "regional",
+    "high_rate": 1.00,
+    "low_rate": 0.20,
+    "Kc": 2.0,
+    "Kb": 3.0,
+    "damping": 0.92,
+    "carrying_cap_factor": 4.1,
+    "tau": 520.0,
+    "simulation_mode": "high_fidelity",
+    "enable_two_layer_approx": true,
+    "outer_layer_growth_scale": 1.22,
+    "inner_layer_growth_scale": 0.78,
+    "two_layer_coupling": 0.12,
+    "anisotropy_mode": "regional",
+    "anisotropy_strength": 0.32,
+    "anisotropy_high": 1.0,
+    "anisotropy_low": 0.0
+  }
+]
