@@ -1,0 +1,6 @@
+{
+  "baseline_runtime_s": 3.988744166912511,
+  "high_fidelity_runtime_s": 3.5406107103917748,
+  "runtime_ratio_hf_over_baseline": 0.8876504890340926,
+  "command_elapsed_s_total": 39.97388895996846
+}

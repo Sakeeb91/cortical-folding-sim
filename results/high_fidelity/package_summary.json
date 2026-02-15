@@ -1,0 +1,84 @@
+{
+  "generated_at_utc": "2026-02-15T13:25:52.898138+00:00",
+  "seed": 42,
+  "n_steps": 120,
+  "render_steps": 180,
+  "dry_run": false,
+  "steps": [
+    {
+      "command": [
+        "python3.11",
+        "scripts/run_forward_sweep.py",
+        "--mode",
+        "high_fidelity",
+        "--config-path",
+        "configs/high_fidelity_forward_sweep.json",
+        "--seed",
+        "42",
+        "--n-steps",
+        "120",
+        "--output-csv",
+        "results/high_fidelity/forward_sweep.csv",
+        "--output-summary",
+        "results/high_fidelity/forward_sweep_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/forward_sweep_manifest.json"
+      ],
+      "elapsed_s": 8.032421875046566,
+      "returncode": 0,
+      "passed": true,
+      "stdout_tail": "Running forward sweep with 4 configs (subdivisions=3, steps=120)\n[01/04] mode=uniform  collision=spatial_hash Kc=2.00 Kb=3.20 GI=0.623 stable=1 collision_share=0.0000\n[02/04] mode=uniform  collision=spatial_hash Kc=1.90 Kb=3.10 GI=0.659 stable=1 collision_share=0.0000\n[03/04] mode=regional collision=spatial_hash Kc=1.90 Kb=2.80 GI=0.707 stable=1 collision_share=0.0000\n[04/04] mode=regional collision=spatial_hash Kc=2.00 Kb=2.90 GI=0.738 stable=1 collision_share=0.0000\nSaved CSV: results/high_fidelity/forward_sweep.csv\nSaved summary: results/high_fidelity/forward_sweep_summary.json\nSaved manifest: results/high_fidelity/forward_sweep_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true,
+      "name": "high_fidelity_sweep"
+    },
+    {
+      "command": [
+        "python3.11",
+        "scripts/generate_high_fidelity_publication_render.py",
+        "--config-path",
+        "configs/high_fidelity_publication_render.json",
+        "--seed",
+        "42",
+        "--n-steps",
+        "180",
+        "--with-metric-overlays",
+        "--output-gif",
+        "docs/assets/high_fidelity/publication_comparison.gif",
+        "--output-mp4",
+        "docs/assets/high_fidelity/publication_comparison.mp4",
+        "--output-summary",
+        "results/high_fidelity/publication_render_summary.json",
+        "--output-manifest",
+        "results/high_fidelity/publication_render_manifest.json"
+      ],
+      "elapsed_s": 27.418710167054087,
+      "returncode": 0,
+      "passed": true,
+      "stdout_tail": "Saved: results/high_fidelity/publication_render_summary.json\nSaved: results/high_fidelity/publication_render_manifest.json\n",
+      "stderr_tail": "",
+      "executed": true,
+      "name": "publication_render"
+    },
+    {
+      "command": [
+        "python3.11",
+        "scripts/validate_high_fidelity.py",
+        "--seed",
+        "42",
+        "--n-steps",
+        "120",
+        "--output-dir",
+        "results/high_fidelity"
+      ],
+      "elapsed_s": 162.21359691605903,
+      "returncode": 0,
+      "passed": true,
+      "stdout_tail": "Saved: results/high_fidelity/validation_report.json\n",
+      "stderr_tail": "",
+      "executed": true,
+      "name": "hardened_validation"
+    }
+  ],
+  "passed": true
+}
